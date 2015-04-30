@@ -1,0 +1,3 @@
+<!-- BEGIN_INCLUDE(wiki-pedia:greet) -->
+    <wiki-pedia:get-param-info config-ref="" action="paraminfo" doc:name="WikiPedia"/>
+<!-- END_INCLUDE(wiki-pedia:greet) -->
