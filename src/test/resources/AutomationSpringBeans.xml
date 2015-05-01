@@ -3596,7 +3596,7 @@
 <!--queryGenLinks-->
 <util:map id="queryGenLinksTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="info"/>
         <entry key="list" value=""/>
         <entry key="gplnamespace" value=""/>
         <entry key="gpllimit" value=""/>
@@ -3608,7 +3608,7 @@
         <entry key="exportnowrap" value=""/>
         <entry key="iwurl" value=""/>
         <entry key="continueId" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="generator" value=""/>
@@ -3628,7 +3628,7 @@
 <!--queryGenLinkShere-->
 <util:map id="queryGenLinkShereTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="info"/>
         <entry key="list" value=""/>
         <entry key="glhprop" value=""/>
         <entry key="glhnamespace" value=""/>
@@ -3640,7 +3640,7 @@
         <entry key="exportnowrap" value=""/>
         <entry key="iwurl" value=""/>
         <entry key="continueId" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="generator" value=""/>
@@ -3662,12 +3662,12 @@
  <entry key="format" value="json"/>
         <entry key="prop" value=""/>
         <entry key="list" value=""/>
-        <entry key="gmcgroup" value=""/>
-        <entry key="gmclanguage" value="en"/>
+        <entry key="gmcgroup" value="page-Example"/>
+        <entry key="gmclanguage" value="fi"/>
         <entry key="gmclimit" value="500"/>
         <entry key="gmcoffset" value=""/>
         <entry key="gmcfilter" value="!optional|!ignored"/>
-        <entry key="gmcprop" value="definition|translation"/>
+        <entry key="gmcprop" value="definition|translation|tags"/>
         <entry key="indexpageids" value=""/>
         <entry key="export" value=""/>
         <entry key="exportnowrap" value=""/>
@@ -3695,8 +3695,8 @@
  <entry key="format" value="json"/>
         <entry key="prop" value=""/>
         <entry key="list" value=""/>
-        <entry key="gpwppropname" value=""/>
-        <entry key="gpwpprop" value="ids|title"/>
+        <entry key="gpwppropname" value="displaytitle"/>
+        <entry key="gpwpprop" value="ids|title|value"/>
         <entry key="gpwpcontinue" value=""/>
         <entry key="gpwplimit" value="10"/>
         <entry key="gpwpdir" value="ascending"/>
@@ -3727,7 +3727,7 @@
  <entry key="format" value="json"/>
         <entry key="prop" value=""/>
         <entry key="list" value=""/>
-        <entry key="gpssearch" value=""/>
+        <entry key="gpssearch" value="meaning"/>
         <entry key="gpsnamespace" value="0"/>
         <entry key="gpslimit" value="10"/>
         <entry key="gpsoffset" value="0"/>
@@ -3756,9 +3756,9 @@
 <!--queryGenProtectedTitles-->
 <util:map id="queryGenProtectedTitlesTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="linkshere"/>
         <entry key="list" value=""/>
-        <entry key="gptnamespace" value=""/>
+        <entry key="gptnamespace" value="0"/>
         <entry key="gptlevel" value=""/>
         <entry key="gptlimit" value="10"/>
         <entry key="gptdir" value=""/>
@@ -3793,7 +3793,7 @@
  <entry key="format" value="json"/>
         <entry key="prop" value=""/>
         <entry key="list" value=""/>
-        <entry key="gqppage" value=""/>
+        <entry key="gqppage" value="Ancientpages"/>
         <entry key="gqpoffset" value="0"/>
         <entry key="gqplimit" value="10"/>
         <entry key="indexpageids" value=""/>
@@ -3821,9 +3821,9 @@
 <!--queryGenRandom-->
 <util:map id="queryGenRandomTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="info"/>
         <entry key="list" value=""/>
-        <entry key="grnnamespace" value=""/>
+        <entry key="grnnamespace" value="0"/>
         <entry key="grnlimit" value="1"/>
         <entry key="grnredirect" value=""/>
         <entry key="indexpageids" value=""/>
@@ -3851,7 +3851,7 @@
 <!--queryGenRecentChanges-->
 <util:map id="queryGenRecentChangesTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="info"/>
         <entry key="list" value=""/>
         <entry key="grcstart" value=""/>
         <entry key="grcend" value=""/>
@@ -3871,7 +3871,7 @@
         <entry key="exportnowrap" value=""/>
         <entry key="iwurl" value=""/>
         <entry key="continueId" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="generator" value=""/>
@@ -3891,7 +3891,7 @@
 <!--queryGenRedirects-->
 <util:map id="queryGenRedirectsTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="info"/>
         <entry key="list" value=""/>
         <entry key="grdprop" value="pageid|title"/>
         <entry key="grdnamespace" value=""/>
@@ -3903,7 +3903,7 @@
         <entry key="exportnowrap" value=""/>
         <entry key="iwurl" value=""/>
         <entry key="continueId" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="generator" value=""/>
@@ -3926,7 +3926,7 @@
         <entry key="prop" value=""/>
         <entry key="list" value=""/>
         <entry key="grvprop" value="ids|timestamp|flags|comment|user"/>
-        <entry key="grvlimit" value=""/>
+        <entry key="grvlimit" value="5"/>
         <entry key="grvexpandtemplates" value=""/>
         <entry key="grvgeneratexml" value=""/>
         <entry key="grvparse" value=""/>
@@ -3936,9 +3936,9 @@
         <entry key="grvcontentformat" value=""/>
         <entry key="grvstartid" value=""/>
         <entry key="grvendid" value=""/>
-        <entry key="grvstart" value=""/>
+        <entry key="grvstart" value="2006-05-01T00:00:00Z"/>
         <entry key="grvend" value=""/>
-        <entry key="grvdir" value="older"/>
+        <entry key="grvdir" value="newer"/>
         <entry key="grvuser" value=""/>
         <entry key="grvexcludeuser" value=""/>
         <entry key="grvtag" value=""/>
@@ -3948,7 +3948,7 @@
         <entry key="exportnowrap" value=""/>
         <entry key="iwurl" value=""/>
         <entry key="continueId" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="generator" value=""/>
@@ -3968,9 +3968,9 @@
 <!--queryGenSearch-->
 <util:map id="queryGenSearchTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="info"/>
         <entry key="list" value=""/>
-        <entry key="gsrsearch" value=""/>
+        <entry key="gsrsearch" value="meaning"/>
         <entry key="gsrnamespace" value="0"/>
         <entry key="gsrwhat" value=""/>
         <entry key="gsrinfo" value="totalhits|suggestion"/>
@@ -4003,9 +4003,9 @@
 <!--queryGenTemplates-->
 <util:map id="queryGenTemplatesTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="info"/>
         <entry key="list" value=""/>
-        <entry key="gtlnamespace" value=""/>
+        <entry key="gtlnamespace" value="2|10"/>
         <entry key="gtllimit" value="10"/>
         <entry key="gtlcontinue" value=""/>
         <entry key="gtltemplates" value=""/>
@@ -4015,7 +4015,7 @@
         <entry key="exportnowrap" value=""/>
         <entry key="iwurl" value=""/>
         <entry key="continueId" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="generator" value=""/>
@@ -4047,7 +4047,7 @@
         <entry key="exportnowrap" value=""/>
         <entry key="iwurl" value=""/>
         <entry key="continueId" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="generator" value=""/>
@@ -4067,7 +4067,7 @@
 <!--queryGenWatchList-->
 <util:map id="queryGenWatchListTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="revisions"/>
         <entry key="list" value=""/>
         <entry key="gwlallrev" value=""/>
         <entry key="gwlstart" value=""/>
@@ -4108,13 +4108,13 @@
 <!--queryGenWatchListRaw-->
 <util:map id="queryGenWatchListRawTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="prop" value=""/>
+        <entry key="prop" value="info"/>
         <entry key="list" value=""/>
         <entry key="gwrcontinue" value=""/>
         <entry key="gwrnamespace" value=""/>
         <entry key="gwrlimit" value="10"/>
         <entry key="gwrprop" value=""/>
-        <entry key="gwrshow" value=""/>
+        <entry key="gwrshow" value="changed"/>
         <entry key="gwrowner" value=""/>
         <entry key="gwrtoken" value="older"/>
         <entry key="gwrdir" value="ascending"/>
@@ -4143,13 +4143,13 @@
 <!--login-->
 <util:map id="loginTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="lgname" value=""/>
-        <entry key="lgpassword" value=""/>
-        <entry key="lgdomain" value=""/>
+        <entry key="lgpassword" value="${password}"/>
+        <entry key="lgdomain" value="${user.name}"/>
         <entry key="token" value=""/>
     </util:map>
 <!--getmainModule-->
 <util:map id="getmainModuleTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
- <entry key="action" value=""/>
+ 		<entry key="action" value="help"/>
         <entry key="format" value="json"/>
         <entry key="maxlag" value=""/>
         <entry key="smaxage" value="0"/>
@@ -4168,7 +4168,7 @@
 <!--openSearch-->
 <util:map id="openSearchTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="search" value=""/>
+        <entry key="search" value="Te"/>
         <entry key="limit" value="10"/>
         <entry key="namespace" value="0"/>
         <entry key="suggest" value=""/>
@@ -4188,7 +4188,7 @@
 <util:map id="parseContentTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
         <entry key="title" value=""/>
-        <entry key="text" value=""/>
+        <entry key="text" value="{{Project:Sandbox}}"/>
         <entry key="summary" value=""/>
         <entry key="page" value=""/>
         <entry key="pageid" value=""/>
@@ -4207,7 +4207,7 @@
         <entry key="sectionpreview" value=""/>
         <entry key="disabletoc" value=""/>
         <entry key="contentformat" value=""/>
-        <entry key="contentmodel" value=""/>
+        <entry key="contentmodel" value="wikitext"/>
         <entry key="mobileformat" value=""/>
         <entry key="noimages" value=""/>
         <entry key="mainpage" value=""/>
@@ -4234,7 +4234,7 @@
         <entry key="gacfrom" value=""/>
         <entry key="gaccontinue" value=""/>
         <entry key="gacto" value=""/>
-        <entry key="gacprefix" value=""/>
+        <entry key="gacprefix" value="List"/>
         <entry key="gacdir" value="ascending"/>
         <entry key="gacmin" value=""/>
         <entry key="gacmax" value=""/>
@@ -4263,7 +4263,7 @@
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gadrprop" value="ids|timestamp|flags|comment|user"/>
-        <entry key="gadrlimit" value=""/>
+        <entry key="gadrlimit" value="50"/>
         <entry key="gadrexpandtemplates" value=""/>
         <entry key="gadrgeneratexml" value=""/>
         <entry key="gadrparse" value=""/>
@@ -4275,7 +4275,7 @@
         <entry key="gadrnamespace" value=""/>
         <entry key="gadrstart" value=""/>
         <entry key="gadrend" value=""/>
-        <entry key="gadrdir" value="older"/>
+        <entry key="gadrdir" value="newer"/>
         <entry key="gadrfrom" value=""/>
         <entry key="gadrto" value=""/>
         <entry key="gadrprefix" value=""/>
@@ -4306,10 +4306,10 @@
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gafcontinue" value=""/>
-        <entry key="gaffrom" value=""/>
+        <entry key="gaffrom" value="B"/>
         <entry key="gafto" value=""/>
         <entry key="gafprefix" value=""/>
-        <entry key="gafunique" value=""/>
+        <entry key="gafunique" value=" "/>
         <entry key="gafprop" value="title"/>
         <entry key="gaflimit" value="10"/>
         <entry key="gafdir" value="ascending"/>
@@ -4337,7 +4337,7 @@
         <entry key="revids" value=""/>
         <entry key="gaisort" value="name"/>
         <entry key="gaidir" value="ascending"/>
-        <entry key="gaifrom" value=""/>
+        <entry key="gaifrom" value="T"/>
         <entry key="gaito" value=""/>
         <entry key="gaicontinue" value=""/>
         <entry key="gaistart" value=""/>
@@ -4351,7 +4351,7 @@
         <entry key="gaiuser" value=""/>
         <entry key="gaifilterbots" value="all"/>
         <entry key="gaimime" value=""/>
-        <entry key="gailimit" value=""/>
+        <entry key="gailimit" value="4"/>
         <entry key="redirects" value=""/>
         <entry key="converttitles" value=""/>
         <entry key="maxlag" value=""/>
@@ -4375,7 +4375,7 @@
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="galcontinue" value=""/>
-        <entry key="galfrom" value=""/>
+        <entry key="galfrom" value="B"/>
         <entry key="galto" value=""/>
         <entry key="galprefix" value=""/>
         <entry key="galunique" value=""/>
@@ -4406,17 +4406,17 @@
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gapcontinue" value=""/>
-        <entry key="gapfrom" value=""/>
+        <entry key="gapfrom" value="Re"/>
         <entry key="gapto" value=""/>
         <entry key="gapprefix" value=""/>
         <entry key="gapnamespace" value="0"/>
-        <entry key="gapfilterredir" value="all"/>
+        <entry key="gapfilterredir" value="nondirects"/>
         <entry key="gapminsize" value=""/>
         <entry key="gapmaxsize" value=""/>
         <entry key="gapprtype" value=""/>
         <entry key="gapprlevel" value=""/>
         <entry key="gapprfiltercascade" value="all"/>
-        <entry key="gaplimit" value="10"/>
+        <entry key="gaplimit" value="2"/>
         <entry key="gapdir" value="ascending"/>
         <entry key="gapfilterlanglinks" value="all"/>
         <entry key="gapprexpiry" value="all"/>
@@ -4443,7 +4443,7 @@
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="garcontinue" value=""/>
-        <entry key="garfrom" value=""/>
+        <entry key="garfrom" value="B"/>
         <entry key="garto" value=""/>
         <entry key="garprefix" value=""/>
         <entry key="garunique" value=""/>
@@ -4474,7 +4474,7 @@
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gatcontinue" value=""/>
-        <entry key="gatfrom" value=""/>
+        <entry key="gatfrom" value="B"/>
         <entry key="gatto" value=""/>
         <entry key="gatprefix" value=""/>
         <entry key="gatunique" value=""/>
@@ -4504,7 +4504,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="gbltitle" value=""/>
+        <entry key="gbltitle" value="Main Page"/>
         <entry key="gblpageid" value=""/>
         <entry key="gblcontinue" value=""/>
         <entry key="gblnamespace" value=""/>
@@ -4531,7 +4531,7 @@
         <entry key="forcelinkupdate" value=""/>
         <entry key="forcerecursivelinkupdate" value=""/>
         <entry key="continueStr" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Albert Einstein"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gclprop" value=""/>
@@ -4562,7 +4562,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="gcmtitle" value=""/>
+        <entry key="gcmtitle" value="Category:Physics"/>
         <entry key="gcmpageid" value=""/>
         <entry key="gcmprop" value="ids|title"/>
         <entry key="gcmnamespace" value=""/>
@@ -4588,7 +4588,7 @@
         <entry key="continueStr" value=""/>
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
-        <entry key="revids" value=""/>
+        <entry key="revids" value="123456"/>
         <entry key="gdrvprop" value=""/>
         <entry key="gdrvlimit" value=""/>
         <entry key="gdrvexpandtemplates" value=""/>
@@ -4653,7 +4653,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="geititle" value=""/>
+        <entry key="geititle" value="Template:Stub"/>
         <entry key="geipageid" value=""/>
         <entry key="geicontinue" value=""/>
         <entry key="geinamespace" value=""/>
@@ -4685,7 +4685,7 @@
         <entry key="geuprop" value=""/>
         <entry key="geuoffset" value=""/>
         <entry key="geuprotocol" value=""/>
-        <entry key="geuquery" value=""/>
+        <entry key="geuquery" value="www.mediawiki.org"/>
         <entry key="geunamespace" value=""/>
         <entry key="geulimit" value=""/>
         <entry key="geuexpandurl" value=""/>
@@ -4708,7 +4708,7 @@
         <entry key="forcelinkupdate" value=""/>
         <entry key="forcerecursivelinkupdate" value=""/>
         <entry key="continueStr" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="File:Example.jpg"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gfuprop" value=""/>
@@ -4735,7 +4735,7 @@
         <entry key="forcelinkupdate" value=""/>
         <entry key="forcerecursivelinkupdate" value=""/>
         <entry key="continueStr" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gimlimit" value=""/>
@@ -4764,7 +4764,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="giutitle" value=""/>
+        <entry key="giutitle" value="Albert Einstein Head.jpg"/>
         <entry key="giupageid" value=""/>
         <entry key="giucontinue" value=""/>
         <entry key="giunamespace" value=""/>
@@ -4794,8 +4794,8 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="giwblprefix" value=""/>
-        <entry key="giwbltitle" value=""/>
+        <entry key="giwblprefix" value="wikibooks"/>
+        <entry key="giwbltitle" value="Test"/>
         <entry key="giwblcontinue" value=""/>
         <entry key="giwbllimit" value=""/>
         <entry key="giwblprop" value=""/>
@@ -4822,8 +4822,8 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="glbllang" value=""/>
-        <entry key="glbltitle" value=""/>
+        <entry key="glbllang" value="fr"/>
+        <entry key="glbltitle" value="Test"/>
         <entry key="glblcontinue" value=""/>
         <entry key="glbllimit" value=""/>
         <entry key="glblprop" value=""/>
@@ -4847,7 +4847,7 @@
         <entry key="forcelinkupdate" value=""/>
         <entry key="forcerecursivelinkupdate" value=""/>
         <entry key="continueStr" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gplnamespace" value=""/>
@@ -4874,7 +4874,7 @@
         <entry key="forcelinkupdate" value=""/>
         <entry key="forcerecursivelinkupdate" value=""/>
         <entry key="continueStr" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="glhprop" value=""/>
@@ -4904,8 +4904,8 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="gmcgroup" value=""/>
-        <entry key="gmclanguage" value="en"/>
+        <entry key="gmcgroup" value="page-Example"/>
+        <entry key="gmclanguage" value="n1"/>
         <entry key="gmclimit" value="500"/>
         <entry key="gmcoffset" value=""/>
         <entry key="gmcfilter" value="!optional|!ignored"/>
@@ -4932,7 +4932,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="gpwppropname" value=""/>
+        <entry key="gpwppropname" value="notoc"/>
         <entry key="gpwpprop" value="ids|title"/>
         <entry key="gpwpcontinue" value=""/>
         <entry key="gpwplimit" value="10"/>
@@ -4959,7 +4959,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="gpssearch" value=""/>
+        <entry key="gpssearch" value="meaning"/>
         <entry key="gpsnamespace" value="0"/>
         <entry key="gpslimit" value="10"/>
         <entry key="gpsoffset" value="0"/>
@@ -4985,7 +4985,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="gptnamespace" value=""/>
+        <entry key="gptnamespace" value="0"/>
         <entry key="gptlevel" value=""/>
         <entry key="gptlimit" value="10"/>
         <entry key="gptdir" value=""/>
@@ -5015,7 +5015,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="gqppage" value=""/>
+        <entry key="gqppage" value="Ancientpages"/>
         <entry key="gqpoffset" value="0"/>
         <entry key="gqplimit" value="10"/>
         <entry key="redirects" value=""/>
@@ -5040,8 +5040,8 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="grnnamespace" value=""/>
-        <entry key="grnlimit" value="1"/>
+        <entry key="grnnamespace" value="0"/>
+        <entry key="grnlimit" value="2"/>
         <entry key="grnredirect" value=""/>
         <entry key="redirects" value=""/>
         <entry key="converttitles" value=""/>
@@ -5073,7 +5073,7 @@
         <entry key="grcexcludeuser" value=""/>
         <entry key="grctag" value=""/>
         <entry key="grcprop" value="title|timestamp|ids"/>
-        <entry key="grcshow" value=""/>
+        <entry key="grcshow" value="!patrolled"/>
         <entry key="grclimit" value="10"/>
         <entry key="grctype" value="edit|new|log"/>
         <entry key="grctoponly" value=""/>
@@ -5097,7 +5097,7 @@
         <entry key="forcelinkupdate" value=""/>
         <entry key="forcerecursivelinkupdate" value=""/>
         <entry key="continueStr" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="grdprop" value="pageid|title"/>
@@ -5167,7 +5167,7 @@
         <entry key="titles" value=""/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
-        <entry key="gsrsearch" value=""/>
+        <entry key="gsrsearch" value="meaning"/>
         <entry key="gsrnamespace" value="0"/>
         <entry key="gsrwhat" value=""/>
         <entry key="gsrinfo" value="totalhits|suggestion"/>
@@ -5211,7 +5211,7 @@
         <entry key="forcelinkupdate" value=""/>
         <entry key="forcerecursivelinkupdate" value=""/>
         <entry key="continueStr" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gtiprop" value="pageid|title|redirect"/>
@@ -5238,7 +5238,7 @@
         <entry key="forcelinkupdate" value=""/>
         <entry key="forcerecursivelinkupdate" value=""/>
         <entry key="continueStr" value=""/>
-        <entry key="titles" value=""/>
+        <entry key="titles" value="Main Page"/>
         <entry key="pageids" value=""/>
         <entry key="revids" value=""/>
         <entry key="gwlallrev" value=""/>
@@ -5281,7 +5281,7 @@
         <entry key="gwrnamespace" value=""/>
         <entry key="gwrlimit" value="10"/>
         <entry key="gwrprop" value=""/>
-        <entry key="gwrshow" value=""/>
+        <entry key="gwrshow" value="changed"/>
         <entry key="gwrowner" value=""/>
         <entry key="gwrtoken" value="older"/>
         <entry key="gwrdir" value="ascending"/>
@@ -5301,7 +5301,7 @@
 <!--getParamInfo-->
 <util:map id="getParamInfoTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="format" value="json"/>
-        <entry key="modules" value=""/>
+        <entry key="modules" value="parse|phpfm|query+allpages|query+siteinfo"/>
         <entry key="helpformat" value="none"/>
     </util:map>
 </beans>

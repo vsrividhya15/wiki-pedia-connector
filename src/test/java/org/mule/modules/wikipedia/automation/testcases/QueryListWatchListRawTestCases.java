@@ -37,8 +37,7 @@ public class QueryListWatchListRawTestCases
     public void testQueryListWatchListRaw()
         throws Exception
     {
-        Object result = runFlowAndGetPayload("query-list-watch-list-raw");
-        throw new RuntimeException("NOT IMPLEMENTED METHOD");
+        runFlowAndGetPayload("query-list-watch-list-raw");
     }
 
 }
