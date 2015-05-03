@@ -14,7 +14,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
 <context:property-placeholder location="automation-credentials.properties" />
 
-<wiki-pedia:config-type name="Wiki-pedia" username="${user.name}" password="${password}" doc:name="Wiki-pedia"/>
+<wiki-pedia:config-type name="Wiki-pedia" username="Srividhya_V04" password="${password}" doc:name="Wiki-pedia"/>
 
 <flow name="query" >
 	<wiki-pedia:query config-ref="Wiki-pedia" doc:name="WikiPedia"/>

@@ -4144,7 +4144,7 @@
 <util:map id="loginTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
  <entry key="lgname" value=""/>
         <entry key="lgpassword" value="${password}"/>
-        <entry key="lgdomain" value="${user.name}"/>
+        <entry key="lgdomain" value="Srividhya_V04"/>
         <entry key="token" value=""/>
     </util:map>
 <!--getmainModule-->
