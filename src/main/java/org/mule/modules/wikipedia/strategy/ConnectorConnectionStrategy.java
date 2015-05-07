@@ -10,14 +10,20 @@ import org.mule.api.annotations.components.HttpBasicAuth;
 import org.mule.api.annotations.rest.BasicAuthPassword;
 import org.mule.api.annotations.rest.BasicAuthUsername;
 
+/**
+ * ConnectorConnectionStrategy
+ *
+ * @author MuleSoft, Inc.
+ */
+@HttpBasicAuth(configElementName = "config-type", headerName = "Authorization", friendlyName = "HttpBasicAuth")
+public class ConnectorConnectionStrategy {
 
-@HttpBasicAuth( configElementName = "config-type", headerName="Authorization", friendlyName = "HttpBasicAuth")
-public class ConnectorConnectionStrategy{
-	
+	/** The username to use to connect to WikiPedia */
 	@Configurable
 	@BasicAuthUsername
 	private String username;
 
+	/** The Password to connect to WikiPedia */
 	@Configurable
 	@BasicAuthPassword
 	private String password;
@@ -37,5 +43,5 @@ public class ConnectorConnectionStrategy{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 }

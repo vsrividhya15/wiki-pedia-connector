@@ -19,21 +19,24 @@ import org.mule.api.annotations.rest.RestCall;
 import org.mule.api.annotations.rest.RestQueryParam;
 import org.mule.modules.wikipedia.strategy.ConnectorConnectionStrategy;
 
-/** Anypoint Connector
+/**
+ * WikiPediaConnector Connector
  *
- * @author MuleSoft, Inc. */
+ * @author MuleSoft, Inc.
+ */
 @Connector(name = "wiki-pedia", friendlyName = "WikiPedia")
 public abstract class WikiPediaConnector {
 
-	private static final String BASE_URL = "http://en.wikipedia.org/w/api.php";
+	private static final String	BASE_URL	= "http://en.wikipedia.org/w/api.php";
 	@ConnectionStrategy
-	ConnectorConnectionStrategy connectionStrategy;
+	ConnectorConnectionStrategy	connectionStrategy;
 
-	/** Fetch data from and about MediaWiki. All data modifications will first
+	/**
+	 * Fetch data from and about MediaWiki. All data modifications will first
 	 * have to use query to acquire a token to prevent abuse from malicious
-	 * sites.
+	 * sites. {@sample.xml ../../../doc/wiki-pedia-connector.xml.sample
+	 * wiki-pedia:query}
 	 * 
-	 * {@sample.xml ../../../doc/wiki-pedia-connector.xml.sample wiki-pedia:query}
 	 * @param format - The format of the output. Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
 	 *            (separate with |): categories, categoryinfo, contributors,
@@ -71,7 +74,9 @@ public abstract class WikiPediaConnector {
 	 *            pairs that should simply be merged into the original request.
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
-	 *            and will be made default in the next API version.
+	 *            and will be made default in the next API version. - A list of
+	 *            titles to work on. Separate values with |. Maximum number of
+	 *            values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
@@ -96,7 +101,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -136,17 +141,15 @@ public abstract class WikiPediaConnector {
 	 *            be used once, and expires after 10 seconds. This should be
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
-	 * 
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Fetch site info and revisions of Main
+	 * @throws IOException Examples: Fetch site info and revisions of Main
 	 *             Page.-api.php?
 	 *             action=query&prop=revisions&meta=siteinfo&titles
 	 *             =Main%20Page&rvprop=user|comment&continue= Fetch revisions of
 	 *             pages beginning with
 	 *             API/.-api.php?action=query&generator=allpages
-	 *             &gapprefix=API/&prop=revisions&continue= */
+	 *             &gapprefix=API/&prop=revisions&continue=
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "" + "?action=query", method = HttpMethod.GET)
@@ -178,9 +181,11 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** List all categories the pages belong to.
+	/**
+	 * List all categories the pages belong to. {@sample.xml
+	 * ../../../doc/wiki-pedia-connector.xml.sample
+	 * wiki-pedia:query-prop-categories}
 	 * 
-	 * {@sample.xml ../../../doc/wiki-pedia-connector.xml.sample wiki-pedia:query-prop-categories}
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
 	 *            abuselog, allcategories, alldeletedrevisions, allfileusages,
@@ -228,7 +233,9 @@ public abstract class WikiPediaConnector {
 	 *            pairs that should simply be merged into the original request.
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
-	 *            and will be made default in the next API version.
+	 *            and will be made default in the next API version. - A list of
+	 *            titles to work on. Separate values with |. Maximum number of
+	 *            values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
@@ -253,7 +260,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -293,17 +300,15 @@ public abstract class WikiPediaConnector {
 	 *            be used once, and expires after 10 seconds. This should be
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
-	 * 
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Fetch site info and revisions of Main
+	 * @throws IOException Examples: Fetch site info and revisions of Main
 	 *             Page.-api.php?
 	 *             action=query&prop=revisions&meta=siteinfo&titles
 	 *             =Main%20Page&rvprop=user|comment&continue= Fetch revisions of
 	 *             pages beginning with
 	 *             API/.-api.php?action=query&generator=allpages
-	 *             &gapprefix=API/&prop=revisions&continue= */
+	 *             &gapprefix=API/&prop=revisions&continue=
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=categories", method = HttpMethod.GET)
@@ -340,7 +345,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns information about the given categories.
+	/**
+	 * Returns information about the given categories.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -374,7 +380,9 @@ public abstract class WikiPediaConnector {
 	 *            pairs that should simply be merged into the original request.
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
-	 *            and will be made default in the next API version.
+	 *            and will be made default in the next API version. - A list of
+	 *            titles to work on. Separate values with |. Maximum number of
+	 *            values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
@@ -399,7 +407,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -440,12 +448,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about Category:Foo and
+	 * @throws IOException Examples: Get information about Category:Foo and
 	 *             Category:Bar.
 	 *             -api.php?action=query&prop=categoryinfo&titles=Category
-	 *             :Foo|Category:Bar */
+	 *             :Foo|Category:Bar
+	 */
 	@Processor(friendlyName = "Query Prop Category Info")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=categoryinfo", method = HttpMethod.GET)
@@ -477,7 +484,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki. All data modifications will first
+	/**
+	 * Fetch data from and about MediaWiki. All data modifications will first
 	 * have to use query to acquire a token to prevent abuse from malicious
 	 * sites.
 	 * 
@@ -535,7 +543,9 @@ public abstract class WikiPediaConnector {
 	 *            pairs that should simply be merged into the original request.
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
-	 *            and will be made default in the next API version.
+	 *            and will be made default in the next API version. - A list of
+	 *            titles to work on. Separate values with |. Maximum number of
+	 *            values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
@@ -560,7 +570,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -601,10 +611,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show contributors to the page Main
-	 *             Page.-api.php?action=query&prop=contributors&titles=Main_Page */
+	 * @throws IOException Examples: Show contributors to the page Main
+	 *             Page.-api
+	 *             .php?action=query&prop=contributors&titles=Main_Page
+	 */
 
 	@Processor(friendlyName = "Query Prop Contributors")
 	@ReconnectOn(exceptions = { Exception.class })
@@ -642,7 +652,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Get deleted revision information. May be used in several ways: Get
+	/**
+	 * Get deleted revision information. May be used in several ways: Get
 	 * deleted revisions for a set of pages, by setting titles or pageids.
 	 * Ordered by title and timestamp. Get data about a set of deleted revisions
 	 * by setting their IDs with revids. Ordered by revision ID.
@@ -719,7 +730,9 @@ public abstract class WikiPediaConnector {
 	 *            pairs that should simply be merged into the original request.
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
-	 *            and will be made default in the next API version.
+	 *            and will be made default in the next API version. - A list of
+	 *            titles to work on. Separate values with |. Maximum number of
+	 *            values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
@@ -744,7 +757,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -785,16 +798,15 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Example: List the deleted revisions of the pages Main Page
-	 *             and Talk:Main Page, with content.-
+	 * @throws IOException Example: List the deleted revisions of the pages Main
+	 *             Page and Talk:Main Page, with content.-
 	 *             api.php?action=query&prop=deletedrevisions
 	 *             &titles=Main%20Page|
 	 *             Talk:Main%20Page&drvprop=user|comment|content List the
 	 *             information for deleted revision
 	 *             123456.-api.php?action=query&
-	 *             prop=deletedrevisions&revids=123456 */
+	 *             prop=deletedrevisions&revids=123456
+	 */
 	@Processor(friendlyName = "Query Prop Deleted Revisions")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=deletedrevisions", method = HttpMethod.GET)
@@ -841,10 +853,11 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** List all files that are duplicates of the given files based on hash
-	 * values.
+	/**
+	 * List all files that are duplicates of the given files based on hash
+	 * values. {@sample.xml ../../../doc/wiki-pedia-connector.xml.sample
+	 * wiki-pedia:query-prop-duplicate-files}
 	 * 
-	 * {@sample.xml ../../../doc/wiki-pedia-connector.xml.sample wiki-pedia:query-prop-duplicate-files}
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
 	 *            abuselog, allcategories, alldeletedrevisions, allfileusages,
@@ -882,7 +895,9 @@ public abstract class WikiPediaConnector {
 	 *            pairs that should simply be merged into the original request.
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
-	 *            and will be made default in the next API version.
+	 *            and will be made default in the next API version. - A list of
+	 *            titles to work on. Separate values with |. Maximum number of
+	 *            values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
@@ -907,7 +922,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -948,7 +963,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException */
+	 * @throws IOException
+	 */
 	@Processor(friendlyName = "Query Prop Duplicate Files")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=duplicatefiles", method = HttpMethod.GET)
@@ -983,7 +999,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns all external URLs (not interwikis) from the given pages.
+	/**
+	 * Returns all external URLs (not interwikis) from the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -1028,7 +1045,9 @@ public abstract class WikiPediaConnector {
 	 *            pairs that should simply be merged into the original request.
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
-	 *            and will be made default in the next API version.
+	 *            and will be made default in the next API version. - A list of
+	 *            titles to work on. Separate values with |. Maximum number of
+	 *            values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
@@ -1053,7 +1072,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -1094,10 +1113,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get a list of external links on Main
-	 *             Page.-api.php?action=query&prop=extlinks&titles=Main%20Page */
+	 * @throws IOException Examples: Get a list of external links on Main
+	 *             Page.-api.php?action=query&prop=extlinks&titles=Main%20Page
+	 */
 	@Processor(friendlyName = "Query Prop Exteral Links")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=extlinks", method = HttpMethod.GET)
@@ -1120,7 +1138,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
 			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
-			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
+			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
+			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
 			@Default("0") @RestQueryParam(value = "smaxage", ignoreIfEmpty = true) String smaxage,
 			@Default("0") @RestQueryParam(value = "maxage", ignoreIfEmpty = true) String maxage,
 			@Optional @RestQueryParam(value = "assert", ignoreIfEmpty = true) String assertUser,
@@ -1132,7 +1151,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns plain-text or limited HTML extracts of the given pages.
+	/**
+	 * Returns plain-text or limited HTML extracts of the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -1182,7 +1202,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -1206,7 +1226,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -1247,11 +1267,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Get a 175-character
+	 * @throws IOException Get a 175-character
 	 *             extract-api.php?action=query&prop=extracts
-	 *             &exchars=175&titles=Therion */
+	 *             &exchars=175&titles=Therion
+	 */
 	@Processor(friendlyName = "Query Prop Extracts")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=extracts", method = HttpMethod.GET)
@@ -1277,7 +1296,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
 			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
-			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
+			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
+			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
 			@Default("0") @RestQueryParam(value = "smaxage", ignoreIfEmpty = true) String smaxage,
 			@Default("0") @RestQueryParam(value = "maxage", ignoreIfEmpty = true) String maxage,
 			@Optional @RestQueryParam(value = "assert", ignoreIfEmpty = true) String assertUser,
@@ -1289,7 +1309,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Find all pages that use the given files.
+	/**
+	 * Find all pages that use the given files.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -1336,7 +1357,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -1360,7 +1381,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -1401,15 +1422,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get a list of pages using
+	 * @throws IOException Examples: Get a list of pages using
 	 *             File:Example.jpg.-api.php?
 	 *             action=query&prop=fileusage&titles=File%3AExample.jpg Get
 	 *             information about pages using
 	 *             File:Example.jpg.-api.php?action
 	 *             =query&generator=fileusage&titles
-	 *             =File%3AExample.jpg&prop=info */
+	 *             =File%3AExample.jpg&prop=info
+	 */
 	@Processor(friendlyName = "Query Prop File Usage")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=fileusage", method = HttpMethod.GET)
@@ -1432,7 +1452,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
 			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
-			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
+			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
+			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
 			@Default("0") @RestQueryParam(value = "smaxage", ignoreIfEmpty = true) String smaxage,
 			@Default("0") @RestQueryParam(value = "maxage", ignoreIfEmpty = true) String maxage,
 			@Optional @RestQueryParam(value = "assert", ignoreIfEmpty = true) String assertUser,
@@ -1444,7 +1465,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns global image usage for a certain image.
+	/**
+	 * Returns global image usage for a certain image.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -1485,7 +1507,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -1509,7 +1531,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -1550,11 +1572,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get usage of
+	 * @throws IOException Examples: Get usage of
 	 *             File:Example.jpg-api.php?action=query&prop
-	 *             =globalusage&titles=File:Example.jpg */
+	 *             =globalusage&titles=File:Example.jpg
+	 */
 	@Processor(friendlyName = "Query Prop Global Usage")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=globalusage", method = HttpMethod.GET)
@@ -1576,7 +1597,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
 			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
-			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
+			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
+			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
 			@Default("0") @RestQueryParam(value = "smaxage", ignoreIfEmpty = true) String smaxage,
 			@Default("0") @RestQueryParam(value = "maxage", ignoreIfEmpty = true) String maxage,
 			@Optional @RestQueryParam(value = "assert", ignoreIfEmpty = true) String assertUser,
@@ -1588,7 +1610,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns file information and upload history.
+	/**
+	 * Returns file information and upload history.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -1653,7 +1676,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -1677,7 +1700,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -1718,17 +1741,16 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Fetch information about the current version of
-	 *             File:Albert Einstein Head.jpg.
+	 * @throws IOException Examples: Fetch information about the current version
+	 *             of File:Albert Einstein Head.jpg.
 	 *             -api.php?action=query&titles=File
 	 *             :Albert%20Einstein%20Head.jpg&prop=imageinfo Fetch
 	 *             information about versions of File:Test.jpg from 2008 and
 	 *             later.
 	 *             api.php?action=query&titles=File:Test.jpg&prop=imageinfo
 	 *             &iilimit
-	 *             =50&iiend=2007-12-31T23:59:59Z&iiprop=timestamp|user|url */
+	 *             =50&iiend=2007-12-31T23:59:59Z&iiprop=timestamp|user|url
+	 */
 	@Processor(friendlyName = "Query Prop Image Info")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=imageinfo", method = HttpMethod.GET)
@@ -1759,7 +1781,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
 			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
-			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
+			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
+			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
 			@Default("0") @RestQueryParam(value = "smaxage", ignoreIfEmpty = true) String smaxage,
 			@Default("0") @RestQueryParam(value = "maxage", ignoreIfEmpty = true) String maxage,
 			@Optional @RestQueryParam(value = "assert", ignoreIfEmpty = true) String assertUser,
@@ -1771,7 +1794,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns all files contained on the given pages.
+	/**
+	 * Returns all files contained on the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -1813,7 +1837,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -1837,7 +1861,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -1878,13 +1902,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get a list of files used in the Main
+	 * @throws IOException Examples: Get a list of files used in the Main
 	 *             Page.-api.php?action=query&prop=images&titles=Main%20Page Get
 	 *             information about all files used in the Main
 	 *             Page.-api.php?action
-	 *             =query&generator=images&titles=Main%20Page&prop=info */
+	 *             =query&generator=images&titles=Main%20Page&prop=info
+	 */
 	@Processor(friendlyName = "Query Prop Images")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=images", method = HttpMethod.GET)
@@ -1906,7 +1929,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
 			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
-			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
+			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
+			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
 			@Default("0") @RestQueryParam(value = "smaxage", ignoreIfEmpty = true) String smaxage,
 			@Default("0") @RestQueryParam(value = "maxage", ignoreIfEmpty = true) String maxage,
 			@Optional @RestQueryParam(value = "assert", ignoreIfEmpty = true) String assertUser,
@@ -1918,7 +1942,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Get basic page information.
+	/**
+	 * Get basic page information.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -1969,7 +1994,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -1993,7 +2018,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -2033,16 +2058,14 @@ public abstract class WikiPediaConnector {
 	 *            be used once, and expires after 10 seconds. This should be
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
-	 * 
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about the page Main
+	 * @throws IOException Examples: Get information about the page Main
 	 *             Page.-api.php?action=query&prop=info&titles=Main%20Page Get
 	 *             general and protection information about the page Main
 	 *             Page.-api
 	 *             .php?action=query&prop=info&inprop=protection&titles=
-	 *             Main%20Page */
+	 *             Main%20Page
+	 */
 	@Processor(friendlyName = "Query Prop Info")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=info", method = HttpMethod.GET)
@@ -2076,7 +2099,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns all interwiki links from the given pages.
+	/**
+	 * Returns all interwiki links from the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -2120,7 +2144,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -2144,7 +2168,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -2185,10 +2209,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get interwiki links from the page Main
-	 *             Page.-api.php?action=query&prop=iwlinks&titles=Main%20Page */
+	 * @throws IOException Examples: Get interwiki links from the page Main
+	 *             Page.-api.php?action=query&prop=iwlinks&titles=Main%20Page
+	 */
 	@Processor(friendlyName = "Query Prop Interwiki Links")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=iwlinks", method = HttpMethod.GET)
@@ -2225,7 +2248,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns all interlanguage links from the given pages.
+	/**
+	 * Returns all interlanguage links from the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -2273,7 +2297,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -2297,7 +2321,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -2338,11 +2362,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get interlanguage links from the page Main
-	 *             Page.-api.php?action=query&prop=langlinks&titles=Main%20Page&
-	 *             redirects= */
+	 * @throws IOException Examples: Get interlanguage links from the page Main
+	 *             Page
+	 *             .-api.php?action=query&prop=langlinks&titles=Main%20Page&
+	 *             redirects=
+	 */
 	@Processor(friendlyName = "Query Prop Lang links")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=langlinks", method = HttpMethod.GET)
@@ -2380,7 +2404,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns all links from the given pages.
+	/**
+	 * Returns all links from the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -2425,7 +2450,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -2449,7 +2474,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -2490,9 +2515,7 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get links from the page Main
+	 * @throws IOException Examples: Get links from the page Main
 	 *             Page-api.php?action=query&prop=links&titles=Main%20Page Get
 	 *             information about the link pages in the page Main
 	 *             Page.-api.php
@@ -2500,7 +2523,8 @@ public abstract class WikiPediaConnector {
 	 *             Get links from the page Main Page in the User and Template
 	 *             namespaces
 	 *             .-api.php?action=query&prop=links&titles=Main%20Page
-	 *             &plnamespace=2|10 */
+	 *             &plnamespace=2|10
+	 */
 	@Processor(friendlyName = "Query Prop links")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=links", method = HttpMethod.GET)
@@ -2536,7 +2560,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Find all pages that link to the given pages.
+	/**
+	 * Find all pages that link to the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -2583,7 +2608,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -2607,8 +2632,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 * @return Json String
-	 * * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -2648,13 +2672,13 @@ public abstract class WikiPediaConnector {
 	 *            be used once, and expires after 10 seconds. This should be
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
-	 * @throws IOException
-	 * 
-	 *             Examples: Get a list of pages linking to the Main
-	 *             Page.-api.php?action=query&prop=linkshere&titles=Main%20Page
+	 * @return Json String
+	 * @throws IOException Examples: Get a list of pages linking to the Main
+	 *             Page .-api.php?action=query&prop=linkshere&titles=Main%20Page
 	 *             Get information about pages linking to the Main
-	 *             Page.-api.php?
-	 *             action=query&generator=linkshere&titles=Main%20Page&prop=info */
+	 *             Page.-api.php? action=query&generator=linkshere&titles=Main%
+	 *             20Page&prop=info
+	 */
 	@Processor(friendlyName = "Query Prop Linkshere")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=linkshere", method = HttpMethod.GET)
@@ -2690,7 +2714,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns information about images on the page, such as thumbnail and
+	/**
+	 * Returns information about images on the page, such as thumbnail and
 	 * presence of photos.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -2733,7 +2758,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -2757,7 +2782,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -2798,7 +2823,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException */
+	 * @throws IOException
+	 */
 	@Processor(friendlyName = "Query Prop Page Images")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=pageimages", method = HttpMethod.GET)
@@ -2833,7 +2859,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Get various properties defined in the page content.
+	/**
+	 * Get various properties defined in the page content.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -2871,7 +2898,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -2895,7 +2922,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -2936,11 +2963,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get properties for
+	 * @throws IOException Examples: Get properties for
 	 *             Category:Foo.-api.php?action=query
-	 *             &prop=pageprops&titles=Category:Foo */
+	 *             &prop=pageprops&titles=Category:Foo
+	 */
 	@Processor(friendlyName = "Query Prop Page Props")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=pageprops", method = HttpMethod.GET)
@@ -2973,7 +2999,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Get terms associated with a page via an associated data item.
+	/**
+	 * Get terms associated with a page via an associated data item.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -3011,7 +3038,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -3035,7 +3062,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -3076,15 +3103,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get all terms associated with the page 'London', in
-	 *             the user
+	 * @throws IOException Examples: Get all terms associated with the page
+	 *             'London', in the user
 	 *             language.-api.php?action=query&prop=pageterms&titles=London
 	 *             Get labels and aliases associated with the page 'London', in
 	 *             English.
 	 *             api.php?action=query&prop=pageterms&titles=London&wbptterms
-	 *             =label|alias&uselang=en */
+	 *             =label|alias&uselang=en
+	 */
 	@Processor(friendlyName = "Query Prop Page Terms")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=pageterms", method = HttpMethod.GET)
@@ -3117,7 +3143,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns all redirects to the given pages.
+	/**
+	 * Returns all redirects to the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -3168,7 +3195,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -3192,7 +3219,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -3233,13 +3260,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get a list of redirects to the Main
-	 *             Page.-api.php?action=query&prop=redirects&titles=Main%20Page
+	 * @throws IOException Examples: Get a list of redirects to the Main
+	 *             Page.-api .php?action=query&prop=redirects&titles=Main%20Page
 	 *             Get information about all redirects to the Main
-	 *             Page.-api.php?
-	 *             action=query&generator=redirects&titles=Main%20Page&prop=info */
+	 *             Page.-api.php? action
+	 *             =query&generator=redirects&titles=Main%20Page&prop=info
+	 */
 	@Processor(friendlyName = "Query Prop Redirects")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=redirects", method = HttpMethod.GET)
@@ -3275,7 +3301,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Get revision information. May be used in several ways: Get data about a
+	/**
+	 * Get revision information. May be used in several ways: Get data about a
 	 * set of pages (last revision), by setting titles or pageids. Get revisions
 	 * for one given page, by using titles or pageids with start, end, or limit.
 	 * Get data about a set of revisions by setting their IDs with revids.
@@ -3362,7 +3389,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -3386,7 +3413,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -3427,14 +3454,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get data with content for the last revision of
-	 *             titles API and Main Page.
-	 *             api.php?action=query&prop=revisions&
-	 *             titles=API|Main%20Page&rvprop=timestamp|user|comment|content
-	 *             Get last 5 revisions of the Main Page.
-	 *             api.php?action=query&prop
+	 * @throws IOException Examples: Get data with content for the last revision
+	 *             of titles API and Main Page.
+	 *             api.php?action=query&prop=revisions& titles=API|Main%20Page&
+	 *             rvprop=timestamp|user|comment|content Get last 5 revisions of
+	 *             the Main Page. api.php?action=query&prop
 	 *             =revisions&titles=Main%20Page&rvlimit
 	 *             =5&rvprop=timestamp|user|comment Get first 5 revisions of the
 	 *             Main Page.
@@ -3454,7 +3478,8 @@ public abstract class WikiPediaConnector {
 	 *             MediaWiki default.
 	 *             api.php?action=query&prop=revisions&titles=
 	 *             Main%20Page&rvlimit
-	 *             =5&rvprop=timestamp|user|comment&rvuser=MediaWiki%20default */
+	 *             =5&rvprop=timestamp|user|comment&rvuser=MediaWiki%20default
+	 */
 	@Processor(friendlyName = "Query Prop Revisions ")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=revisions", method = HttpMethod.GET)
@@ -3503,7 +3528,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns file information for stashed files.
+	/**
+	 * Returns file information for stashed files.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -3563,7 +3589,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -3587,7 +3613,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -3628,14 +3654,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Returns information for a stashed
+	 * @throws IOException Examples: Returns information for a stashed
 	 *             file.-api.php?action
 	 *             =query&prop=stashimageinfo&siifilekey=124sd34rsdf567 Returns
 	 *             thumbnails for two stashed
 	 *             files.-api.php?action=query&prop=stashimageinfo
-	 *             &siifilekey=b34edoe3|bceffd4&siiurlwidth=120&siiprop=url */
+	 *             &siifilekey=b34edoe3|bceffd4&siiurlwidth=120&siiprop=url
+	 */
 	@Processor(friendlyName = "Query Prop Stash Imageinfo")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=stashimageinfo", method = HttpMethod.GET)
@@ -3671,9 +3696,26 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Returns all pages transcluded on the given pages.
+	/**
+	 * Returns all pages transcluded on the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
+	 * @param list - Which lists to get. Values (separate with |): abusefilters,
+	 *            abuselog, allcategories, alldeletedrevisions, allfileusages,
+	 *            allimages, alllinks, allpages, allredirects, alltransclusions,
+	 *            allusers, backlinks, betafeatures, blocks, categorymembers,
+	 *            centralnoticelogs, checkuser, checkuserlog, deletedrevs,
+	 *            embeddedin, exturlusage, filearchive, gadgetcategories,
+	 *            gadgets, globalallusers, globalblocks, globalgroups,
+	 *            imageusage, iwbacklinks, langbacklinks, logevents,
+	 *            messagecollection, mmsites, pagepropnames, pageswithprop,
+	 *            prefixsearch, protectedtitles, querypage, random,
+	 *            recentchanges, search, tags, usercontribs, users, watchlist,
+	 *            watchlistraw, wikisets
+	 * @param meta - Which metadata to get. Values (separate with |):
+	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
+	 *            messagegroups, messagegroupstats, messagetranslations,
+	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param tlnamespace - how templates in this namespaces only. Values
 	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
@@ -3700,7 +3742,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -3724,7 +3766,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -3765,17 +3807,16 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get the templates used on the page Main
-	 *             Page.-api.php?action=query&prop=templates&titles=Main%20Page
+	 * @throws IOException Examples: Get the templates used on the page Main
+	 *             Page .-api.php?action=query&prop=templates&titles=Main%20Page
 	 *             Get information about the template pages used on Main
 	 *             Page.-api
 	 *             .php?action=query&generator=templates&titles=Main%20Page
 	 *             &prop=info Get pages in the User and Template namespaces that
 	 *             are transcluded on the page Main Page.
 	 *             -api.php?action=query&prop
-	 *             =templates&titles=Main%20Page&tlnamespace=2|10 */
+	 *             =templates&titles=Main%20Page&tlnamespace=2|10
+	 */
 	@Processor(friendlyName = "Query Prop Templates")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=templates", method = HttpMethod.GET)
@@ -3811,7 +3852,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Find all pages that transclude the given pages.
+	/**
+	 * Find all pages that transclude the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param list - Which lists to get. Values (separate with |): abusefilters,
@@ -3858,7 +3900,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -3882,7 +3924,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -3923,14 +3965,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get a list of pages transcluding Main Page. -
-	 *             api.php?action=query&prop=transcludedin&titles=Main%20Page
+	 * @throws IOException Examples: Get a list of pages transcluding Main Page.
+	 *             - api.php?action=query&prop=transcludedin&titles=Main%20Page
 	 *             Get information about pages transcluding Main Page. -
 	 *             api.php?
 	 *             action=query&generator=transcludedin&titles=Main%20Page
-	 *             &prop=info */
+	 *             &prop=info
+	 */
 	@Processor(friendlyName = "Query Prop Transcludedin")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=transcludedin", method = HttpMethod.GET)
@@ -3966,7 +4007,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with prop=videoinfo which Extends
+	/**
+	 * Fetch data from and about MediaWiki with prop=videoinfo which Extends
 	 * imageinfo to include video source (derivatives) information
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -4024,7 +4066,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -4048,7 +4090,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -4089,10 +4131,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Fetch information about File:Folgers.ogv -
-	 *             api.php?action=query&titles=File:Folgers.ogv&prop=videoinfo */
+	 * @throws IOException Examples: Fetch information about File:Folgers.ogv -
+	 *             api.php?action=query&titles=File:Folgers.ogv&prop=videoinfo
+	 */
 	@Processor(friendlyName = "Query Prop VideoInfo")
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=videoinfo", method = HttpMethod.GET)
@@ -4131,7 +4172,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=abusefilters which Show
+	/**
+	 * Fetch data from and about MediaWiki with list=abusefilters which Show
 	 * details of the abuse filters
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -4148,24 +4190,19 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param abfstartid - The filter ID to start enumerating from.
 	 * @param abfendid - The filter ID to stop enumerating at.
-	 * @param abfdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: abfstart has to be before
-	 *            abfend. older List newest first (default). Note: abfstart has
-	 *            to be later than abfend. One value: older, newer Default:
-	 *            newer
-	 * @param abfshow - Show only filters which meet these criteria.
-	 * 
-	 *            Values (separate with |): enabled, !enabled, deleted,
-	 *            !deleted, private, !private
-	 * @param abflimit-The maximum number of filters to list.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param abfprop - Which properties to get.
-	 * 
-	 *            Values (separate with |): id, description, pattern, actions,
-	 *            hits, comments, lasteditor, lastedittime, status, private
-	 *            Default: id|description|actions|status
+	 * @param abfdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: abfstart has to be before abfend. older List newest
+	 *            first (default). Note: abfstart has to be later than abfend.
+	 *            One value: older, newer Default: newer
+	 * @param abfshow - Show only filters which meet these criteria. Values
+	 *            (separate with |): enabled, !enabled, deleted, !deleted,
+	 *            private, !private
+	 * @param abflimit-The maximum number of filters to list. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
+	 * @param abfprop - Which properties to get. Values (separate with |): id,
+	 *            description, pattern, actions, hits, comments, lasteditor,
+	 *            lastedittime, status, private Default:
+	 *            id|description|actions|status
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -4180,7 +4217,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -4204,7 +4241,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -4245,14 +4282,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List enabled public filters
+	 * @throws IOException Examples: List enabled public filters
 	 *             api.php?action=query&list
 	 *             =abusefilters&abfshow=enabled|!private Show some details
 	 *             about filters
 	 *             api.php?action=query&list=abusefilters&abfprop=id
-	 *             |description|pattern */
+	 *             |description|pattern
+	 */
 
 	@Processor(friendlyName = "Query List Abuse Filters")
 	@ReconnectOn(exceptions = { Exception.class })
@@ -4290,7 +4326,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=abusefilters which Show
+	/**
+	 * Fetch data from and about MediaWiki with list=abusefilters which Show
 	 * details of the abuse filters
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -4307,26 +4344,20 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param aflstart - The filter ID to start enumerating from.
 	 * @param aflend - The filter ID to stop enumerating at.
-	 * @param afldir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: abfstart has to be before
-	 *            abfend. older List newest first (default). Note: abfstart has
-	 *            to be later than abfend. One value: older, newer Default:
-	 *            older
+	 * @param afldir - In which direction to enumerate: newer List oldest first.
+	 *            Note: abfstart has to be before abfend. older List newest
+	 *            first (default). Note: abfstart has to be later than abfend.
+	 *            One value: older, newer Default: older
 	 * @param afluser - Show only entries done by a given user or IP address.
 	 * @param afltitle - Show only entries occurring on a given page.
 	 * @param aflfilter - Show only entries that were caught by a given filter
-	 *            ID.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
-	 * @param afllimit-The maximum amount of entries to list.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param aflprop - Which properties to get.
-	 * 
-	 *            Values (separate with |): ids, filter, user, ip, title,
-	 *            action, details, result, timestamp, hidden, revid Default:
+	 *            ID. Separate values with |. Maximum number of values is 50
+	 *            (500 for bots).
+	 * @param afllimit-The maximum amount of entries to list. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
+	 * @param aflprop - Which properties to get. Values (separate with |): ids,
+	 *            filter, user, ip, title, action, details, result, timestamp,
+	 *            hidden, revid Default:
 	 *            ids|user|title|action|result|timestamp|hidden|revid
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -4342,7 +4373,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -4366,7 +4397,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -4407,11 +4438,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Show recent log entries api.php?action=query&list=abuselog
-	 *             Show recent log entries for API
-	 *             api.php?action=query&list=abuselog&afltitle=API */
+	 * @throws IOException Show recent log entries
+	 *             api.php?action=query&list=abuselog Show recent log entries
+	 *             for API api.php?action=query&list=abuselog&afltitle=API
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -4451,7 +4481,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=allcategories which
+	/**
+	 * Fetch data from and about MediaWiki with list=allcategories which
 	 * Enumerate all categories
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -4496,7 +4527,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -4520,7 +4551,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -4561,14 +4592,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             List categories with information on the number of pages in
-	 *             each. api.php?action=query&list=allcategories&acprop=size
-	 *             Retrieve info about the category page itself for categories
-	 *             beginning List.
-	 *             api.php?action=query&generator=allcategories&gacprefix
-	 *             =List&prop=info */
+	 * @throws IOException List categories with information on the number of
+	 *             pages in each.
+	 *             api.php?action=query&list=allcategories&acprop=size Retrieve
+	 *             info about the category page itself for categories beginning
+	 *             List. api.php?action=query&generator=allcategories&gacprefix
+	 *             =List&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -4609,7 +4639,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=alldeletedrevisions which
+	/**
+	 * Fetch data from and about MediaWiki with list=alldeletedrevisions which
 	 * List all deleted revisions by a user or in a namespace
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -4624,7 +4655,7 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param gadrprop Which properties to get for each revision: ids The ID of
+	 * @param adrprop Which properties to get for each revision: ids The ID of
 	 *            the revision. flags Revision flags (minor). timestamp The
 	 *            timestamp of the revision. user User that made the revision.
 	 *            userid User ID of the revision creator. size Length (bytes) of
@@ -4636,51 +4667,49 @@ public abstract class WikiPediaConnector {
 	 *            timestamp, user, userid, size, sha1, contentmodel, comment,
 	 *            parsedcomment, content, tags Default:
 	 *            ids|timestamp|flags|comment|user
-	 * @param gadrlimit - Limit how many revisions will be returned. No more
-	 *            than 500 (5,000 for bots) allowed.
-	 * @param gadrexpandtemplates - Expand templates in revision content
+	 * @param adrlimit - Limit how many revisions will be returned. No more than
+	 *            500 (5,000 for bots) allowed.
+	 * @param adrexpandtemplates - Expand templates in revision content
 	 *            (requires adrprop=content).
-	 * @param gadrgeneratexml - Generate XML parse tree for revision content
+	 * @param adrgeneratexml - Generate XML parse tree for revision content
 	 *            (requires adrprop=content).
-	 * @param gadrparse - Parse revision content (requires adrprop=content). For
+	 * @param adrparse - Parse revision content (requires adrprop=content). For
 	 *            performance reasons, if this option is used, adrlimit is
 	 *            enforced to 1.
-	 * @param gadrsection - Only retrieve the content of this section number.
-	 * @param gadrdiffto - Revision ID to diff each revision to. Use prev, next
+	 * @param adrsection - Only retrieve the content of this section number.
+	 * @param adrdiffto - Revision ID to diff each revision to. Use prev, next
 	 *            and cur for the previous, next and current revision
 	 *            respectively.
-	 * @param gadrdifftotext - Text to diff each revision to. Only diffs a
+	 * @param adrdifftotext - Text to diff each revision to. Only diffs a
 	 *            limited number of revisions. Overrides adrdiffto. If
 	 *            adrsection is set, only that section will be diffed against
 	 *            this text
-	 * @param gadrcontentformat - Serialization format used for adrdifftotext
-	 *            and expected for output of content. One value: text/x-wiki,
+	 * @param adrcontentformat - Serialization format used for adrdifftotext and
+	 *            expected for output of content. One value: text/x-wiki,
 	 *            text/javascript, application/json, text/css, text/plain
-	 * @param gadruser - Only list revisions by this user.
-	 * @param gadrnamespace - Only list pages in this namespace. Values
-	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-	 *            13, 14, 15, 100, 101, 108, 109, 118, 119, 710, 711, 446, 447,
-	 *            2600, 828, 829
-	 * @param gadrstart - The timestamp to start enumerating from.May only be
+	 * @param adruser - Only list revisions by this user.
+	 * @param adrnamespace - Only list pages in this namespace. Values (separate
+	 *            with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+	 *            100, 101, 108, 109, 118, 119, 710, 711, 446, 447, 2600, 828,
+	 *            829
+	 * @param adrstart - The timestamp to start enumerating from.May only be
 	 *            used with adruser.
-	 * @param gadrend - The timestamp to stop enumerating at.May only be used
+	 * @param adrend - The timestamp to stop enumerating at.May only be used
 	 *            with adruser.
-	 * @param gadrdir - In which direction to enumerate: newer List oldest
-	 *            first. Note: adrstart has to be before adrend. older List
-	 *            newest first (default). Note: adrstart has to be later than
-	 *            adrend. One value: newer, older. Default: older
-	 * 
-	 * @param gadrfrom - Start listing at this title.Cannot be used with
-	 *            adruser.
-	 * @param gadrto - Stop listing at this title.Cannot be used with adruser.
-	 * @param gadrprefix - Search for all page titles that begin with this
+	 * @param adrdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: adrstart has to be before adrend. older List newest
+	 *            first (default). Note: adrstart has to be later than adrend.
+	 *            One value: newer, older. Default: older
+	 * @param adrfrom - Start listing at this title.Cannot be used with adruser.
+	 * @param adrto - Stop listing at this title.Cannot be used with adruser.
+	 * @param adrprefix - Search for all page titles that begin with this
 	 *            value.Cannot be used with adruser.
-	 * @param gadrexcludeuser - Don't list revisions by this user.Cannot be used
+	 * @param adrexcludeuser - Don't list revisions by this user.Cannot be used
 	 *            with adruser. -
-	 * @param gadrtag - Only list revisions tagged with this tag.
-	 * @param gadrcontinue - When more results are available, use this to
+	 * @param adrtag - Only list revisions tagged with this tag.
+	 * @param adrcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param gadrgeneratetitles - When being used as a generator, generate
+	 * @param adrgeneratetitles - When being used as a generator, generate
 	 *            titles rather than revision IDs.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -4696,7 +4725,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -4720,7 +4749,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -4761,15 +4790,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             List the last 50 deleted contributions by user Example.
-	 *             api.php
+	 * @throws IOException List the last 50 deleted contributions by user
+	 *             Example. api.php
 	 *             ?action=query&list=alldeletedrevisions&adruser=Example&
 	 *             adrlimit=50 List the first 50 deleted revisions in the main
 	 *             namespace.
 	 *             api.php?action=query&list=alldeletedrevisions&adrdir
-	 *             =newer&adrlimit=50 */
+	 *             =newer&adrlimit=50
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -4822,7 +4850,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=allfileusages which List
+	/**
+	 * Fetch data from and about MediaWiki with list=allfileusages which List
 	 * all file usages, including non-existing
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -4837,21 +4866,21 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param gafcontinue - When more results are available, use this to
+	 * @param afcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param gaffrom - The title of the file to start enumerating from.
-	 * @param gafto - The title of the file to stop enumerating at.
-	 * @param gafprefix - Search for all file titles that begin with this value.
-	 * @param gafunique - Only show distinct file titles. Cannot be used with
+	 * @param affrom - The title of the file to start enumerating from.
+	 * @param afto - The title of the file to stop enumerating at.
+	 * @param afprefix - Search for all file titles that begin with this value.
+	 * @param afunique - Only show distinct file titles. Cannot be used with
 	 *            afprop=ids. When used as a generator, yields target pages
 	 *            instead of source pages.
-	 * @param gafprop - Which pieces of information to include: ids Adds the
-	 *            page ID of the using page (cannot be used with afunique).
-	 *            title Adds the title of the file. Values (separate with |):
-	 *            ids, title. Default: title
-	 * @param gaflimit - How many total items to return. No more than 500 (5,000
+	 * @param afprop - Which pieces of information to include: ids Adds the page
+	 *            ID of the using page (cannot be used with afunique). title
+	 *            Adds the title of the file. Values (separate with |): ids,
+	 *            title. Default: title
+	 * @param aflimit - How many total items to return. No more than 500 (5,000
 	 *            for bots) allowed. Default: 10
-	 * @param gafdir - The direction in which to list. One value: ascending,
+	 * @param afdir - The direction in which to list. One value: ascending,
 	 *            descending. Default: ascending
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -4867,7 +4896,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -4891,7 +4920,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -4932,15 +4961,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             List the last 50 deleted contributions by user Example.
-	 *             api.php
+	 * @throws IOException List the last 50 deleted contributions by user
+	 *             Example. api.php
 	 *             ?action=query&list=alldeletedrevisions&adruser=Example&
 	 *             adrlimit=50 List the first 50 deleted revisions in the main
 	 *             namespace.
 	 *             api.php?action=query&list=alldeletedrevisions&adrdir
-	 *             =newer&adrlimit=50 */
+	 *             =newer&adrlimit=50
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -4980,7 +5008,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=allimages which Enumerate
+	/**
+	 * Fetch data from and about MediaWiki with list=allimages which Enumerate
 	 * all images sequentially
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -4995,40 +5024,40 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param gaisort - Property to sort by.One value: name, timestamp Default:
+	 * @param aisort - Property to sort by.One value: name, timestamp Default:
 	 *            name
-	 * @param gaidir - The direction in which to list. One value: ascending,
+	 * @param aidir - The direction in which to list. One value: ascending,
 	 *            descending, newer, older Default: ascending
-	 * @param gaifrom - The image title to start enumerating from. Can only be
+	 * @param aifrom - The image title to start enumerating from. Can only be
 	 *            used with gaisort=name.
-	 * @param gaito - The image title to stop enumerating at. Can only be used
+	 * @param aito - The image title to stop enumerating at. Can only be used
 	 *            with aisort=name.
-	 * @param gaicontinue - When more results are available, use this to
+	 * @param aicontinue - When more results are available, use this to
 	 *            continue.
-	 * @param gaistart - The timestamp to start enumerating from. Can only be
+	 * @param aistart - The timestamp to start enumerating from. Can only be
 	 *            used with aisort=timestamp.
-	 * @param gaiend - The timestamp to end enumerating. Can only be used with
+	 * @param aiend - The timestamp to end enumerating. Can only be used with
 	 *            aisort=timestamp.
-	 * @param gaiprop - Which file information to get. Values (separate with |):
+	 * @param aiprop - Which file information to get. Values (separate with |):
 	 *            timestamp, user, userid, comment, parsedcomment,
 	 *            canonicaltitle, url, size, dimensions, sha1, mime, mediatype,
 	 *            metadata, commonmetadata, extmetadata, bitdepth. Default:
 	 *            timestamp|url
-	 * @param gaiprefix - Search for all image titles that begin with this
-	 *            value. Can only be used with aisort=name.
-	 * @param gaiminsize - Limit to images with at least this many bytes.
-	 * @param gaimaxsize - Limit to images with at most this many bytes.
-	 * @param gaisha1 - SHA1 hash of image. Overrides aisha1base36.
-	 * @param gaisha1base36 - SHA1 hash of image in base 36 (used in MediaWiki).
-	 * @param gaiuser - Only return files uploaded by this user. Can only be
-	 *            used with aisort=timestamp. Cannot be used together with
+	 * @param aiprefix - Search for all image titles that begin with this value.
+	 *            Can only be used with aisort=name.
+	 * @param aiminsize - Limit to images with at least this many bytes.
+	 * @param aimaxsize - Limit to images with at most this many bytes.
+	 * @param aisha1 - SHA1 hash of image. Overrides aisha1base36.
+	 * @param aisha1base36 - SHA1 hash of image in base 36 (used in MediaWiki).
+	 * @param aiuser - Only return files uploaded by this user. Can only be used
+	 *            with aisort=timestamp. Cannot be used together with
 	 *            aifilterbots.
-	 * @param gaifilterbots - How to filter files uploaded by bots. Can only be
+	 * @param aifilterbots - How to filter files uploaded by bots. Can only be
 	 *            used with aisort=timestamp. Cannot be used together with
 	 *            aiuser. One value: all, bots, nobots Default: all
-	 * @param gaimime - Disabled due to miser mode. Separate values with |.
+	 * @param aimime - Disabled due to miser mode. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
-	 * @param gailimit - How many images in total to return.
+	 * @param ailimit - How many images in total to return.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -5043,7 +5072,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -5067,7 +5096,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -5108,9 +5137,7 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Show a list of files starting at the letter B.
+	 * @throws IOException Show a list of files starting at the letter B.
 	 *             api.php?action=query&list=allimages&aifrom=B Show a list of
 	 *             recently uploaded files, similar to Special:NewFiles.
 	 *             api.php?
@@ -5121,7 +5148,8 @@ public abstract class WikiPediaConnector {
 	 *             &aimime=image/png|image/gif Show info about 4 files starting
 	 *             at the letter T.
 	 *             api.php?action=query&generator=allimages&gailimit
-	 *             =4&gaifrom=T&prop=imageinfo */
+	 *             =4&gaifrom=T&prop=imageinfo
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -5170,7 +5198,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=alllinks which Enumerate
+	/**
+	 * Fetch data from and about MediaWiki with list=alllinks which Enumerate
 	 * all links that point to a given namespace
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -5185,25 +5214,25 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param galcontinue - When more results are available, use this to
+	 * @param alcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param galfrom - The title of the link to start enumerating from.
-	 * @param galto - The title of the link to stop enumerating at.
-	 * @param galprefix - Search for all linked titles that begin with this
+	 * @param alfrom - The title of the link to start enumerating from.
+	 * @param alto - The title of the link to stop enumerating at.
+	 * @param alprefix - Search for all linked titles that begin with this
 	 *            value.
-	 * @param galunique - Only show distinct linked titles. Cannot be used with
+	 * @param alunique - Only show distinct linked titles. Cannot be used with
 	 *            alprop=ids. When used as a generator, yields target pages
 	 *            instead of source pages.
-	 * @param galprop - Which pieces of information to include: ids Adds the
-	 *            page ID of the linking page (cannot be used with alunique).
-	 *            title Adds the title of the link. Values (separate with |):
-	 *            ids, title. Default: title
-	 * @param galnamespace - The namespace to enumerate. One value: 0, 1, 2, 3,
+	 * @param alprop - Which pieces of information to include: ids Adds the page
+	 *            ID of the linking page (cannot be used with alunique). title
+	 *            Adds the title of the link. Values (separate with |): ids,
+	 *            title. Default: title
+	 * @param alnamespace - The namespace to enumerate. One value: 0, 1, 2, 3,
 	 *            4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 120, 121, 122, 123,
 	 *            1198, 1199, 2600, 828, 829 Default: 0
-	 * @param gallimit - How many total items to return. No more than 500 (5,000
+	 * @param allimit - How many total items to return. No more than 500 (5,000
 	 *            for bots) allowed.Default: 10
-	 * @param galdir - The direction in which to list.One value: ascending,
+	 * @param aldir - The direction in which to list.One value: ascending,
 	 *            descending. Default: ascending.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -5219,7 +5248,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -5243,7 +5272,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -5284,17 +5313,15 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             List linked titles, including missing ones, with page IDs
-	 *             they are from, starting at B.
-	 *             api.php?action=query&list=alllinks&alfrom=B&alprop=ids|title
-	 *             List unique linked titles.
-	 *             api.php?action=query&list=alllinks&alunique=&alfrom=B Gets
-	 *             all linked titles, marking the missing ones.
-	 *             api.php?action=query&generator=alllinks&galunique=&galfrom=B
+	 * @throws IOException List linked titles, including missing ones, with page
+	 *             IDs they are from, starting at B. api.php?action=query&
+	 *             list=alllinks&alfrom=B&alprop=ids|title List unique linked
+	 *             titles. api.php?action=query&list=alllinks&alunique=&alfrom=B
+	 *             Gets all linked titles, marking the missing ones.
+	 *             api.php?action= query&generator=alllinks&galunique=&galfrom=B
 	 *             Gets pages containing the links.
-	 *             api.php?action=query&generator=alllinks&galfrom=B */
+	 *             api.php?action=query&generator=alllinks&galfrom=B
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -5335,7 +5362,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=allpages which Enumerate
+	/**
+	 * Fetch data from and about MediaWiki with list=allpages which Enumerate
 	 * all pages sequentially in a given namespace
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -5350,34 +5378,34 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param gapcontinue - When more results are available, use this to
+	 * @param apcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param gapfrom - The page title to start enumerating from.
-	 * @param gapto - The page title to stop enumerating at.
-	 * @param gapprefix - Search for all page titles that begin with this value.
-	 * @param gapnamespace - The namespace to enumerate. One value: 0, 1, 2, 3,
+	 * @param apfrom - The page title to start enumerating from.
+	 * @param apto - The page title to stop enumerating at.
+	 * @param apprefix - Search for all page titles that begin with this value.
+	 * @param apnamespace - The namespace to enumerate. One value: 0, 1, 2, 3,
 	 *            4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 120, 121, 122, 123,
 	 *            1198, 1199, 2600, 828, 829 Default: 0
-	 * @param gapfilterredir - Which pages to list. One value: all, redirects,
+	 * @param apfilterredir - Which pages to list. One value: all, redirects,
 	 *            nonredirects. Default: all
-	 * @param gapminsize - Limit to pages with at least this many bytes.
-	 * @param gapmaxsize - Limit to pages with at most this many bytes.
-	 * @param gapprtype - Limit to protected pages only.Values (separate with
-	 *            |): edit, move, upload
-	 * @param gapprlevel - Filter protections based on protection level (must be
+	 * @param apminsize - Limit to pages with at least this many bytes.
+	 * @param apmaxsize - Limit to pages with at most this many bytes.
+	 * @param apprtype - Limit to protected pages only.Values (separate with |):
+	 *            edit, move, upload
+	 * @param apprlevel - Filter protections based on protection level (must be
 	 *            used with apprtype= parameter). Values (separate with |): Can
 	 *            be empty, or autoconfirmed, sysop, superprotect
-	 * @param gapprfiltercascade - Filter protections based on cascadingness
+	 * @param apprfiltercascade - Filter protections based on cascadingness
 	 *            (ignored when apprtype isn't set). One value: cascading,
 	 *            noncascading, all. Default: all
-	 * @param gaplimit - How many total pages to return. No more than 500 (5,000
+	 * @param aplimit - How many total pages to return. No more than 500 (5,000
 	 *            for bots) allowed. Default: 10
-	 * @param gapdir - The direction in which to list. One value: ascending,
+	 * @param apdir - The direction in which to list. One value: ascending,
 	 *            descending. Default: ascending
-	 * @param gapfilterlanglinks - Filter based on whether a page has langlinks.
+	 * @param apfilterlanglinks - Filter based on whether a page has langlinks.
 	 *            Note that this may not consider langlinks added by extensions.
 	 *            One value: withlanglinks, withoutlanglinks, all. Default: all
-	 * @param gapprexpiry - Which protection expiry to filter the page on:
+	 * @param apprexpiry - Which protection expiry to filter the page on:
 	 *            indefinite Get only pages with indefinite protection expiry.
 	 *            definite Get only pages with a definite (specific) protection
 	 *            expiry. all Get pages with any protections expiry. One value:
@@ -5396,7 +5424,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -5420,7 +5448,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -5461,9 +5489,7 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Show a list of pages starting at the letter B.
+	 * @throws IOException Show a list of pages starting at the letter B.
 	 *             api.php?action=query&list=allpages&apfrom=B Show info about 4
 	 *             pages starting at the letter T.
 	 *             api.php?action=query&generator
@@ -5471,7 +5497,8 @@ public abstract class WikiPediaConnector {
 	 *             first 2 non-redirect pages beginning at Re.
 	 *             api.php?action=query
 	 *             &generator=allpages&gaplimit=2&gapfilterredir
-	 *             =nonredirects&gapfrom=Re&prop=revisions&rvprop=content */
+	 *             =nonredirects&gapfrom=Re&prop=revisions&rvprop=content
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -5518,7 +5545,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=allredirects which List all
+	/**
+	 * Fetch data from and about MediaWiki with list=allredirects which List all
 	 * redirects to a namespace
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -5533,29 +5561,28 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param garcontinue - When more results are available, use this to
+	 * @param arcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param garfrom - The title of the redirect to start enumerating from.
-	 * @param garto - The title of the redirect to stop enumerating at.
-	 * @param garprefix - Search for all target pages that begin with this
-	 *            value.
-	 * @param garunique - Only show distinct target pages. Cannot be used with
+	 * @param arfrom - The title of the redirect to start enumerating from.
+	 * @param arto - The title of the redirect to stop enumerating at.
+	 * @param arprefix - Search for all target pages that begin with this value.
+	 * @param arunique - Only show distinct target pages. Cannot be used with
 	 *            arprop=ids|fragment|interwiki. When used as a generator,
 	 *            yields target pages instead of source pages.
-	 * @param garprop - Which pieces of information to include: ids Adds the
-	 *            page ID of the redirecting page (cannot be used with
-	 *            arunique). title Adds the title of the redirect. fragment Adds
-	 *            the fragment from the redirect, if any (cannot be used with
+	 * @param arprop - Which pieces of information to include: ids Adds the page
+	 *            ID of the redirecting page (cannot be used with arunique).
+	 *            title Adds the title of the redirect. fragment Adds the
+	 *            fragment from the redirect, if any (cannot be used with
 	 *            arunique). interwiki Adds the interwiki prefix from the
 	 *            redirect, if any (cannot be used with arunique). Values
 	 *            (separate with |): ids, title, fragment, interwiki.Default:
 	 *            title
-	 * @param garnamespace - The namespace to enumerate. One value: 0, 1, 2, 3,
+	 * @param arnamespace - The namespace to enumerate. One value: 0, 1, 2, 3,
 	 *            4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 120, 121, 122, 123,
 	 *            1198, 1199, 2600, 828, 829 Default: 0
-	 * @param garlimit - How many total items to return. No more than 500 (5,000
+	 * @param arlimit - How many total items to return. No more than 500 (5,000
 	 *            for bots) allowed.Default: 10
-	 * @param gardir - The direction in which to list.One value: ascending,
+	 * @param ardir - The direction in which to list.One value: ascending,
 	 *            descending. Default: ascending.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -5571,7 +5598,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -5595,7 +5622,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -5636,10 +5663,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             List target pages, including missing ones, with page IDs they
-	 *             are from, starting at B.
+	 * @throws IOException List target pages, including missing ones, with page
+	 *             IDs they are from, starting at B.
 	 *             api.php?action=query&list=allredirects
 	 *             &arfrom=B&arprop=ids|title List unique target pages.
 	 *             api.php?action=query&list=allredirects&arunique=&arfrom=B
@@ -5647,7 +5672,8 @@ public abstract class WikiPediaConnector {
 	 *             api.php?action
 	 *             =query&generator=allredirects&garunique=&garfrom=B Gets pages
 	 *             containing the redirects.
-	 *             api.php?action=query&generator=allredirects&garfrom=B */
+	 *             api.php?action=query&generator=allredirects&garfrom=B
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -5688,7 +5714,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=alltransclusions which List
+	/**
+	 * Fetch data from and about MediaWiki with list=alltransclusions which List
 	 * all transclusions (pages embedded using {{x}}), including non-existing
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -5703,25 +5730,25 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param gatcontinue - When more results are available, use this to
+	 * @param atcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param gatfrom - The title of the transclusion to start enumerating from.
-	 * @param gatto - The title of the transclusion to stop enumerating at.
-	 * @param gatprefix - Search for all transclused titles that begin with this
+	 * @param atfrom - The title of the transclusion to start enumerating from.
+	 * @param atto - The title of the transclusion to stop enumerating at.
+	 * @param atprefix - Search for all transclused titles that begin with this
 	 *            value.
-	 * @param gatunique - Only show distinct transcluded titles. Cannot be used
+	 * @param atunique - Only show distinct transcluded titles. Cannot be used
 	 *            with gatprop=ids. When used as a generator, yields target
 	 *            pages instead of source pages.
-	 * @param gatprop - Which pieces of information to include: ids Adds the
-	 *            page ID of the transcluding page (cannot be used with
-	 *            arunique). title Adds the title of the transclusion. Values
-	 *            (separate with |): ids, title.Default: title
-	 * @param gatnamespace - The namespace to enumerate. One value: 0, 1, 2, 3,
+	 * @param atprop - Which pieces of information to include: ids Adds the page
+	 *            ID of the transcluding page (cannot be used with arunique).
+	 *            title Adds the title of the transclusion. Values (separate
+	 *            with |): ids, title.Default: title
+	 * @param atnamespace - The namespace to enumerate. One value: 0, 1, 2, 3,
 	 *            4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 120, 121, 122, 123,
 	 *            1198, 1199, 2600, 828, 829 Default: 0
-	 * @param gatlimit - How many total items to return. No more than 500 (5,000
+	 * @param atlimit - How many total items to return. No more than 500 (5,000
 	 *            for bots) allowed.Default: 10
-	 * @param gatdir - The direction in which to list.One value: ascending,
+	 * @param atdir - The direction in which to list.One value: ascending,
 	 *            descending. Default: ascending.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -5737,7 +5764,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -5761,7 +5788,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -5802,18 +5829,17 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             List transcluded titles, including missing ones, with page
-	 *             IDs they are from, starting at B.
+	 * @throws IOException List transcluded titles, including missing ones, with
+	 *             page IDs they are from, starting at B.
 	 *             api.php?action=query&list=alltransclusions
 	 *             &atfrom=B&atprop=ids|title List unique transcluded titles.
-	 *             api.php?action=query&list=alltransclusions&atunique=&atfrom=B
+	 *             api
+	 *             .php?action=query&list=alltransclusions&atunique=&atfrom=B
 	 *             Gets all transcluded titles, marking the missing ones.
-	 *             api.php
-	 *             ?action=query&generator=alltransclusions&gatunique=&gatfrom=B
-	 *             Gets pages containing the transclusions.
-	 *             api.php?action=query&generator=alltransclusions&gatfrom=B */
+	 *             api.php ?action=query&generator=alltransclusions&gatunique=&
+	 *             gatfrom=B Gets pages containing the transclusions.
+	 *             api.php?action=query&generator=alltransclusions&gatfrom=B
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -5854,7 +5880,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=allusers which Enumerate
+	/**
+	 * Fetch data from and about MediaWiki with list=allusers which Enumerate
 	 * all registered users
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -5872,38 +5899,33 @@ public abstract class WikiPediaConnector {
 	 * @param aufrom - The user name to start enumerating from.
 	 * @param auto - The user name to stop enumerating at.
 	 * @param auprefix - Search for all users that begin with this value.
-	 * @param audir - Direction to sort in.
-	 * 
-	 *            One value: ascending, descending Default: ascending
-	 * @param augroup - Only include users in the given groups.
-	 * 
-	 *            Values (separate with |): bot, sysop, bureaucrat, steward,
-	 *            accountcreator, import, transwiki, ipblock-exempt, oversight,
-	 *            rollbacker, propertycreator, wikidata-staff, flood,
-	 *            translationadmin, flow-bot, checkuser, confirmed
-	 * @param auexcludegroup - Exclude users in the given groups.
-	 * 
-	 *            Values (separate with |): bot, sysop, bureaucrat, steward,
+	 * @param audir - Direction to sort in. One value: ascending, descending
+	 *            Default: ascending
+	 * @param augroup - Only include users in the given groups. Values (separate
+	 *            with |): bot, sysop, bureaucrat, steward, accountcreator,
+	 *            import, transwiki, ipblock-exempt, oversight, rollbacker,
+	 *            propertycreator, wikidata-staff, flood, translationadmin,
+	 *            flow-bot, checkuser, confirmed
+	 * @param auexcludegroup - Exclude users in the given groups. Values
+	 *            (separate with |): bot, sysop, bureaucrat, steward,
 	 *            accountcreator, import, transwiki, ipblock-exempt, oversight,
 	 *            rollbacker, propertycreator, wikidata-staff, flood,
 	 *            translationadmin, flow-bot, checkuser, confirmed
 	 * @param aurights - Only include users with the given rights. Does not
 	 *            include rights granted by implicit or auto-promoted groups
 	 *            like *, user, or autoconfirmed.
-	 * @param auprop - Which pieces of information to include:
-	 * 
-	 *            blockinfo Adds the information about a current block on the
-	 *            user. groups Lists groups that the user is in. This uses more
-	 *            server resources and may return fewer results than the limit.
+	 * @param auprop - Which pieces of information to include: blockinfo Adds
+	 *            the information about a current block on the user. groups
+	 *            Lists groups that the user is in. This uses more server
+	 *            resources and may return fewer results than the limit.
 	 *            implicitgroups Lists all the groups the user is automatically
 	 *            in. rights Lists rights that the user has. editcount Adds the
 	 *            edit count of the user. registration Adds the timestamp of
 	 *            when the user registered if available (may be blank). Values
 	 *            (separate with |): blockinfo, groups, implicitgroups, rights,
 	 *            editcount, registration
-	 * @param aulimit - How many total user names to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param aulimit - How many total user names to return. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
 	 * @param auwitheditsonly - Only list users who have made edits.
 	 * @param auactiveusers - Only list users active in the last 30 days.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -5920,7 +5942,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -5944,7 +5966,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -5985,10 +6007,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             List users starting at Y.
-	 *             api.php?action=query&list=allusers&aufrom=Y */
+	 * @throws IOException List users starting at Y.
+	 *             api.php?action=query&list=allusers&aufrom=Y
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -6031,7 +6052,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=backlinks which Find all
+	/**
+	 * Fetch data from and about MediaWiki with list=backlinks which Find all
 	 * pages that link to the given page.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -6080,7 +6102,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -6104,7 +6126,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -6145,13 +6167,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Show links to Main page.
+	 * @throws IOException Show links to Main page.
 	 *             api.php?action=query&list=backlinks&bltitle=Main%20Page Get
 	 *             information about pages linking to Main page.
 	 *             api.php?action=query
-	 *             &generator=backlinks&gbltitle=Main%20Page&prop=info */
+	 *             &generator=backlinks&gbltitle=Main%20Page&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -6191,7 +6212,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=betafeatures which List all
+	/**
+	 * Fetch data from and about MediaWiki with list=betafeatures which List all
 	 * BetaFeatures
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -6222,7 +6244,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -6246,7 +6268,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -6287,10 +6309,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Get all available beta features and show how many users have
-	 *             enabled them api.php?action=query&list=betafeatures&bfcounts= */
+	 * @throws IOException Get all available beta features and show how many
+	 *             users have enabled them
+	 *             api.php?action=query&list=betafeatures&bfcounts=
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -6323,7 +6345,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=blocks which List all
+	/**
+	 * Fetch data from and about MediaWiki with list=blocks which List all
 	 * blocked users and IP addresses
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -6340,44 +6363,34 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param bkstart - The timestamp to start enumerating from.
 	 * @param bkend - The timestamp to stop enumerating at.
-	 * @param bkdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: bkstart has to be before bkend.
-	 *            older List newest first (default). Note: bkstart has to be
-	 *            later than bkend. One value: newer, older Default: older
-	 * @param bkids - List of block IDs to list (optional).
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
-	 * @param bkusers - List of users to search for (optional).
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
+	 * @param bkdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: bkstart has to be before bkend. older List newest first
+	 *            (default). Note: bkstart has to be later than bkend. One
+	 *            value: newer, older Default: older
+	 * @param bkids - List of block IDs to list (optional). Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
+	 * @param bkusers - List of users to search for (optional). Separate values
+	 *            with |. Maximum number of values is 50 (500 for bots).
 	 * @param bkip - Get all blocks applying to this IP or CIDR range, including
 	 *            range blocks. Cannot be used together with bkusers. CIDR
 	 *            ranges broader than IPv4/16 or IPv6/19 are not accepted.
-	 * @param bklimit - The maximum number of blocks to list.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param bklbkpropimit - Which properties to get:
-	 * 
-	 *            id Adds the ID of the block. user Adds the username of the
-	 *            blocked user. userid Adds the user ID of the blocked user. by
-	 *            Adds the username of the blocking user. byid Adds the user ID
-	 *            of the blocking user. timestamp Adds the timestamp of when the
-	 *            block was given. expiry Adds the timestamp of when the block
-	 *            expires. reason Adds the reason given for the block. range
-	 *            Adds the range of IP addresses affected by the block. flags
-	 *            Tags the ban with (autoblock, anononly, etc.). Values
-	 *            (separate with |): id, user, userid, by, byid, timestamp,
-	 *            expiry, reason, range, flags Default:
-	 *            id|user|by|timestamp|expiry|reason|flags
+	 * @param bklimit - The maximum number of blocks to list. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
+	 * @param bklbkpropimit - Which properties to get: id Adds the ID of the
+	 *            block. user Adds the username of the blocked user. userid Adds
+	 *            the user ID of the blocked user. by Adds the username of the
+	 *            blocking user. byid Adds the user ID of the blocking user.
+	 *            timestamp Adds the timestamp of when the block was given.
+	 *            expiry Adds the timestamp of when the block expires. reason
+	 *            Adds the reason given for the block. range Adds the range of
+	 *            IP addresses affected by the block. flags Tags the ban with
+	 *            (autoblock, anononly, etc.). Values (separate with |): id,
+	 *            user, userid, by, byid, timestamp, expiry, reason, range,
+	 *            flags Default: id|user|by|timestamp|expiry|reason|flags
 	 * @param bkshow - Show only items that meet these criteria. For example, to
 	 *            see only indefinite blocks on IP addresses, set
-	 *            bkshow=ip|!temp.
-	 * 
-	 *            Values (separate with |): account, !account, temp, !temp, ip,
-	 *            !ip, range, !range
+	 *            bkshow=ip|!temp. Values (separate with |): account, !account,
+	 *            temp, !temp, ip, !ip, range, !range
 	 * @param bkcontinue - When more results are available, use this to
 	 *            continue.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -6394,7 +6407,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -6418,7 +6431,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -6459,11 +6472,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             List blocks. api.php?action=query&list=blocks List blocks of
-	 *             users Alice and Bob.
-	 *             api.php?action=query&list=blocks&bkusers=Alice|Bob */
+	 * @throws IOException List blocks. api.php?action=query&list=blocks List
+	 *             blocks of users Alice and Bob.
+	 *             api.php?action=query&list=blocks&bkusers=Alice|Bob
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -6505,7 +6517,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=categorymembers which List
+	/**
+	 * Fetch data from and about MediaWiki with list=categorymembers which List
 	 * all pages in a given category
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -6580,7 +6593,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -6604,7 +6617,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -6645,14 +6658,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Get first 10 pages in Category:Physics.
+	 * @throws IOException Get first 10 pages in Category:Physics.
 	 *             api.php?action=query&list
 	 *             =categorymembers&cmtitle=Category:Physics Get page info about
 	 *             first 10 pages in Category:Physics.
 	 *             api.php?action=query&generator
-	 *             =categorymembers&gcmtitle=Category:Physics&prop=info */
+	 *             =categorymembers&gcmtitle=Category:Physics&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -6699,7 +6711,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=centralnoticelogs which Get
+	/**
+	 * Fetch data from and about MediaWiki with list=centralnoticelogs which Get
 	 * a log of campaign configuration changes.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -6717,12 +6730,9 @@ public abstract class WikiPediaConnector {
 	 * @param campaign - Campaign name (optional). Separate multiple values with
 	 *            a "|" (vertical bar).
 	 * @param user - Username (optional).
-	 * @param limit - Maximum rows to return (optional).
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 50
-	 * @param offset - Offset into result set (optional).
-	 * 
-	 *            Default: 0
+	 * @param limit - Maximum rows to return (optional). No more than 500 (5,000
+	 *            for bots) allowed. Default: 50
+	 * @param offset - Offset into result set (optional). Default: 0
 	 * @param start - Start time of range (optional).
 	 * @param end -End time of range (optional).
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -6739,7 +6749,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -6763,7 +6773,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -6804,10 +6814,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Show logs
-	 *             api.php?action=query&list=centralnoticelogs&format=json */
+	 * @throws IOException Show logs
+	 *             api.php?action=query&list=centralnoticelogs&format=json
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -6845,7 +6854,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=checkuser which Check which
+	/**
+	 * Fetch data from and about MediaWiki with list=checkuser which Check which
 	 * IP addresses are used by a given username or which usernames are used by
 	 * a given IP address
 	 * 
@@ -6861,25 +6871,19 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param curequest - Type of CheckUser request:
-	 * 
-	 *            userips Get IP address of target user. edits Get changes from
-	 *            target IP address or range. ipusers Get users from target IP
-	 *            address or range. This parameter is required. One value:
-	 *            userips, edits, ipusers
-	 * @param cutarget - Username, IP address, or CIDR range to check.
-	 * 
-	 *            This parameter is required.
+	 * @param curequest - Type of CheckUser request: userips Get IP address of
+	 *            target user. edits Get changes from target IP address or
+	 *            range. ipusers Get users from target IP address or range. This
+	 *            parameter is required. One value: userips, edits, ipusers
+	 * @param cutarget - Username, IP address, or CIDR range to check. This
+	 *            parameter is required.
 	 * @param cureason - Reason to check.
-	 * @param culimit - Limit of rows.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 1000
-	 * @param cutimecond - Time limit of user data (like "2 weeks").
-	 * 
-	 *            Default: -2 weeks
+	 * @param culimit - Limit of rows. No more than 500 (5,000 for bots)
+	 *            allowed. Default: 1000
+	 * @param cutimecond - Time limit of user data (like "2 weeks"). Default: -2
+	 *            weeks
 	 * @param cuxff - Use XFF data instead of IP address.
 	 * @param cutoken - A "csrf" token retrieved from action=query&meta=tokens
-	 * 
 	 *            This parameter is required.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -6895,7 +6899,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -6918,7 +6922,8 @@ public abstract class WikiPediaConnector {
 	 * @param converttitles - Convert titles to other variants if necessary.
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
-	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.* @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -6958,16 +6963,14 @@ public abstract class WikiPediaConnector {
 	 *            be used once, and expires after 10 seconds. This should be
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
-	 *            
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Check IP addresses for User:Example
+	 * @throws IOException Check IP addresses for User:Example
 	 *             api.php?action=query&list=
 	 *             checkuser&curequest=userips&cutarget=Jimbo_Wales Check edits
 	 *             from 192.0.2.0/24
 	 *             api.php?action=query&list=checkuser&curequest
-	 *             =edits&cutarget=127.0.0.1/16&xff=1&cureason=Some_check */
+	 *             =edits&cutarget=127.0.0.1/16&xff=1&cureason=Some_check
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -7006,7 +7009,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=checkuserlog which Check
+	/**
+	 * Fetch data from and about MediaWiki with list=checkuserlog which Check
 	 * which Get entries from the CheckUser log
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -7023,15 +7027,12 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param culuser - Username of the CheckUser.
 	 * @param cultarget - Checked user, IP address, or CIDR range.
-	 * @param cullimit - Limit of rows.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param culdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: culstart has to be before
-	 *            culend. older List newest first (default). Note: culstart has
-	 *            to be later than culend. One value: newer, older Default:
-	 *            older
+	 * @param cullimit - Limit of rows. No more than 500 (5,000 for bots)
+	 *            allowed. Default: 10
+	 * @param culdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: culstart has to be before culend. older List newest
+	 *            first (default). Note: culstart has to be later than culend.
+	 *            One value: newer, older Default: older
 	 * @param culfrom - The timestamp to start enumerating from.
 	 * @param culto - The timestamp to end enumerating.
 	 * @param culcontinue - When more results are available, use this to
@@ -7050,7 +7051,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -7073,7 +7074,8 @@ public abstract class WikiPediaConnector {
 	 * @param converttitles - Convert titles to other variants if necessary.
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
-	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.* @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -7113,16 +7115,14 @@ public abstract class WikiPediaConnector {
 	 *            be used once, and expires after 10 seconds. This should be
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
-	 *            
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Show checks of User:Example
+	 * @throws IOException Show checks of User:Example
 	 *             api.php?action=query&list=checkuserlog
 	 *             &culuser=Example&cullimit=25 Show checks of 192.0.2.0/24
 	 *             after 2011-10-15T23:00:00Z
 	 *             api.php?action=query&list=checkuserlog
-	 *             &cultarget=192.0.2.0/24&culfrom=2011-10-15T23:00:00Z */
+	 *             &cultarget=192.0.2.0/24&culfrom=2011-10-15T23:00:00Z
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -7161,16 +7161,14 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=deletedrevs List deleted
-	 * revisions.
-	 * 
-	 * Operates in three modes:
-	 * 
-	 * List deleted revisions for the given titles, sorted by timestamp. List
-	 * deleted contributions for the given user, sorted by timestamp (no titles
-	 * specified). List all deleted revisions in the given namespace, sorted by
-	 * title and timestamp (no titles specified, druser not set). Certain
-	 * parameters only apply to some modes and are ignored in others.
+	/**
+	 * Fetch data from and about MediaWiki with list=deletedrevs List deleted
+	 * revisions. Operates in three modes: List deleted revisions for the given
+	 * titles, sorted by timestamp. List deleted contributions for the given
+	 * user, sorted by timestamp (no titles specified). List all deleted
+	 * revisions in the given namespace, sorted by title and timestamp (no
+	 * titles specified, druser not set). Certain parameters only apply to some
+	 * modes and are ignored in others.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -7184,55 +7182,37 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param drstart - The timestamp to start enumerating from.
-	 * 
-	 *            Modes: 1, 2
-	 * @param drend - The timestamp to stop enumerating at.
-	 * 
-	 *            Modes: 1, 2
-	 * @param drdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: drstart has to be before drend.
-	 *            older List newest first (default). Note: drstart has to be
-	 *            later than drend. Modes: 1, 3 One value: newer, older Default:
-	 *            older
-	 * @param drfrom - Start listing at this title.
-	 * 
-	 *            Mode: 3
-	 * @param drto - Stop listing at this title.
-	 * 
-	 *            Mode: 3
+	 * @param drstart - The timestamp to start enumerating from. Modes: 1, 2
+	 * @param drend - The timestamp to stop enumerating at. Modes: 1, 2
+	 * @param drdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: drstart has to be before drend. older List newest first
+	 *            (default). Note: drstart has to be later than drend. Modes: 1,
+	 *            3 One value: newer, older Default: older
+	 * @param drfrom - Start listing at this title. Mode: 3
+	 * @param drto - Stop listing at this title. Mode: 3
 	 * @param drprefix - Search for all page titles that begin with this value.
-	 * 
 	 *            Mode: 3
-	 * @param drunique - List only one revision for each page.
-	 * 
-	 *            Mode: 3
-	 * @param drnamespace - Only list pages in this namespace.
-	 * 
-	 *            Mode: 3 One value: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
-	 *            Default: 0
+	 * @param drunique - List only one revision for each page. Mode: 3
+	 * @param drnamespace - Only list pages in this namespace. Mode: 3 One
+	 *            value: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+	 *            120, 121, 122, 123, 1198, 1199, 2600, 828, 829 Default: 0
 	 * @param drtag - Only list revisions tagged with this tag.
 	 * @param druser - Only list revisions by this user.
 	 * @param drexcludeuser - Don't list revisions by this user.
-	 * @param drprop - Which properties to get:
-	 * 
-	 *            revid Adds the revision ID of the deleted revision. parentid
-	 *            Adds the revision ID of the previous revision to the page.
-	 *            user Adds the user who made the revision. userid Adds the user
-	 *            ID whom made the revision. comment Adds the comment of the
-	 *            revision. parsedcomment Adds the parsed comment of the
-	 *            revision. minor Tags if the revision is minor. len Adds the
-	 *            length (bytes) of the revision. sha1 Adds the SHA-1 (base 16)
-	 *            of the revision. content Adds the content of the revision.
-	 *            token Deprecated. Gives the edit token. tags Tags for the
-	 *            revision. Values (separate with |): revid, parentid, user,
-	 *            userid, comment, parsedcomment, minor, len, sha1, content,
-	 *            token, tags Default: user|comment
-	 * @param drlimit - The maximum amount of revisions to list.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param drprop - Which properties to get: revid Adds the revision ID of
+	 *            the deleted revision. parentid Adds the revision ID of the
+	 *            previous revision to the page. user Adds the user who made the
+	 *            revision. userid Adds the user ID whom made the revision.
+	 *            comment Adds the comment of the revision. parsedcomment Adds
+	 *            the parsed comment of the revision. minor Tags if the revision
+	 *            is minor. len Adds the length (bytes) of the revision. sha1
+	 *            Adds the SHA-1 (base 16) of the revision. content Adds the
+	 *            content of the revision. token Deprecated. Gives the edit
+	 *            token. tags Tags for the revision. Values (separate with |):
+	 *            revid, parentid, user, userid, comment, parsedcomment, minor,
+	 *            len, sha1, content, token, tags Default: user|comment
+	 * @param drlimit - The maximum amount of revisions to list. No more than
+	 *            500 (5,000 for bots) allowed. Default: 10
 	 * @param drcontinue - When more results are available, use this to
 	 *            continue.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -7249,7 +7229,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -7273,7 +7253,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -7314,22 +7294,20 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List the last deleted revisions of the pages Main
-	 *             Page and Talk:Main Page, with content (mode 1).
+	 * @throws IOException Examples: List the last deleted revisions of the
+	 *             pages Main Page and Talk:Main Page, with content (mode 1).
 	 *             api.php?action=query&list
 	 *             =deletedrevs&titles=Main%20Page|Talk:
 	 *             Main%20Page&drprop=user|comment|content List the last 50
 	 *             deleted contributions by Bob (mode 2).
 	 *             api.php?action=query&list=deletedrevs&druser=Bob&drlimit=50
 	 *             List the first 50 deleted revisions in the main namespace
-	 *             (mode 3).
-	 *             api.php?action=query&list=deletedrevs&drdir=newer&drlimit=50
-	 *             List the first 50 deleted pages in the Talk namespace (mode
-	 *             3).
+	 *             (mode 3). api.php?action=query&list=deletedrevs&drdir=newer&
+	 *             drlimit=50 List the first 50 deleted pages in the Talk
+	 *             namespace (mode 3).
 	 *             api.php?action=query&list=deletedrevs&drdir=newer&drlimit=
-	 *             50&drnamespace=1&drunique= */
+	 *             50&drnamespace=1&drunique=
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -7375,9 +7353,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=embeddedin which Find all
+	/**
+	 * Fetch data from and about MediaWiki with list=embeddedin which Find all
 	 * pages that embed (transclude) the given title.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -7419,7 +7397,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -7443,7 +7421,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -7484,14 +7462,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show pages transcluding Template:Stub.
+	 * @throws IOException Examples: Show pages transcluding Template:Stub.
 	 *             api.php?action=query&list=embeddedin&eititle=Template:Stub
 	 *             Get information about pages transcluding Template:Stub.
 	 *             api.php
 	 *             ?action=query&generator=embeddedin&geititle=Template:Stub
-	 *             &prop=info */
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -7530,9 +7507,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=exturlusage which Enumerate
+	/**
+	 * Fetch data from and about MediaWiki with list=exturlusage which Enumerate
 	 * pages that contain a given URL.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -7583,7 +7560,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -7607,7 +7584,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -7648,11 +7625,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show pages linking to http://www.mediawiki.org.
-	 *             api.
-	 *             php?action=query&list=exturlusage&euquery=www.mediawiki.org */
+	 * @throws IOException Examples: Show pages linking to
+	 *             http://www.mediawiki.org. api.
+	 *             php?action=query&list=exturlusage&euquery=www.mediawiki.org
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -7691,9 +7667,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=filearchive which Enumerate
+	/**
+	 * Fetch data from and about MediaWiki with list=filearchive which Enumerate
 	 * all deleted files sequentially.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -7710,30 +7686,26 @@ public abstract class WikiPediaConnector {
 	 * @param fafrom - The image title to start enumerating from.
 	 * @param fato - The image title to stop enumerating at.
 	 * @param faprefix - Search for all image titles that begin with this value.
-	 * @param fadir - The direction in which to list.
-	 * 
-	 *            One value: ascending, descending Default: ascending
+	 * @param fadir - The direction in which to list. One value: ascending,
+	 *            descending Default: ascending
 	 * @param fasha1 - SHA1 hash of image. Overrides fasha1base36.
 	 * @param fasha1base36 - SHA1 hash of image in base 36 (used in MediaWiki).
-	 * @param faprop - Which image information to get:
-	 * 
-	 *            sha1 Adds SHA-1 hash for the image. timestamp Adds timestamp
-	 *            for the uploaded version. user Adds user who uploaded the
-	 *            image version. size Adds the size of the image in bytes and
-	 *            the height, width and page count (if applicable). dimensions
-	 *            Alias for size. description Adds description the image
-	 *            version. parseddescription Parse the description on the
-	 *            version. mime Adds MIME of the image. mediatype Adds the media
-	 *            type of the image. metadata Lists Exif metadata for the
-	 *            version of the image. bitdepth Adds the bit depth of the
-	 *            version. archivename Adds the filename of the archive version
-	 *            for non-latest versions. Values (separate with |): sha1,
-	 *            timestamp, user, size, dimensions, description,
+	 * @param faprop - Which image information to get: sha1 Adds SHA-1 hash for
+	 *            the image. timestamp Adds timestamp for the uploaded version.
+	 *            user Adds user who uploaded the image version. size Adds the
+	 *            size of the image in bytes and the height, width and page
+	 *            count (if applicable). dimensions Alias for size. description
+	 *            Adds description the image version. parseddescription Parse
+	 *            the description on the version. mime Adds MIME of the image.
+	 *            mediatype Adds the media type of the image. metadata Lists
+	 *            Exif metadata for the version of the image. bitdepth Adds the
+	 *            bit depth of the version. archivename Adds the filename of the
+	 *            archive version for non-latest versions. Values (separate with
+	 *            |): sha1, timestamp, user, size, dimensions, description,
 	 *            parseddescription, mime, mediatype, metadata, bitdepth,
 	 *            archivename Default: timestamp
-	 * @param falimit - How many images to return in total.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param falimit - How many images to return in total. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
 	 * @param facontinue - When more results are available, use this to
 	 *            continue.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -7750,7 +7722,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -7774,7 +7746,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -7815,10 +7787,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show a list of all deleted files.
-	 *             api.php?action=query&list=filearchive */
+	 * @throws IOException Examples: Show a list of all deleted files.
+	 *             api.php?action=query&list=filearchive
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -7859,9 +7830,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=gadgetcategories which
+	/**
+	 * Fetch data from and about MediaWiki with list=gadgetcategories which
 	 * Returns a list of gadget categories.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -7875,15 +7846,12 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param gcprop - What gadget category information to get:
-	 * 
-	 *            name Internal category name. title Category title. members
-	 *            Number of gadgets in category. Values (separate with |): name,
-	 *            title, members Default: name
-	 * @param gcnames - Names of categories to retrieve.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots)..
+	 * @param gcprop - What gadget category information to get: name Internal
+	 *            category name. title Category title. members Number of gadgets
+	 *            in category. Values (separate with |): name, title, members
+	 *            Default: name
+	 * @param gcnames - Names of categories to retrieve. Separate values with |.
+	 *            Maximum number of values is 50 (500 for bots)..
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -7898,7 +7866,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -7922,7 +7890,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -7963,14 +7931,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get a list of existing gadget categories
+	 * @throws IOException Examples: Get a list of existing gadget categories
 	 *             api.php?action=query&list=gadgetcategories Get all
 	 *             information about categories named "foo" and "bar"
 	 *             api.php?action
 	 *             =query&list=gadgetcategories&gcnames=foo|bar&gcprop
-	 *             =name|title|members */
+	 *             =name|title|members
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -8004,9 +7971,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=gadgets which Returns a
+	/**
+	 * Fetch data from and about MediaWiki with list=gadgets which Returns a
 	 * list of gadgets used on this wiki.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -8020,20 +7987,15 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param gaprop - What gadget information to get:
-	 * 
-	 *            id Internal gadget ID. metadata The gadget metadata. desc
-	 *            Gadget description transformed into HTML (can be slow, use
-	 *            only if really needed). Values (separate with |): id,
-	 *            metadata, desc Default: id|metadata
-	 * @param gacategories - Gadgets from what categories to retrieve.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
-	 * @param gaids - IDs of gadgets to retrieve.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
+	 * @param gaprop - What gadget information to get: id Internal gadget ID.
+	 *            metadata The gadget metadata. desc Gadget description
+	 *            transformed into HTML (can be slow, use only if really
+	 *            needed). Values (separate with |): id, metadata, desc Default:
+	 *            id|metadata
+	 * @param gacategories - Gadgets from what categories to retrieve. Separate
+	 *            values with |. Maximum number of values is 50 (500 for bots).
+	 * @param gaids - IDs of gadgets to retrieve. Separate values with |.
+	 *            Maximum number of values is 50 (500 for bots).
 	 * @param gaallowedonly - List only gadgets allowed to current user.
 	 * @param gaenabledonly - List only gadgets enabled by current user.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -8050,7 +8012,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -8074,7 +8036,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -8115,11 +8077,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get a list of gadgets along with their descriptions
-	 *             api.php?action=query&list=gadgets&gaprop=id|desc Get a list
-	 *             of gadgets with all possible properties
+	 * @throws IOException Examples: Get a list of gadgets along with their
+	 *             descriptions api.php?action=query&list=gadgets&gaprop=id|desc
+	 *             Get a list of gadgets with all possible properties
 	 *             api.php?action=query&list=gadgets&gaprop=id|metadata|desc Get
 	 *             a list of gadgets belonging to category "foo"
 	 *             api.php?action=query&list=gadgets&gacategories=foo Get
@@ -8127,7 +8087,8 @@ public abstract class WikiPediaConnector {
 	 *             api.php?action=query
 	 *             &list=gadgets&gaids=foo|bar&gaprop=id|desc|metadata Get a
 	 *             list of gadgets enabled by current user
-	 *             api.php?action=query&list=gadgets&gaenabledonly */
+	 *             api.php?action=query&list=gadgets&gaenabledonly
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -8164,9 +8125,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=globalallusers which
+	/**
+	 * Fetch data from and about MediaWiki with list=globalallusers which
 	 * Enumerate all global users.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -8183,12 +8144,18 @@ public abstract class WikiPediaConnector {
 	 * @param agufrom - The user name to start enumerating from.
 	 * @param aguto - The user name to stop enumerating at.
 	 * @param aguprefix - Search for all users that begin with this value.
-	 * @param agudir - Direction to sort in.
-	 * 
-	 *            One value: ascending, descending Default: ascending
-	 * @param agugroup - Limit users to given global groups.
-	 * 
-	 *            Values (separate with |): OTRS-member, WMF_Ops_Monitoring,
+	 * @param agudir - Direction to sort in. One value: ascending, descending
+	 *            Default: ascending
+	 * @param agugroup - Limit users to given global groups. Values (separate
+	 *            with |): OTRS-member, WMF_Ops_Monitoring, abusefilter-helper,
+	 *            apihighlimits-requestor, captcha-exempt, delete-global,
+	 *            founder, global-bot, global-deleted-image-review,
+	 *            global-gather-admins, global-interface-editor,
+	 *            global-ipblock-exempt, global-rollbacker, global-sysop,
+	 *            new-wikis-importer, ombudsman, recursive-export, staff,
+	 *            steward, sysadmin, wmf-researcher
+	 * @param aguexcludegroup - Exclude users in given global groups. Values
+	 *            (separate with |): OTRS-member, WMF_Ops_Monitoring,
 	 *            abusefilter-helper, apihighlimits-requestor, captcha-exempt,
 	 *            delete-global, founder, global-bot,
 	 *            global-deleted-image-review, global-gather-admins,
@@ -8196,26 +8163,14 @@ public abstract class WikiPediaConnector {
 	 *            global-rollbacker, global-sysop, new-wikis-importer,
 	 *            ombudsman, recursive-export, staff, steward, sysadmin,
 	 *            wmf-researcher
-	 * @param aguexcludegroup - Exclude users in given global groups.
-	 * 
-	 *            Values (separate with |): OTRS-member, WMF_Ops_Monitoring,
-	 *            abusefilter-helper, apihighlimits-requestor, captcha-exempt,
-	 *            delete-global, founder, global-bot,
-	 *            global-deleted-image-review, global-gather-admins,
-	 *            global-interface-editor, global-ipblock-exempt,
-	 *            global-rollbacker, global-sysop, new-wikis-importer,
-	 *            ombudsman, recursive-export, staff, steward, sysadmin,
-	 *            wmf-researcher
-	 * @param aguprop - What pieces of information to include:
-	 * 
-	 *            lockinfo Whether the user account is locked. groups Lists
-	 *            global groups that the user is in. This uses more server
-	 *            resources and may return fewer results than the limit.
-	 *            existslocally Adds the information if the user exists locally.
-	 *            Values (separate with |): lockinfo, groups, existslocally
-	 * @param agulimit - How many total user names to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param aguprop - What pieces of information to include: lockinfo Whether
+	 *            the user account is locked. groups Lists global groups that
+	 *            the user is in. This uses more server resources and may return
+	 *            fewer results than the limit. existslocally Adds the
+	 *            information if the user exists locally. Values (separate with
+	 *            |): lockinfo, groups, existslocally
+	 * @param agulimit - How many total user names to return. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -8230,7 +8185,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -8254,7 +8209,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -8295,14 +8250,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List global users
+	 * @throws IOException Examples: List global users
 	 *             api.php?action=query&list=globalallusers Show some
 	 *             information for global users starting from "ABC"
 	 *             api.php?action
 	 *             =query&list=globalallusers&agufrom=ABC&aguprop=lockinfo
-	 *             |groups|existslocally */
+	 *             |groups|existslocally
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -8342,9 +8296,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=globalblocks which List all
+	/**
+	 * Fetch data from and about MediaWiki with list=globalblocks which List all
 	 * globally blocked IP addresses.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -8360,31 +8314,24 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param bgstart - The timestamp to start enumerating from.
 	 * @param bgend - The timestamp to stop enumerating at.
-	 * @param bgdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: bgstart has to be before bgend.
-	 *            older List newest first (default). Note: bgstart has to be
-	 *            later than bgend. One value: newer, older Default: older
-	 * @param bgids - Pipe-separated list of block IDs to list.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
+	 * @param bgdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: bgstart has to be before bgend. older List newest first
+	 *            (default). Note: bgstart has to be later than bgend. One
+	 *            value: newer, older Default: older
+	 * @param bgids - Pipe-separated list of block IDs to list. Separate values
+	 *            with |. Maximum number of values is 50 (500 for bots).
 	 * @param bgaddresses - Pipe-separated list of IP addresses to search for.
-	 * 
 	 *            Separate values with |. Maximum number of values is 50 (500
 	 *            for bots).
 	 * @param bgip - Get all blocks applying to this IP address or CIDR range,
 	 *            including range blocks. Cannot be used together with bgusers.
 	 *            CIDR ranges broader than /16 are not accepted.
-	 * @param bglimit - The maximum amount of blocks to list.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param bgprop - Which properties to get.
-	 * 
-	 *            Values (separate with |): id, address, by, timestamp, expiry,
-	 *            reason, range Default: id|address|by|timestamp|expiry|reason
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param bglimit - The maximum amount of blocks to list. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
+	 * @param bgprop - Which properties to get. Values (separate with |): id,
+	 *            address, by, timestamp, expiry, reason, range Default:
+	 *            id|address|by|timestamp|expiry|reason No more than 500 (5,000
+	 *            for bots) allowed. Default: 10
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -8399,7 +8346,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -8423,7 +8370,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -8464,12 +8411,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List all global blocks
+	 * @throws IOException Examples: List all global blocks
 	 *             api.php?action=query&list=globalblocks List global blocks
 	 *             applying to IP address 192.0.2.18
-	 *             api.php?action=query&list=globalblocks&bgip=192.0.2.18 */
+	 *             api.php?action=query&list=globalblocks&bgip=192.0.2.18
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -8509,9 +8455,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=globalgroups which
+	/**
+	 * Fetch data from and about MediaWiki with list=globalgroups which
 	 * Enumerate all global groups..
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -8525,9 +8471,8 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param ggpprop - TWhat pieces of information to include.
-	 * 
-	 *            Values (separate with |): rights.
+	 * @param ggpprop - TWhat pieces of information to include. Values (separate
+	 *            with |): rights.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -8542,7 +8487,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -8566,7 +8511,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -8607,12 +8552,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List global groups
+	 * @throws IOException Examples: List global groups
 	 *             api.php?action=query&list=globalgroups Show global groups
 	 *             with the rights they grant
-	 *             api.php?action=query&list=globalgroups&ggpprop=rights */
+	 *             api.php?action=query&list=globalgroups&ggpprop=rights
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -8645,9 +8589,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=imageusage which Find all
+	/**
+	 * Fetch data from and about MediaWiki with list=imageusage which Find all
 	 * pages that use the given image title.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -8661,6 +8605,7 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
+	 * @param iutitle - Title to search. Cannot be used together with iupageid.
 	 * @param iupageid - Page ID to search. Cannot be used together with
 	 *            iutitle.
 	 * @param iucontinue - When more results are available, use this to
@@ -8694,7 +8639,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -8718,7 +8663,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -8759,15 +8704,15 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show pages using File:Albert Einstein Head.jpg.
+	 * @throws IOException Examples: Show pages using File:Albert Einstein
+	 *             Head.jpg.
 	 *             api.php?action=query&list=imageusage&iutitle=File:Albert%
 	 *             20Einstein%20Head.jpg Get information about pages using
 	 *             File:Albert Einstein Head.jpg.
 	 *             api.php?action=query&generator=
 	 *             imageusage&giutitle=File:Albert
-	 *             %20Einstein%20Head.jpg&prop=info */
+	 *             %20Einstein%20Head.jpg&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -8807,13 +8752,11 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=iwbacklinks which Find all
-	 * pages that link to the given interwiki link.
-	 * 
-	 * Can be used to find all links with a prefix, or all links to a title
-	 * (with a given prefix). Using neither parameter is effectively
-	 * "all interwiki links".
-	 * 
+	/**
+	 * Fetch data from and about MediaWiki with list=iwbacklinks which Find all
+	 * pages that link to the given interwiki link. Can be used to find all
+	 * links with a prefix, or all links to a title (with a given prefix). Using
+	 * neither parameter is effectively "all interwiki links".
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -8853,7 +8796,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -8877,7 +8820,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -8918,14 +8861,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get pages linking to wikibooks:Test.
+	 * @throws IOException Examples: Get pages linking to wikibooks:Test.
 	 *             api.php?action=
 	 *             query&list=iwbacklinks&iwbltitle=Test&iwblprefix=wikibooks
 	 *             Get information about pages linking to wikibooks:Test.
 	 *             api.php?action=query&generator=iwbacklinks&giwbltitle=Test&
-	 *             giwblprefix=wikibooks&prop=info */
+	 *             giwblprefix=wikibooks&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -8963,15 +8905,12 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=langbacklinks which Find
-	 * all pages that link to the given language link
-	 * 
-	 * Can be used to find all links with a language code, or all links to a
-	 * title (with a given language). Using neither parameter is effectively
-	 * "all language links".
-	 * 
+	/**
+	 * Fetch data from and about MediaWiki with list=langbacklinks which Find
+	 * all pages that link to the given language link Can be used to find all
+	 * links with a language code, or all links to a title (with a given
+	 * language). Using neither parameter is effectively "all language links".
 	 * Note that this may not consider language links added by extensions.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -9011,7 +8950,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -9035,7 +8974,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -9076,14 +9015,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get pages linking to fr:Test.
+	 * @throws IOException Examples: Get pages linking to fr:Test.
 	 *             api.php?action=query&list
 	 *             =langbacklinks&lbltitle=Test&lbllang=fr Get information about
 	 *             pages linking to fr:Test.
 	 *             api.php?action=query&generator=langbacklinks
-	 *             &glbltitle=Test&glbllang=fr&prop=info */
+	 *             &glbltitle=Test&glbllang=fr&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -9121,7 +9059,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=logevents which Get events
+	/**
+	 * Fetch data from and about MediaWiki with list=logevents which Get events
 	 * from logs.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -9136,48 +9075,42 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param leprop - Which properties to get:
-	 * 
-	 *            ids Adds the ID of the log event. title Adds the title of the
-	 *            page for the log event. type Adds the type of log event. user
-	 *            Adds the user responsible for the log event. userid Adds the
-	 *            user ID who was responsible for the log event. timestamp Adds
-	 *            the timestamp for the event. comment Adds the comment of the
-	 *            event. parsedcomment Adds the parsed comment of the event.
-	 *            details Lists additional details about the event. tags Lists
-	 *            tags for the event. Values (separate with |): ids, title,
-	 *            type, user, userid, timestamp, comment, parsedcomment,
-	 *            details, tags Default:
-	 *            ids|title|type|user|timestamp|comment|details
-	 * @param letype - Filter log entries to only this type.
-	 * 
-	 *            One value: Can be empty, or block, protect, rights, delete,
-	 *            upload, move, import, patrol, merge, suppress, managetags,
-	 *            spamblacklist, titleblacklist, gblblock, renameuser,
-	 *            globalauth, gblrights, gblrename, abusefilter, massmessage,
-	 *            translationreview, translatorsandbox, notifytranslators,
-	 *            thanks, usermerge, newusers, pagetranslation
+	 * @param leprop - Which properties to get: ids Adds the ID of the log
+	 *            event. title Adds the title of the page for the log event.
+	 *            type Adds the type of log event. user Adds the user
+	 *            responsible for the log event. userid Adds the user ID who was
+	 *            responsible for the log event. timestamp Adds the timestamp
+	 *            for the event. comment Adds the comment of the event.
+	 *            parsedcomment Adds the parsed comment of the event. details
+	 *            Lists additional details about the event. tags Lists tags for
+	 *            the event. Values (separate with |): ids, title, type, user,
+	 *            userid, timestamp, comment, parsedcomment, details, tags
+	 *            Default: ids|title|type|user|timestamp|comment|details
+	 * @param letype - Filter log entries to only this type. One value: Can be
+	 *            empty, or block, protect, rights, delete, upload, move,
+	 *            import, patrol, merge, suppress, managetags, spamblacklist,
+	 *            titleblacklist, gblblock, renameuser, globalauth, gblrights,
+	 *            gblrename, abusefilter, massmessage, translationreview,
+	 *            translatorsandbox, notifytranslators, thanks, usermerge,
+	 *            newusers, pagetranslation
 	 * @param leaction - Filter log actions to only this action. Overrides
 	 *            letype. Wildcard actions like action/* allows to specify any
 	 *            string for the asterisk.
 	 * @param lestart - The timestamp to start enumerating from.
 	 * @param leend - The timestamp to end enumerating.
-	 * @param ledir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: lestart has to be before leend.
-	 *            older List newest first (default). Note: lestart has to be
-	 *            later than leend. One value: newer, older Default: older
+	 * @param ledir - In which direction to enumerate: newer List oldest first.
+	 *            Note: lestart has to be before leend. older List newest first
+	 *            (default). Note: lestart has to be later than leend. One
+	 *            value: newer, older Default: older
 	 * @param leuser - Filter entries to those made by the given user.
 	 * @param letitle - Filter entries to those related to a page.
-	 * @param lenamespace - Filter entries to those in the given namespace.
-	 * 
-	 *            One value: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-	 *            15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
+	 * @param lenamespace - Filter entries to those in the given namespace. One
+	 *            value: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+	 *            120, 121, 122, 123, 1198, 1199, 2600, 828, 829
 	 * @param leprefix - Disabled due to miser mode.
 	 * @param letag - Only list event entries tagged with this tag.
-	 * @param lelimit - How many total event entries to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param lelimit - How many total event entries to return. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
 	 * @param lecontinue - When more results are available, use this to
 	 *            continue.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -9194,7 +9127,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -9218,7 +9151,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -9259,10 +9192,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List recent log events.
-	 *             api.php?action=query&list=logevents */
+	 * @throws IOException Examples: List recent log events.
+	 *             api.php?action=query&list=logevents
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -9307,7 +9239,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=messagecollection which
+	/**
+	 * Fetch data from and about MediaWiki with list=messagecollection which
 	 * Query MessageCollection about translations.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -9322,14 +9255,13 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param gmcgroup - Message group.This parameter is required.
-	 * @param gmclanguage - Language code. Default: en
-	 * 
-	 * @param gmclimit - How many messages to show (after filtering). No more
+	 * @param mcgroup - Message group.This parameter is required.
+	 * @param mclanguage - Language code. Default: en
+	 * @param mclimit - How many messages to show (after filtering). No more
 	 *            than 5,000 (5,000 for bots) allowed. Default: 500
-	 * @param gmcoffset - When more results are available, use this to continue.
+	 * @param mcoffset - When more results are available, use this to continue.
 	 *            Default: (empty)
-	 * @param gmcfilter - Message collection filters. Use ! to negate condition.
+	 * @param mcfilter - Message collection filters. Use ! to negate condition.
 	 *            For example !fuzzy means list only all non-fuzzy messages.
 	 *            Filters are applied in the order given. fuzzy Messages with
 	 *            fuzzy tag. optional Messages which should be translated only
@@ -9342,7 +9274,7 @@ public abstract class WikiPediaConnector {
 	 *            last-translator:# Messages where given user ID # is the last
 	 *            translator. Separate values with |. Maximum number of values
 	 *            is 50 (500 for bots). Default: !optional|!ignored
-	 * @param gmcprop - Which properties to get: definition Message definition.
+	 * @param mcprop - Which properties to get: definition Message definition.
 	 *            translation Current translation (without !!FUZZY!! string if
 	 *            any, use the tags to check for outdated or broken
 	 *            translations). tags Message tags, like optional, ignored and
@@ -9365,7 +9297,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -9389,7 +9321,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -9430,9 +9362,7 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List of supported languages
+	 * @throws IOException Examples: List of supported languages
 	 *             api.php?action=query&meta=siteinfo&siprop=languages List of
 	 *             non-optional message definitions for group page-Example
 	 *             api.php
@@ -9446,7 +9376,8 @@ public abstract class WikiPediaConnector {
 	 *             revisions for group page-Example
 	 *             api.php?action=query&generator
 	 *             =messagecollection&gmcgroup=page
-	 *             -Example&gmclanguage=nl&prop=revisions */
+	 *             -Example&gmclanguage=nl&prop=revisions
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -9484,7 +9415,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=term which Serve
+	/**
+	 * Fetch data from and about MediaWiki with list=term which Serve
 	 * autocomplete requests for the site field in MassMessage..
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -9499,7 +9431,8 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param term - Serve autocomplete requests for the site field in MassMessage.
+	 * @param term - Serve autocomplete requests for the site field in
+	 *            MassMessage.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -9514,7 +9447,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -9538,7 +9471,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -9579,15 +9512,15 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show pages using File:Albert Einstein Head.jpg.
+	 * @throws IOException Examples: Show pages using File:Albert Einstein
+	 *             Head.jpg.
 	 *             api.php?action=query&list=imageusage&iutitle=File:Albert%
 	 *             20Einstein%20Head.jpg Get information about pages using
 	 *             File:Albert Einstein Head.jpg.
 	 *             api.php?action=query&generator=
 	 *             imageusage&giutitle=File:Albert
-	 *             %20Einstein%20Head.jpg&prop=info */
+	 *             %20Einstein%20Head.jpg&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -9620,7 +9553,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=pagepropnames which List
+	/**
+	 * Fetch data from and about MediaWiki with list=pagepropnames which List
 	 * all page property names in use on the wiki.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -9637,9 +9571,8 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param ppncontinue - When more results are available, use this to
 	 *            continue.
-	 * @param ppnlimit - The maximum number of names to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10.
+	 * @param ppnlimit - The maximum number of names to return. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -9654,7 +9587,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -9678,7 +9611,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -9719,10 +9652,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get first 10 property names.
-	 *             api.php?action=query&list=pagepropnames */
+	 * @throws IOException Examples: Get first 10 property names.
+	 *             api.php?action=query&list=pagepropnames
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -9756,7 +9688,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=pageswithprop which List
+	/**
+	 * Fetch data from and about MediaWiki with list=pageswithprop which List
 	 * all pages using a given page property.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -9796,7 +9729,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -9820,7 +9753,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -9861,14 +9794,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List the first 10 pages using {{DISPLAYTITLE:}}.
+	 * @throws IOException Examples: List the first 10 pages using
+	 *             {{DISPLAYTITLE:}}.
 	 *             api.php?action=query&list=pageswithprop&pwppropname=
 	 *             displaytitle&pwpprop=ids|title|value Get page info about
 	 *             first 10 pages using __NOTOC__.
 	 *             api.php?action=query&generator
-	 *             =pageswithprop&gpwppropname=notoc&prop=info */
+	 *             =pageswithprop&gpwppropname=notoc&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -9905,7 +9838,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=prefixsearch which Perform
+	/**
+	 * Fetch data from and about MediaWiki with list=prefixsearch which Perform
 	 * a prefix search for page titles.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -9941,7 +9875,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -9965,7 +9899,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -10006,10 +9940,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Search for page titles beginning with meaning.
-	 *             api.php?action=query&list=prefixsearch&pssearch=meaning */
+	 * @throws IOException Examples: Search for page titles beginning with
+	 *             meaning.
+	 *             api.php?action=query&list=prefixsearch&pssearch=meaning
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -10045,7 +9979,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=protectedtitles which List
+	/**
+	 * Fetch data from and about MediaWiki with list=protectedtitles which List
 	 * all titles protected from creation
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -10098,7 +10033,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -10122,7 +10057,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -10163,13 +10098,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List protected titles.
+	 * @throws IOException Examples: List protected titles.
 	 *             api.php?action=query&list=protectedtitles Find links to
 	 *             protected titles in the main namespace.
 	 *             api.php?action=query&generator
-	 *             =protectedtitles&gptnamespace=0&prop=linkshere */
+	 *             =protectedtitles&gptnamespace=0&prop=linkshere
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -10180,7 +10114,7 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "meta", ignoreIfEmpty = true) String meta,
 			@Optional @RestQueryParam(value = "ptnamespace", ignoreIfEmpty = true) String ptnamespace,
 			@Optional @RestQueryParam(value = "ptlevel", ignoreIfEmpty = true) String ptlevel,
-			@Default("10") @RestQueryParam(value = "ptlimit", ignoreIfEmpty = true) String gptlimit,
+			@Default("10") @RestQueryParam(value = "ptlimit", ignoreIfEmpty = true) String ptlimit,
 			@Optional @RestQueryParam(value = "ptdir", ignoreIfEmpty = true) String ptdir,
 			@Optional @RestQueryParam(value = "ptstart", ignoreIfEmpty = true) String ptstart,
 			@Optional @RestQueryParam(value = "ptend", ignoreIfEmpty = true) String ptend,
@@ -10209,7 +10143,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=querypage which Get a list
+	/**
+	 * Fetch data from and about MediaWiki with list=querypage which Get a list
 	 * provided by a QueryPage-based special page.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -10254,7 +10189,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -10278,7 +10213,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -10319,10 +10254,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Return results from Special:Ancientpages.
-	 *             api.php?action=query&list=querypage&qppage=Ancientpages */
+	 * @throws IOException Examples: Return results from Special:Ancientpages.
+	 *             api.php?action=query&list=querypage&qppage=Ancientpages
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -10357,16 +10291,14 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=random which Get a set of
-	 * random pages.
-	 * 
-	 * Pages are listed in a fixed sequence, only the starting point is random.
-	 * This means that if, for example, Main Page is the first random page in
-	 * the list, List of fictional monkeys will always be second, List of people
-	 * on stamps of Vanuatu third, etc.
-	 * 
-	 * If the number of pages in the namespace is lower than rnlimit, fewer
-	 * pages will be returned. The same page will not be returned twice..
+	/**
+	 * Fetch data from and about MediaWiki with list=random which Get a set of
+	 * random pages. Pages are listed in a fixed sequence, only the starting
+	 * point is random. This means that if, for example, Main Page is the first
+	 * random page in the list, List of fictional monkeys will always be second,
+	 * List of people on stamps of Vanuatu third, etc. If the number of pages in
+	 * the namespace is lower than rnlimit, fewer pages will be returned. The
+	 * same page will not be returned twice..
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -10400,7 +10332,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -10424,7 +10356,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -10465,14 +10397,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Return two random pages from the main namespace.
+	 * @throws IOException Examples: Return two random pages from the main
+	 *             namespace.
 	 *             api.php?action=query&list=random&rnnamespace=0&rnlimit=2
 	 *             Return page info about two random pages from the main
 	 *             namespace.
 	 *             api.php?action=query&generator=random&grnnamespace=
-	 *             0&grnlimit=2&prop=info */
+	 *             0&grnlimit=2&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -10507,7 +10439,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=recentchanges which
+	/**
+	 * Fetch data from and about MediaWiki with list=recentchanges which
 	 * Enumerate recent changes
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -10552,17 +10485,13 @@ public abstract class WikiPediaConnector {
 	 *            loginfo, tags, sha1 Default: title|timestamp|ids
 	 * @param rcshow - Show only items that meet these criteria. For example, to
 	 *            see only minor edits done by logged-in users, set
-	 *            rcshow=minor|!anon.
-	 * 
-	 *            Values (separate with |): minor, !minor, bot, !bot, anon,
-	 *            !anon, redirect, !redirect, patrolled, !patrolled, unpatrolled
-	 * @param rclimit - How many total changes to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param rctype - hich types of changes to show.
-	 * 
-	 *            Values (separate with |): edit, external, new, log Default:
-	 *            edit|new|log
+	 *            rcshow=minor|!anon. Values (separate with |): minor, !minor,
+	 *            bot, !bot, anon, !anon, redirect, !redirect, patrolled,
+	 *            !patrolled, unpatrolled
+	 * @param rclimit - How many total changes to return. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
+	 * @param rctype - hich types of changes to show. Values (separate with |):
+	 *            edit, external, new, log Default: edit|new|log
 	 * @param rctoponly - Only list changes which are the latest revision.
 	 * @param rccontinue - When more results are available, use this to
 	 *            continue.
@@ -10580,7 +10509,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -10604,7 +10533,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -10645,13 +10574,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List recent changes.
+	 * @throws IOException Examples: List recent changes.
 	 *             api.php?action=query&list=recentchanges Get page info about
 	 *             recent unpatrolled changes.
 	 *             api.php?action=query&generator=recentchanges
-	 *             &grcshow=!patrolled&prop=info */
+	 *             &grcshow=!patrolled&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -10696,9 +10624,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=search which Perform a full
+	/**
+	 * Fetch data from and about MediaWiki with list=search which Perform a full
 	 * text search.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -10713,43 +10641,32 @@ public abstract class WikiPediaConnector {
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param srsearch - Search for all page titles (or content) that have this
-	 *            value.
-	 * 
-	 *            This parameter is required.
-	 * 
-	 * @param srnamespace - Search only within these namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829 Default: 0
-	 * @param srwhat - Which type of search to perform.
-	 * 
-	 *            One value: title, text, nearmatch
-	 * @param srinfo - Which metadata to return.
-	 * 
-	 *            Values (separate with |): totalhits, suggestion Default:
-	 *            totalhits|suggestion
-	 * @param srprop - Which properties to return:
-	 * 
-	 *            size Adds the size of the page in bytes. wordcount Adds the
-	 *            word count of the page. timestamp Adds the timestamp of when
-	 *            the page was last edited. snippet Adds a parsed snippet of the
-	 *            page. titlesnippet Adds a parsed snippet of the page title.
-	 *            redirectsnippet Adds a parsed snippet of the redirect title.
-	 *            redirecttitle Adds the title of the matching redirect.
-	 *            sectionsnippet Adds a parsed snippet of the matching section
-	 *            title. sectiontitle Adds the title of the matching section.
-	 *            score Deprecated and ignored. hasrelated Deprecated and
-	 *            ignored. Values (separate with |): size, wordcount, timestamp,
-	 *            score, snippet, titlesnippet, redirecttitle, redirectsnippet,
-	 *            sectiontitle, sectionsnippet, hasrelated Default:
-	 *            size|wordcount|timestamp|snippet
-	 * @param sroffset - When more results are available, use this to continue.
-	 * 
+	 *            value. This parameter is required.
+	 * @param srnamespace - Search only within these namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
 	 *            Default: 0
-	 * @param srlimit - How many total pages to return.
-	 * 
-	 *            No more than 50 (500 for bots) allowed. Default: 10
+	 * @param srwhat - Which type of search to perform. One value: title, text,
+	 *            nearmatch
+	 * @param srinfo - Which metadata to return. Values (separate with |):
+	 *            totalhits, suggestion Default: totalhits|suggestion
+	 * @param srprop - Which properties to return: size Adds the size of the
+	 *            page in bytes. wordcount Adds the word count of the page.
+	 *            timestamp Adds the timestamp of when the page was last edited.
+	 *            snippet Adds a parsed snippet of the page. titlesnippet Adds a
+	 *            parsed snippet of the page title. redirectsnippet Adds a
+	 *            parsed snippet of the redirect title. redirecttitle Adds the
+	 *            title of the matching redirect. sectionsnippet Adds a parsed
+	 *            snippet of the matching section title. sectiontitle Adds the
+	 *            title of the matching section. score Deprecated and ignored.
+	 *            hasrelated Deprecated and ignored. Values (separate with |):
+	 *            size, wordcount, timestamp, score, snippet, titlesnippet,
+	 *            redirecttitle, redirectsnippet, sectiontitle, sectionsnippet,
+	 *            hasrelated Default: size|wordcount|timestamp|snippet
+	 * @param sroffset - When more results are available, use this to continue.
+	 *            Default: 0
+	 * @param srlimit - How many total pages to return. No more than 50 (500 for
+	 *            bots) allowed. Default: 10
 	 * @param srinterwiki - Include interwiki results in the search, if
 	 *            available.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -10766,7 +10683,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -10790,7 +10707,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -10831,16 +10748,15 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Search for meaning.
+	 * @throws IOException Examples: Search for meaning.
 	 *             api.php?action=query&list=search&srsearch=meaning Search
 	 *             texts for meaning.
-	 *             api.php?action=query&list=search&srwhat=text&srsearch=meaning
-	 *             Ger page info about the pages returned for a search for
-	 *             meaning.
+	 *             api.php?action=query&list=search&srwhat=text
+	 *             &srsearch=meaning Ger page info about the pages returned for
+	 *             a search for meaning.
 	 *             api.php?action=query&generator=search&gsrsearch=meaning
-	 *             &prop=info */
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -10880,7 +10796,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=tags which List change
+	/**
+	 * Fetch data from and about MediaWiki with list=tags which List change
 	 * tags.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -10897,20 +10814,18 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param tgcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param tglimit - The maximum number of tags to list.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param tgprop - Which properties to get:
-	 * 
-	 *            name Adds name of tag. displayname Adds system message for the
-	 *            tag. description Adds description of the tag. hitcount Adds
-	 *            the number of revisions and log entries that have this tag.
-	 *            defined Indicate whether the tag is defined. source Gets the
-	 *            sources of the tag, which may include extension for
-	 *            extension-defined tags and manual for tags that may be applied
-	 *            manually by users. active Whether the tag is still being
-	 *            applied. Values (separate with |): name, displayname,
-	 *            description, hitcount, defined, source, active Default: name
+	 * @param tglimit - The maximum number of tags to list. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
+	 * @param tgprop - Which properties to get: name Adds name of tag.
+	 *            displayname Adds system message for the tag. description Adds
+	 *            description of the tag. hitcount Adds the number of revisions
+	 *            and log entries that have this tag. defined Indicate whether
+	 *            the tag is defined. source Gets the sources of the tag, which
+	 *            may include extension for extension-defined tags and manual
+	 *            for tags that may be applied manually by users. active Whether
+	 *            the tag is still being applied. Values (separate with |):
+	 *            name, displayname, description, hitcount, defined, source,
+	 *            active Default: name
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -10925,7 +10840,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -10949,7 +10864,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -10990,11 +10905,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List available tags.
+	 * @throws IOException Examples: List available tags.
 	 *             api.php?action=query&list=tags&
-	 *             tgprop=displayname|description|hitcount|defined */
+	 *             tgprop=displayname|description|hitcount|defined
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -11029,7 +10943,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=usercontribs which Get all
+	/**
+	 * Fetch data from and about MediaWiki with list=usercontribs which Get all
 	 * edits by a user
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -11044,49 +10959,39 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param uclimit - The maximum number of contributions to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param uclimit - The maximum number of contributions to return. No more
+	 *            than 500 (5,000 for bots) allowed. Default: 10
 	 * @param ucstart - The start timestamp to return from.
 	 * @param ucend - The end timestamp to return to.
 	 * @param uccontinue - When more results are available, use this to
 	 *            continue.
-	 * @param ucuser - The users to retrieve contributions for.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
+	 * @param ucuser - The users to retrieve contributions for. Separate values
+	 *            with |. Maximum number of values is 50 (500 for bots).
 	 * @param ucuserprefix - Retrieve contributions for all users whose names
 	 *            begin with this value. Overrides ucuser.
-	 * @param ucdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: ucstart has to be before ucend.
-	 *            older List newest first (default). Note: ucstart has to be
-	 *            later than ucend. One value: newer, older Default: older
-	 * @param ucnamespace - Only list contributions in these namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829
-	 * @param ucprop - Include additional pieces of information:
-	 * 
-	 *            ids Adds the page ID and revision ID. title Adds the title and
-	 *            namespace ID of the page. timestamp Adds the timestamp of the
-	 *            edit. comment Adds the comment of the edit. parsedcomment Adds
-	 *            the parsed comment of the edit. size Adds the new size of the
-	 *            edit. sizediff Adds the size delta of the edit against its
-	 *            parent. flags Adds flags of the edit. patrolled Tags patrolled
-	 *            edits. tags Lists tags for the edit. Values (separate with |):
-	 *            ids, title, timestamp, comment, parsedcomment, size, sizediff,
+	 * @param ucdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: ucstart has to be before ucend. older List newest first
+	 *            (default). Note: ucstart has to be later than ucend. One
+	 *            value: newer, older Default: older
+	 * @param ucnamespace - Only list contributions in these namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
+	 * @param ucprop - Include additional pieces of information: ids Adds the
+	 *            page ID and revision ID. title Adds the title and namespace ID
+	 *            of the page. timestamp Adds the timestamp of the edit. comment
+	 *            Adds the comment of the edit. parsedcomment Adds the parsed
+	 *            comment of the edit. size Adds the new size of the edit.
+	 *            sizediff Adds the size delta of the edit against its parent.
+	 *            flags Adds flags of the edit. patrolled Tags patrolled edits.
+	 *            tags Lists tags for the edit. Values (separate with |): ids,
+	 *            title, timestamp, comment, parsedcomment, size, sizediff,
 	 *            flags, patrolled, tags Default:
 	 *            ids|title|timestamp|comment|size|flags
 	 * @param ucshow - Show only items that meet these criteria, e.g. non minor
-	 *            edits only: ucshow=!minor.
-	 * 
-	 *            If ucshow=patrolled or ucshow=!patrolled is set, revisions
-	 *            older than $wgRCMaxAge (2592000 seconds) won't be shown.
-	 * 
-	 *            Values (separate with |): minor, !minor, patrolled,
-	 *            !patrolled, top, !top, new, !new
+	 *            edits only: ucshow=!minor. If ucshow=patrolled or
+	 *            ucshow=!patrolled is set, revisions older than $wgRCMaxAge
+	 *            (2592000 seconds) won't be shown. Values (separate with |):
+	 *            minor, !minor, patrolled, !patrolled, top, !top, new, !new
 	 * @param uctag - Only list revisions tagged with this tag.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -11102,7 +11007,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -11126,7 +11031,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -11167,12 +11072,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show contributions of user Example.
+	 * @throws IOException Examples: Show contributions of user Example.
 	 *             api.php?action=query&list=usercontribs&ucuser=Example Show
-	 *             contributions from all IP addresses with prefix 192.0.2..
-	 *             api.php?action=query&list=usercontribs&ucuserprefix=192.0.2. */
+	 *             contributions from all IP addresses with prefix 192.0.2.. api
+	 *             .php?action=query&list=usercontribs&ucuserprefix=192.0.2.
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -11215,7 +11119,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=users which Get information
+	/**
+	 * Fetch data from and about MediaWiki with list=users which Get information
 	 * about a list of users
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -11230,23 +11135,19 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param usprop - Which pieces of information to include:
-	 * 
-	 *            blockinfo Tags if the user is blocked, by whom, and for what
-	 *            reason. groups Lists all the groups each user belongs to.
-	 *            implicitgroups Lists all the groups a user is automatically a
-	 *            member of. rights Lists all the rights each user has.
-	 *            editcount Adds the user's edit count. registration Adds the
-	 *            user's registration timestamp. emailable Tags if the user can
-	 *            and wants to receive email through Special:Emailuser. gender
-	 *            Tags the gender of the user. Returns "male", "female", or
-	 *            "unknown". Values (separate with |): blockinfo, groups,
-	 *            implicitgroups, rights, editcount, registration, emailable,
-	 *            gender
-	 * @param ususers - A list of users to obtain information for.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
+	 * @param usprop - Which pieces of information to include: blockinfo Tags if
+	 *            the user is blocked, by whom, and for what reason. groups
+	 *            Lists all the groups each user belongs to. implicitgroups
+	 *            Lists all the groups a user is automatically a member of.
+	 *            rights Lists all the rights each user has. editcount Adds the
+	 *            user's edit count. registration Adds the user's registration
+	 *            timestamp. emailable Tags if the user can and wants to receive
+	 *            email through Special:Emailuser. gender Tags the gender of the
+	 *            user. Returns "male", "female", or "unknown". Values (separate
+	 *            with |): blockinfo, groups, implicitgroups, rights, editcount,
+	 *            registration, emailable, gender
+	 * @param ususers - A list of users to obtain information for. Separate
+	 *            values with |. Maximum number of values is 50 (500 for bots).
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -11261,7 +11162,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -11285,7 +11186,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -11326,12 +11227,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Return information for user Example.
+	 * @throws IOException Examples: Return information for user Example.
 	 *             api.php?action=
 	 *             query&list=users&ususers=Example&usprop=groups|
-	 *             editcount|gender. */
+	 *             editcount|gender.
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -11365,7 +11265,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=watchlist which Get recent
+	/**
+	 * Fetch data from and about MediaWiki with list=watchlist which Get recent
 	 * changes to pages in the current user's watchlist.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -11384,47 +11285,38 @@ public abstract class WikiPediaConnector {
 	 *            given timeframe.
 	 * @param wlstart - The timestamp to start enumerating from.
 	 * @param wlend - The timestamp to end enumerating.
-	 * @param wlnamespace - Filter changes to only the given namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829 wluser Only list changes by this user.
+	 * @param wlnamespace - Filter changes to only the given namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
+	 *            wluser Only list changes by this user.
 	 * @param wluser - Only list changes by this user.
 	 * @param wlexcludeuser - Don't list changes by this user.
-	 * @param wldir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: wlstart has to be before wlend.
-	 *            older List newest first (default). Note: wlstart has to be
-	 *            later than wlend. One value: newer, older Default: older
-	 * 
-	 * @param wllimit - How many total results to return per request.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param wlprop - Which additional items to get:
-	 * 
-	 *            ids Adds revision IDs and page IDs. title Adds title of the
-	 *            page. flags Adds flags for the edit. user Adds the user who
-	 *            made the edit. userid Adds user ID of whom made the edit.
-	 *            comment Adds comment of the edit. parsedcomment Adds parsed
-	 *            comment of the edit. timestamp Adds timestamp of the edit.
-	 *            patrol Tags edits that are patrolled. sizes Adds the old and
-	 *            new lengths of the page. notificationtimestamp Adds timestamp
-	 *            of when the user was last notified about the edit. loginfo
-	 *            Adds log information where appropriate. Values (separate with
-	 *            |): ids, title, flags, user, userid, comment, parsedcomment,
-	 *            timestamp, patrol, sizes, notificationtimestamp, loginfo
-	 *            Default: ids|title|flags
+	 * @param wldir - In which direction to enumerate: newer List oldest first.
+	 *            Note: wlstart has to be before wlend. older List newest first
+	 *            (default). Note: wlstart has to be later than wlend. One
+	 *            value: newer, older Default: older
+	 * @param wllimit - How many total results to return per request. No more
+	 *            than 500 (5,000 for bots) allowed. Default: 10
+	 * @param wlprop - Which additional items to get: ids Adds revision IDs and
+	 *            page IDs. title Adds title of the page. flags Adds flags for
+	 *            the edit. user Adds the user who made the edit. userid Adds
+	 *            user ID of whom made the edit. comment Adds comment of the
+	 *            edit. parsedcomment Adds parsed comment of the edit. timestamp
+	 *            Adds timestamp of the edit. patrol Tags edits that are
+	 *            patrolled. sizes Adds the old and new lengths of the page.
+	 *            notificationtimestamp Adds timestamp of when the user was last
+	 *            notified about the edit. loginfo Adds log information where
+	 *            appropriate. Values (separate with |): ids, title, flags,
+	 *            user, userid, comment, parsedcomment, timestamp, patrol,
+	 *            sizes, notificationtimestamp, loginfo Default: ids|title|flags
 	 * @param wlshow - Show only items that meet these criteria. For example, to
 	 *            see only minor edits done by logged-in users, set
-	 *            wlshow=minor|!anon.
-	 * 
-	 *            Values (separate with |): minor, !minor, bot, !bot, anon,
-	 *            !anon, patrolled, !patrolled, unread, !unread
-	 * @param wltype - Which types of changes to show:
-	 * 
-	 *            edit Regular page edits. external External changes. new Page
-	 *            creations. log Log entries. Values (separate with |): edit,
-	 *            external, new, log Default: edit|new|log
+	 *            wlshow=minor|!anon. Values (separate with |): minor, !minor,
+	 *            bot, !bot, anon, !anon, patrolled, !patrolled, unread, !unread
+	 * @param wltype - Which types of changes to show: edit Regular page edits.
+	 *            external External changes. new Page creations. log Log
+	 *            entries. Values (separate with |): edit, external, new, log
+	 *            Default: edit|new|log
 	 * @param wlowner - Used along with wltoken to access a different user's
 	 *            watchlist.
 	 * @param wltoken - A security token (available in the user's preferences)
@@ -11445,7 +11337,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -11469,7 +11361,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -11510,10 +11402,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List the top revision for recently changed pages on
-	 *             the current user's watchlist.
+	 * @throws IOException Examples: List the top revision for recently changed
+	 *             pages on the current user's watchlist.
 	 *             api.php?action=query&list=watchlist Fetch additional
 	 *             information about the top revision for recently changed pages
 	 *             on the current user's watchlist.
@@ -11530,9 +11420,9 @@ public abstract class WikiPediaConnector {
 	 *             api.php?action=query&generator=watchlist&gwlallrev
 	 *             =&prop=revisions&rvprop=timestamp|user List the top revision
 	 *             for recently changed pages on the watchlist of user Example.
-	 *             api
-	 *             .php?action=query&list=watchlist&wlowner=Example&wltoken=123
-	 *             ABC. */
+	 *             api .php?action=query&list=watchlist&wlowner=Example
+	 *             &wltoken=123 ABC.
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -11578,7 +11468,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=watchlistraw which Get all
+	/**
+	 * Fetch data from and about MediaWiki with list=watchlistraw which Get all
 	 * pages on the current user's watchlist.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -11595,31 +11486,24 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param wrcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param wrnamespace - Only list pages in the given namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829
-	 * @param wrlimit - How many total results to return per request.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param wrprop - Which additional properties to get:
-	 * 
-	 *            changed Adds timestamp of when the user was last notified
-	 *            about the edit. Values (separate with |): changed
-	 * @param wrshow - Only list items that meet these criteria.
-	 * 
-	 *            Values (separate with |): changed, !changed
+	 * @param wrnamespace - Only list pages in the given namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
+	 * @param wrlimit - How many total results to return per request. No more
+	 *            than 500 (5,000 for bots) allowed. Default: 10
+	 * @param wrprop - Which additional properties to get: changed Adds
+	 *            timestamp of when the user was last notified about the edit.
+	 *            Values (separate with |): changed
+	 * @param wrshow - Only list items that meet these criteria. Values
+	 *            (separate with |): changed, !changed
 	 * @param wrowner - Used along with wrtoken to access a different user's
 	 *            watchlist.
 	 * @param wrtoken - A security token (available in the user's preferences)
 	 *            to allow access to another user's watchlist.
-	 * @param wrdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: wrstart has to be before wrend.
-	 *            older List newest first (default). Note: wrstart has to be
-	 *            later than wrend. One value: ascending, descending Default:
-	 *            ascending
+	 * @param wrdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: wrstart has to be before wrend. older List newest first
+	 *            (default). Note: wrstart has to be later than wrend. One
+	 *            value: ascending, descending Default: ascending
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -11634,7 +11518,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -11658,7 +11542,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -11699,13 +11583,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List pages on the current user's watchlist.
+	 * @throws IOException Examples: List pages on the current user's watchlist.
 	 *             api.php?action=query&list=watchlistraw Fetch page info for
 	 *             pages on the current user's watchlist.
 	 *             api.php?action=query&generator
-	 *             =watchlistraw&gwrshow=changed&prop=info */
+	 *             =watchlistraw&gwrshow=changed&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -11745,7 +11628,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with list=wikisets which Enumerate
+	/**
+	 * Fetch data from and about MediaWiki with list=wikisets which Enumerate
 	 * all wiki sets.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -11761,16 +11645,14 @@ public abstract class WikiPediaConnector {
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param wsfrom - The name of the wiki set to start from.
-	 * @param wsprop - What pieces of information to include.
-	 * 
-	 *            type Opt-in based (includes only specified wikis) or opt-out
-	 *            based (includes all wikis except specified). wikisincluded The
-	 *            wikis that are included in this wiki set. wikisnotincluded The
-	 *            wikis that are not included in this wiki set. Values (separate
-	 *            with |): type, wikisincluded, wikisnotincluded
-	 * @param wslimit - How many wiki sets to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param wsprop - What pieces of information to include. type Opt-in based
+	 *            (includes only specified wikis) or opt-out based (includes all
+	 *            wikis except specified). wikisincluded The wikis that are
+	 *            included in this wiki set. wikisnotincluded The wikis that are
+	 *            not included in this wiki set. Values (separate with |): type,
+	 *            wikisincluded, wikisnotincluded
+	 * @param wslimit - How many wiki sets to return. No more than 500 (5,000
+	 *            for bots) allowed. Default: 10
 	 * @param wsorderbyname - Order results by name.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -11786,7 +11668,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -11810,7 +11692,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -11851,11 +11733,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List wiki sets api.php?action=query&list=wikisets
-	 *             Show wiki sets with types
-	 *             api.php?action=query&list=wikisets&wsprop=type&wslimit=200 */
+	 * @throws IOException Examples: List wiki sets
+	 *             api.php?action=query&list=wikisets Show wiki sets with types
+	 *             api.php?action=query&list=wikisets&wsprop=type&wslimit=200
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -11891,7 +11772,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=allmessages which Return
+	/**
+	 * Fetch data from and about MediaWiki with meta=allmessages which Return
 	 * messages from this site.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -11915,13 +11797,10 @@ public abstract class WikiPediaConnector {
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
 	 * @param ammessages - Which messages to output. * (default) means all
-	 *            messages.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots). Default: *
-	 * @param amprop - Which properties to get.
-	 * 
-	 *            Values (separate with |): default
+	 *            messages. Separate values with |. Maximum number of values is
+	 *            50 (500 for bots). Default: *
+	 * @param amprop - Which properties to get. Values (separate with |):
+	 *            default
 	 * @param amenableparser - Set to enable parser, will preprocess the
 	 *            wikitext of message (substitute magic words, handle templates,
 	 *            etc.).
@@ -11931,14 +11810,11 @@ public abstract class WikiPediaConnector {
 	 *            don't exist in the software but do exist as a MediaWiki: page.
 	 *            This lists all MediaWiki: pages, so it will also list those
 	 *            that aren't really messages such as Common.js.
-	 * @param amargs - Arguments to be substituted into message.
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots).
+	 * @param amargs - Arguments to be substituted into message. Separate values
+	 *            with |. Maximum number of values is 50 (500 for bots).
 	 * @param amfilter - Return only messages with names that contain this
 	 *            string.
 	 * @param amcustomised - Return only messages in this customisation state.
-	 * 
 	 *            One value: all, modified, unmodified Default: all
 	 * @param amlang - Return messages in this language.
 	 * @param amfrom - Return messages starting at this message.
@@ -11960,7 +11836,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -11984,7 +11860,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -12025,13 +11901,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show messages starting with ipb-.
+	 * @throws IOException Examples: Show messages starting with ipb-.
 	 *             api.php?action=query&meta=allmessages&amprefix=ipb- Show
 	 *             messages august and mainpage in German.
 	 *             api.php?action=query&meta
-	 *             =allmessages&ammessages=august|mainpage&amlang=de */
+	 *             =allmessages&ammessages=august|mainpage&amlang=de
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -12076,7 +11951,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=filerepoinfo which Return
+	/**
+	 * Fetch data from and about MediaWiki with meta=filerepoinfo which Return
 	 * meta information about image repositories configured on the wiki.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -12100,17 +11976,15 @@ public abstract class WikiPediaConnector {
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
 	 * @param friprop - Which repository properties to get (there may be more
-	 *            available on some wikis):
-	 * 
-	 *            apiurl URL to the repository API - helpful for getting image
-	 *            info from the host. name The key of the repository - used in
-	 *            e.g. $wgForeignFileRepos and imageinfo return values.
-	 *            displayname The human-readable name of the repository wiki.
-	 *            rooturl Root URL for image paths. local Whether that
-	 *            repository is the local one or not. Values (separate with |):
-	 *            name, displayname, rootUrl, local, url, thumbUrl,
-	 *            initialCapital, descBaseUrl, scriptDirUrl, fetchDescription,
-	 *            favicon Default:
+	 *            available on some wikis): apiurl URL to the repository API -
+	 *            helpful for getting image info from the host. name The key of
+	 *            the repository - used in e.g. $wgForeignFileRepos and
+	 *            imageinfo return values. displayname The human-readable name
+	 *            of the repository wiki. rooturl Root URL for image paths.
+	 *            local Whether that repository is the local one or not. Values
+	 *            (separate with |): name, displayname, rootUrl, local, url,
+	 *            thumbUrl, initialCapital, descBaseUrl, scriptDirUrl,
+	 *            fetchDescription, favicon Default:
 	 *            name|displayname|rootUrl|local|url|thumbUrl|initialCapital
 	 *            |descBaseUrl|scriptDirUrl|fetchDescription|favicon.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -12127,7 +12001,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -12151,7 +12025,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -12192,11 +12066,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about file repositories.
+	 * @throws IOException Examples: Get information about file repositories.
 	 *             api.php?action
-	 *             =query&meta=filerepoinfo&friprop=apiurl|name|displayname */
+	 *             =query&meta=filerepoinfo&friprop=apiurl|name|displayname
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -12229,7 +12102,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=globaluserinfo which Show
+	/**
+	 * Fetch data from and about MediaWiki with meta=globaluserinfo which Show
 	 * information about a global user.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -12254,14 +12128,12 @@ public abstract class WikiPediaConnector {
 	 *            watchlist, watchlistraw, wikisets
 	 * @param guiuser - User to get information about. Defaults to the current
 	 *            user.
-	 * @param guiprop - Which properties to get:
-	 * 
-	 *            groups Get a list of global groups this user belongs to.
-	 *            rights Get a list of global rights this user has. merged Get a
-	 *            list of merged accounts. unattached Get a list of unattached
-	 *            accounts. editcount Get users global editcount. Values
-	 *            (separate with |): groups, rights, merged, unattached,
-	 *            editcount
+	 * @param guiprop - Which properties to get: groups Get a list of global
+	 *            groups this user belongs to. rights Get a list of global
+	 *            rights this user has. merged Get a list of merged accounts.
+	 *            unattached Get a list of unattached accounts. editcount Get
+	 *            users global editcount. Values (separate with |): groups,
+	 *            rights, merged, unattached, editcount
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -12276,7 +12148,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -12300,7 +12172,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -12341,13 +12213,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about the current global user
-	 *             api.php?action=query&meta=globaluserinfo Get information
+	 * @throws IOException Examples: Get information about the current global
+	 *             user api.php?action=query&meta=globaluserinfo Get information
 	 *             about global user Example
 	 *             api.php?action=query&meta=globaluserinfo
-	 *             &guiuser=Example&guiprop=groups|merged|unattached */
+	 *             &guiuser=Example&guiprop=groups|merged|unattached
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -12381,7 +12252,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=languagestats which Query
+	/**
+	 * Fetch data from and about MediaWiki with meta=languagestats which Query
 	 * language stats
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -12405,16 +12277,12 @@ public abstract class WikiPediaConnector {
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
 	 * @param lsoffset - When more results are available, use this to continue.
-	 * 
 	 *            Default: 0
 	 * @param lstimelimit - Maximum time to spend calculating missing
 	 *            statistics. If zero, only the cached results from the
-	 *            beginning are returned.
-	 * 
-	 *            The value must be between 0 and 10. Default: 8
-	 * @param lstimelimit - Language code.
-	 * 
-	 *            This parameter is required.
+	 *            beginning are returned. The value must be between 0 and 10.
+	 *            Default: 8
+	 * @param lslanguage - Language code. This parameter is required.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -12429,7 +12297,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -12453,7 +12321,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -12494,10 +12362,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List of translation completion statistics for
-	 *             Finnish api.php?action=query&meta=languagestats&lslanguage=fi */
+	 * @throws IOException Examples: List of translation completion statistics
+	 *             for Finnish
+	 *             api.php?action=query&meta=languagestats&lslanguage=fi
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -12532,11 +12400,10 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=messagegroups Return
-	 * information about message groups.
-	 * 
-	 * Note that the uselang parameter affects the output of language dependent
-	 * parts.
+	/**
+	 * Fetch data from and about MediaWiki with meta=messagegroups Return
+	 * information about message groups. Note that the uselang parameter affects
+	 * the output of language dependent parts.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -12561,44 +12428,33 @@ public abstract class WikiPediaConnector {
 	 * @param mgdepth - When using the tree format, limit the depth to this many
 	 *            levels. Value 0 means that no subgroups are shown. If the
 	 *            limit is reached, a prop groupcount is added and it states the
-	 *            number of direct children.
-	 * 
-	 *            Default: 100
+	 *            number of direct children. Default: 100
 	 * @param mgfilter - Only return messages with IDs that match one or more of
 	 *            the inputs given (case-insensitive, separated by pipes, *
-	 *            wildcard).
-	 * 
-	 *            Separate values with |. Maximum number of values is 50 (500
-	 *            for bots). Default: (empty)
+	 *            wildcard). Separate values with |. Maximum number of values is
+	 *            50 (500 for bots). Default: (empty)
 	 * @param mgformat - In a tree format message groups can exist multiple
-	 *            places in the tree.
-	 * 
-	 *            One value: flat, tree Default: flat
-	 * @param mgiconsize - Preferred size of rasterised group icon.
-	 * 
-	 *            Default: 64
-	 * @param mgprop - What translation-related information to get:
-	 * 
-	 *            id Include ID of the group. label Include label of the group.
-	 *            description Include description of the group. class Include
-	 *            class name of the group. namespace Include namespace of the
-	 *            group. Not all groups belong to a single namespace. exists
-	 *            Include self-calculated existence property of the group. icon
-	 *            Include URLs to icon of the group. priority Include priority
-	 *            status like discouraged. prioritylangs Include preferred
-	 *            languages. If not set, this returns false. priorityforce
-	 *            Include priority status - is the priority languages setting
-	 *            forced. workflowstates Include the workflow states for the
-	 *            message group. Values (separate with |): id, label,
-	 *            description, class, namespace, exists, icon, priority,
-	 *            prioritylangs, priorityforce, workflowstates Default:
+	 *            places in the tree. One value: flat, tree Default: flat
+	 * @param mgiconsize - Preferred size of rasterised group icon. Default: 64
+	 * @param mgprop - What translation-related information to get: id Include
+	 *            ID of the group. label Include label of the group. description
+	 *            Include description of the group. class Include class name of
+	 *            the group. namespace Include namespace of the group. Not all
+	 *            groups belong to a single namespace. exists Include
+	 *            self-calculated existence property of the group. icon Include
+	 *            URLs to icon of the group. priority Include priority status
+	 *            like discouraged. prioritylangs Include preferred languages.
+	 *            If not set, this returns false. priorityforce Include priority
+	 *            status - is the priority languages setting forced.
+	 *            workflowstates Include the workflow states for the message
+	 *            group. Values (separate with |): id, label, description,
+	 *            class, namespace, exists, icon, priority, prioritylangs,
+	 *            priorityforce, workflowstates Default:
 	 *            id|label|description|class|exists
 	 * @param mgroot - When using the tree format, instead of starting from top
 	 *            level start from the given message group, which must be an
 	 *            aggregate message group. When using flat format only the
-	 *            specified group is returned.
-	 * 
-	 *            Default: (empty)
+	 *            specified group is returned. Default: (empty)
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -12613,7 +12469,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -12637,7 +12493,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -12678,10 +12534,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show message groups
-	 *             api.php?action=query&meta=messagegroups */
+	 * @throws IOException Examples: Show message groups
+	 *             api.php?action=query&meta=messagegroups
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -12719,7 +12574,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=messagegroupstats which
+	/**
+	 * Fetch data from and about MediaWiki with meta=messagegroupstats which
 	 * Query message group stats.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -12743,16 +12599,12 @@ public abstract class WikiPediaConnector {
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
 	 * @param mgsoffset -When more results are available, use this to continue.
-	 * 
 	 *            Default: 0
 	 * @param mgstimelimit - Maximum time to spend calculating missing
 	 *            statistics. If zero, only the cached results from the
-	 *            beginning are returned.
-	 * 
-	 *            The value must be between 0 and 10. Default: 8
-	 * @param mgsgroup - Message group ID.
-	 * 
-	 *            This parameter is required.
+	 *            beginning are returned. The value must be between 0 and 10.
+	 *            Default: 8
+	 * @param mgsgroup - Message group ID. This parameter is required.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -12767,7 +12619,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -12791,7 +12643,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -12832,12 +12684,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List of translation completion statistics for group
-	 *             page-Example
+	 * @throws IOException Examples: List of translation completion statistics
+	 *             for group page-Example
 	 *             api.php?action=query&meta=messagegroupstats&mgsgroup
-	 *             =page-Example */
+	 *             =page-Example
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -12872,7 +12723,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=notifications which Get
+	/**
+	 * Fetch data from and about MediaWiki with meta=notifications which Get
 	 * notifications waiting for the current user.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -12895,22 +12747,16 @@ public abstract class WikiPediaConnector {
 	 *            pageswithprop, prefixsearch, protectedtitles, querypage,
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
-	 * @param notprop - Details to request.
-	 * 
-	 *            Values (separate with |): list, count, index Default: list
-	 * @param notsections - The notification sections to query.
-	 * 
-	 *            Values (separate with |): alert, message Default:
-	 *            alert|message
+	 * @param notprop - Details to request. Values (separate with |): list,
+	 *            count, index Default: list
+	 * @param notsections - The notification sections to query. Values (separate
+	 *            with |): alert, message Default: alert|message
 	 * @param notgroupbysection - Whether to group the result by section. Each
 	 *            section is fetched separately if set.
 	 * @param notformat - If specified, notifications will be returned formatted
-	 *            this way.
-	 * 
-	 *            One value: text, flyout, html
-	 * @param notlimit - The maximum number of notifications to return.
-	 * 
-	 *            No more than 50 (500 for bots) allowed. Default: 20
+	 *            this way. One value: text, flyout, html
+	 * @param notlimit - The maximum number of notifications to return. No more
+	 *            than 50 (500 for bots) allowed. Default: 20
 	 * @param notindex - If specified, a list of notification IDs, in order,
 	 *            will be returned.
 	 * @param notcontinue - When more results are available, use this to
@@ -12937,7 +12783,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -12961,7 +12807,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -13002,13 +12848,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List notifications
+	 * @throws IOException Examples: List notifications
 	 *             api.php?action=query&meta=notifications List notifications,
 	 *             grouped by section, with counts
 	 *             api.php?action=query&meta=notifications
-	 *             &notprop=count&notsections=alert|message&notgroupbysection=1 */
+	 *             &notprop=count&notsections =alert|message&notgroupbysection=1
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -13051,7 +12896,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=messagetranslations which
+	/**
+	 * Fetch data from and about MediaWiki with meta=messagetranslations which
 	 * Query all translations for a single message.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -13074,11 +12920,9 @@ public abstract class WikiPediaConnector {
 	 *            pageswithprop, prefixsearch, protectedtitles, querypage,
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
-	 * @param mttitle - Full title of a known message.
-	 * 
-	 *            This parameter is required.
+	 * @param mttitle - Full title of a known message. This parameter is
+	 *            required.
 	 * @param mtoffset - When more results are available, use this to continue.
-	 * 
 	 *            Default: 0
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -13094,7 +12938,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -13118,7 +12962,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -13159,12 +13003,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List of translations in the wiki for
+	 * @throws IOException Examples: List of translations in the wiki for
 	 *             MediaWiki:January
 	 *             api.php?action=query&meta=messagetranslations
-	 *             &mttitle=MediaWiki:January */
+	 *             &mttitle=MediaWiki:January
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -13198,7 +13041,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=siteinfo which Return
+	/**
+	 * Fetch data from and about MediaWiki with meta=siteinfo which Return
 	 * general information about the site.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -13221,19 +13065,15 @@ public abstract class WikiPediaConnector {
 	 *            pageswithprop, prefixsearch, protectedtitles, querypage,
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
-	 * @param siprop - Which information to get:
-	 * 
-	 * 
-	 *            Values (separate with |): general, namespaces,
-	 *            namespacealiases, specialpagealiases, magicwords,
-	 *            interwikimap, dbrepllag, statistics, usergroups, libraries,
-	 *            extensions, fileextensions, rightsinfo, restrictions,
-	 *            languages, skins, extensiontags, functionhooks, showhooks,
-	 *            variables, protocols, defaultoptions Default: general
+	 * @param siprop - Which information to get: Values (separate with |):
+	 *            general, namespaces, namespacealiases, specialpagealiases,
+	 *            magicwords, interwikimap, dbrepllag, statistics, usergroups,
+	 *            libraries, extensions, fileextensions, rightsinfo,
+	 *            restrictions, languages, skins, extensiontags, functionhooks,
+	 *            showhooks, variables, protocols, defaultoptions Default:
+	 *            general
 	 * @param sifilteriw - Return only local or only nonlocal entries of the
-	 *            interwiki map.
-	 * 
-	 *            One value: local, !local
+	 *            interwiki map. One value: local, !local
 	 * @param sishowalldb - List all database servers, not just the one lagging
 	 *            the most.
 	 * @param sinumberingroup - Lists the number of users in user groups.
@@ -13253,7 +13093,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -13277,7 +13117,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -13318,9 +13158,7 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Fetch site information.
+	 * @throws IOException Examples: Fetch site information.
 	 *             api.php?action=query&meta=siteinfo
 	 *             &siprop=general|namespaces|namespacealiases|statistics Fetch
 	 *             a list of local interwiki prefixes.
@@ -13328,7 +13166,8 @@ public abstract class WikiPediaConnector {
 	 *             siteinfo&siprop=interwikimap&sifilteriw=local Check the
 	 *             current replication lag.
 	 *             api.php?action=query&meta=siteinfo&siprop
-	 *             =dbrepllag&sishowalldb= */
+	 *             =dbrepllag&sishowalldb=
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -13365,7 +13204,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=tokens which Gets tokens
+	/**
+	 * Fetch data from and about MediaWiki with meta=tokens which Gets tokens
 	 * for data-modifying actions.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -13388,11 +13228,9 @@ public abstract class WikiPediaConnector {
 	 *            pageswithprop, prefixsearch, protectedtitles, querypage,
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
-	 * @param type - Types of token to request.
-	 * 
-	 *            Values (separate with |): csrf, deleteglobalaccount, patrol,
-	 *            rollback, setglobalaccountstatus, userrights, watch Default:
-	 *            csrf
+	 * @param type - Types of token to request. Values (separate with |): csrf,
+	 *            deleteglobalaccount, patrol, rollback, setglobalaccountstatus,
+	 *            userrights, watch Default: csrf
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -13407,7 +13245,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -13431,7 +13269,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -13472,12 +13310,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Retrieve a csrf token (the default).
+	 * @throws IOException Examples: Retrieve a csrf token (the default).
 	 *             api.php?action=query&meta=tokens Retrieve a watch token and a
 	 *             patrol token.
-	 *             api.php?action=query&meta=tokens&type=watch|patrol */
+	 *             api.php?action=query&meta=tokens&type=watch|patrol
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -13510,7 +13347,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=userinfo which Get
+	/**
+	 * Fetch data from and about MediaWiki with meta=userinfo which Get
 	 * information about the current user.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -13551,7 +13389,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -13575,7 +13413,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -13616,13 +13454,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about the current user.
+	 * @throws IOException Examples: Get information about the current user.
 	 *             api.php?action=query&meta=userinfo Get additional information
 	 *             about the current user.
 	 *             api.php?action=query&meta=userinfo&uiprop
-	 *             =blockinfo|groups|rights|hasmsg */
+	 *             =blockinfo|groups|rights|hasmsg
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -13655,7 +13492,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with meta=wikibase which Get
+	/**
+	 * Fetch data from and about MediaWiki with meta=wikibase which Get
 	 * information about the associated Wikibase repository.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -13678,10 +13516,8 @@ public abstract class WikiPediaConnector {
 	 *            pageswithprop, prefixsearch, protectedtitles, querypage,
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
-	 * @param wbprop - Which properties to get:
-	 * 
-	 *            url Base URL, script path and article path. Values (separate
-	 *            with |): url Default: url
+	 * @param wbprop - Which properties to get: url Base URL, script path and
+	 *            article path. Values (separate with |): url Default: url
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -13696,7 +13532,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -13720,7 +13556,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -13761,10 +13597,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get URL path and other information for the Wikibase
-	 *             repository. api.php?action=query&meta=wikibase */
+	 * @throws IOException Examples: Get URL path and other information for the
+	 *             Wikibase repository. api.php?action=query&meta=wikibase
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -13773,7 +13608,7 @@ public abstract class WikiPediaConnector {
 			@Default("json") @RestQueryParam(value = "format", ignoreIfEmpty = true) String format,
 			@Optional @RestQueryParam(value = "prop", ignoreIfEmpty = true) String prop,
 			@Optional @RestQueryParam(value = "list", ignoreIfEmpty = true) String list,
-			@Optional @RestQueryParam(value = "wbprop", ignoreIfEmpty = true) String uiprop,
+			@Optional @RestQueryParam(value = "wbprop", ignoreIfEmpty = true) String wbprop,
 			@Optional @RestQueryParam(value = "indexpageids", ignoreIfEmpty = true) String indexpageids,
 			@Optional @RestQueryParam(value = "export", ignoreIfEmpty = true) String export,
 			@Optional @RestQueryParam(value = "exportnowrap", ignoreIfEmpty = true) String exportnowrap,
@@ -13797,7 +13632,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=allcategories which
+	/**
+	 * Fetch data from and about MediaWiki with generator=allcategories which
 	 * Enumerate all categories.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -13854,7 +13690,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -13866,7 +13702,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -13907,11 +13743,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Fetch revisions of pages beginning with API/.
-	 *             api.php?action=query&generator=allpages&gapprefix=API/&prop=
-	 *             revisions&continue= */
+	 * @throws IOException Examples: Fetch revisions of pages beginning with
+	 *             API/. api.php?action=query&generator=allpages&gapprefix=API/
+	 *             &prop= revisions&continue=
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -13937,7 +13772,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -13952,7 +13786,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=alldeletedrevisions
+	/**
+	 * Fetch data from and about MediaWiki with generator=alldeletedrevisions
 	 * List all deleted revisions by a user or in a namespace.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -14024,7 +13859,6 @@ public abstract class WikiPediaConnector {
 	 *            first. Note: adrstart has to be before adrend. older List
 	 *            newest first (default). Note: adrstart has to be later than
 	 *            adrend. One value: newer, older. Default: older
-	 * 
 	 * @param gadrfrom - Start listing at this title.Cannot be used with
 	 *            adruser.
 	 * @param gadrto - Stop listing at this title.Cannot be used with adruser.
@@ -14051,7 +13885,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -14063,7 +13897,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -14104,12 +13938,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List the first 50 deleted revisions in the main
-	 *             namespace.
+	 * @throws IOException Examples: List the first 50 deleted revisions in the
+	 *             main namespace.
 	 *             api.php?action=query&list=alldeletedrevisions&adrdir
-	 *             =newer&adrlimit=50 */
+	 *             =newer&adrlimit=50
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -14147,7 +13980,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -14162,7 +13994,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=allfileusages which
+	/**
+	 * Fetch data from and about MediaWiki with generator=allfileusages which
 	 * List all file usages, including non-existing.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -14219,7 +14052,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -14231,7 +14064,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -14272,13 +14105,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Gets all file titles, marking the missing ones.
-	 *             api.
-	 *             php?action=query&generator=allfileusages&gafunique=&gaffrom=B
-	 *             Gets pages containing the files.
-	 *             api.php?action=query&generator=allfileusages&gaffrom=B */
+	 * @throws IOException Examples: Gets all file titles, marking the missing
+	 *             ones. api. php?action=query&generator=allfileusages&gafunique
+	 *             =&gaffrom=B Gets pages containing the files.
+	 *             api.php?action=query&generator=allfileusages&gaffrom=B
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -14303,7 +14134,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -14318,7 +14148,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=allimages which
+	/**
+	 * Fetch data from and about MediaWiki with generator=allimages which
 	 * Enumerate all images sequentially.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -14393,7 +14224,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -14405,7 +14236,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -14446,12 +14277,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show info about 4 files starting at the letter T.
-	 *             api
+	 * @throws IOException Examples: Show info about 4 files starting at the
+	 *             letter T. api
 	 *             .php?action=query&generator=allimages&gailimit=4&gaifrom=T&
-	 *             prop=imageinfo */
+	 *             prop=imageinfo
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -14485,7 +14315,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -14500,7 +14329,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=allredirects which
+	/**
+	 * Fetch data from and about MediaWiki with generator=allredirects which
 	 * List all redirects to a namespace.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -14523,10 +14353,6 @@ public abstract class WikiPediaConnector {
 	 *            pageswithprop, prefixsearch, protectedtitles, querypage,
 	 *            random, recentchanges, search, tags, usercontribs, users,
 	 *            watchlist, watchlistraw, wikisets
-	 * @param meta - Which metadata to get. Values (separate with |):
-	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
-	 *            messagegroups, messagegroupstats, messagetranslations,
-	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param garcontinue - When more results are available, use this to
 	 *            continue.
 	 * @param garfrom - The title of the redirect to start enumerating from.
@@ -14565,7 +14391,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -14577,7 +14403,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -14618,13 +14444,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Gets all target pages, marking the missing ones.
-	 *             api
-	 *             .php?action=query&generator=allredirects&garunique=&garfrom=B
-	 *             Gets pages containing the redirects.
-	 *             api.php?action=query&generator=allredirects&garfrom=B */
+	 * @throws IOException Examples: Gets all target pages, marking the missing
+	 *             ones. api .php?action=query&generator=allredirects&garunique
+	 *             =&garfrom=B Gets pages containing the redirects.
+	 *             api.php?action=query&generator=allredirects&garfrom=B
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -14633,8 +14457,6 @@ public abstract class WikiPediaConnector {
 			@Default("json") @RestQueryParam(value = "format", ignoreIfEmpty = true) String format,
 			@Optional @RestQueryParam(value = "prop", ignoreIfEmpty = true) String prop,
 			@Optional @RestQueryParam(value = "list", ignoreIfEmpty = true) String list,
-			@Default("name") @RestQueryParam(value = "gaisort", ignoreIfEmpty = true) String gaisort,
-			@Default("ascending") @RestQueryParam(value = "gaidir", ignoreIfEmpty = true) String gaidir,
 			@Optional @RestQueryParam(value = "garcontinue", ignoreIfEmpty = true) String garcontinue,
 			@Optional @RestQueryParam(value = "garfrom", ignoreIfEmpty = true) String garfrom,
 			@Optional @RestQueryParam(value = "garto", ignoreIfEmpty = true) String garto,
@@ -14651,7 +14473,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -14666,7 +14487,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=alltransclusions which
+	/**
+	 * Fetch data from and about MediaWiki with generator=alltransclusions which
 	 * List all transclusions (pages embedded using {{x}}), including
 	 * non-existing.
 	 * 
@@ -14728,7 +14550,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -14740,7 +14562,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -14781,13 +14603,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Gets all transcluded titles, marking the missing
-	 *             ones.
+	 * @throws IOException Examples: Gets all transcluded titles, marking the
+	 *             missing ones.
 	 *             api.php?action=query&generator=alltransclusions&gatunique
 	 *             =&gatfrom=B Gets pages containing the transclusions.
-	 *             api.php?action=query&generator=alltransclusions&gatfrom=B */
+	 *             api.php?action=query&generator=alltransclusions&gatfrom=B
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -14813,7 +14634,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -14828,7 +14648,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=allpages which
+	/**
+	 * Fetch data from and about MediaWiki with generator=allpages which
 	 * Enumerate all pages sequentially in a given namespace.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -14901,7 +14722,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -14913,7 +14734,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -14954,15 +14775,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show info about 4 pages starting at the letter T.
-	 *             api.php?action=query&generator=allpages&gaplimit=4&gapfrom=T&
-	 *             prop=info Show content of first 2 non-redirect pages
-	 *             beginning at Re.
+	 * @throws IOException Examples: Show info about 4 pages starting at the
+	 *             letter T. api.php?action=query&generator=allpages&gaplimit=4
+	 *             &gapfrom=T& prop=info Show content of first 2 non-redirect
+	 *             pages beginning at Re.
 	 *             api.php?action=query&generator=allpages&gaplimit
 	 *             =2&gapfilterredir
-	 *             =nonredirects&gapfrom=Re&prop=revisions&rvprop=content */
+	 *             =nonredirects&gapfrom=Re&prop=revisions&rvprop=content
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -14994,7 +14814,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -15009,7 +14828,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=alllinks which
+	/**
+	 * Fetch data from and about MediaWiki with generator=alllinks which
 	 * Enumerate all links that point to a given namespace.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -15070,7 +14890,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -15082,7 +14902,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -15123,12 +14943,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Gets all linked titles, marking the missing ones.
-	 *             api.php?action=query&generator=alllinks&galunique=&galfrom=B
-	 *             Gets pages containing the links.
-	 *             api.php?action=query&generator=alllinks&galfrom=B */
+	 * @throws IOException Examples: Gets all linked titles, marking the missing
+	 *             ones. api.php?action=query&generator=alllinks&galunique
+	 *             =&galfrom=B Gets pages containing the links.
+	 *             api.php?action=query&generator=alllinks&galfrom=B
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -15154,7 +14973,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -15169,7 +14987,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=backlinks which Find
+	/**
+	 * Fetch data from and about MediaWiki with generator=backlinks which Find
 	 * all pages that link to the given page.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -15231,7 +15050,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -15243,7 +15062,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -15284,12 +15103,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages linking to Main page.
-	 *             api
+	 * @throws IOException Examples: Get information about pages linking to Main
+	 *             page. api
 	 *             .php?action=query&generator=backlinks&gbltitle=Main%20Page&
-	 *             prop=info */
+	 *             prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -15314,7 +15132,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -15329,7 +15146,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=categories which List
+	/**
+	 * Fetch data from and about MediaWiki with generator=categories which List
 	 * all categories the pages belong to.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -15387,7 +15205,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -15399,7 +15217,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -15440,12 +15258,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about all categories used in the
-	 *             page Albert Einstein.
+	 * @throws IOException Examples: Get information about all categories used
+	 *             in the page Albert Einstein.
 	 *             api.php?action=query&generator=categories
-	 *             &titles=Albert%20Einstein&prop=info */
+	 *             &titles=Albert%20Einstein&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -15468,7 +15285,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -15483,7 +15299,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=categorymembers which
+	/**
+	 * Fetch data from and about MediaWiki with generator=categorymembers which
 	 * List all pages in a given category.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -15571,7 +15388,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -15583,7 +15400,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -15624,12 +15441,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get page info about first 10 pages in
+	 * @throws IOException Examples: Get page info about first 10 pages in
 	 *             Category:Physics.
 	 *             api.php?action=query&generator=categorymembers
-	 *             &gcmtitle=Category:Physics&prop=info */
+	 *             &gcmtitle=Category:Physics&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -15661,7 +15477,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -15676,12 +15491,10 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=deletedrevisions which
-	 * Get deleted revision information.
-	 * 
-	 * May be used in several ways:
-	 * 
-	 * Get deleted revisions for a set of pages, by setting titles or pageids.
+	/**
+	 * Fetch data from and about MediaWiki with generator=deletedrevisions which
+	 * Get deleted revision information. May be used in several ways: Get
+	 * deleted revisions for a set of pages, by setting titles or pageids.
 	 * Ordered by title and timestamp. Get data about a set of deleted revisions
 	 * by setting their IDs with revids. Ordered by revision ID.
 	 * 
@@ -15765,7 +15578,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -15777,7 +15590,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -15818,10 +15631,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List the information for deleted revision 123456.
-	 *             api.php?action=query&prop=deletedrevisions&revids=123456 */
+	 * @throws IOException Examples: List the information for deleted revision
+	 *             123456.
+	 *             api.php?action=query&prop=deletedrevisions&revids=123456
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -15854,7 +15667,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -15869,15 +15681,13 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=duplicatefiles which
+	/**
+	 * Fetch data from and about MediaWiki with generator=duplicatefiles which
 	 * List all files that are duplicates of the given files based on hash
-	 * values.
-	 * 
-	 * May be used in several ways:
-	 * 
-	 * Get deleted revisions for a set of pages, by setting titles or pageids.
-	 * Ordered by title and timestamp. Get data about a set of deleted revisions
-	 * by setting their IDs with revids. Ordered by revision ID.
+	 * values. May be used in several ways: Get deleted revisions for a set of
+	 * pages, by setting titles or pageids. Ordered by title and timestamp. Get
+	 * data about a set of deleted revisions by setting their IDs with revids.
+	 * Ordered by revision ID.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -15924,7 +15734,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -15936,7 +15746,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -15977,10 +15787,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Look for duplicates of all files.
-	 *             api.php?action=query&generator=allimages&prop=duplicatefiles */
+	 * @throws IOException Examples: Look for duplicates of all files.
+	 *             api.php?action =query&generator=allimages&prop=duplicatefiles
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -16001,7 +15810,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -16016,9 +15824,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=embeddedin which Find
+	/**
+	 * Fetch data from and about MediaWiki with generator=embeddedin which Find
 	 * all pages that embed (transclude) the given title.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -16073,7 +15881,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -16085,7 +15893,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -16126,12 +15934,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages transcluding
+	 * @throws IOException Examples: Get information about pages transcluding
 	 *             Template:Stub.
 	 *             api.php?action=query&generator=embeddedin&geititle
-	 *             =Template:Stub&prop=info */
+	 *             =Template:Stub&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -16155,7 +15962,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -16170,7 +15976,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=exturlusage which
+	/**
+	 * Fetch data from and about MediaWiki with generator=exturlusage which
 	 * Enumerate pages that contain a given URL.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -16234,7 +16041,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -16246,7 +16053,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -16287,11 +16094,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show pages linking to http://www.mediawiki.org.
-	 *             api.
-	 *             php?action=query&list=exturlusage&euquery=www.mediawiki.org */
+	 * @throws IOException Examples: Show pages linking to
+	 *             http://www.mediawiki.org. api.
+	 *             php?action=query&list=exturlusage&euquery=www.mediawiki.org
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -16315,7 +16121,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -16330,7 +16135,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=fileusage which Find
+	/**
+	 * Fetch data from and about MediaWiki with generator=fileusage which Find
 	 * all pages that use the given files.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -16357,19 +16163,19 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param fuprop - Which properties to get: pageid Page ID of each page.
+	 * @param gfuprop - Which properties to get: pageid Page ID of each page.
 	 *            title Title of each page. redirect Flag if the page is a
 	 *            redirect. Values (separate with |): pageid, title, redirect
 	 *            Default: pageid|title|redirect
-	 * @param funamespace - Only include pages in these namespaces. Values
+	 * @param gfunamespace - Only include pages in these namespaces. Values
 	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
-	 * @param fushow - Show only items that meet these criteria: redirect Only
+	 * @param gfushow - Show only items that meet these criteria: redirect Only
 	 *            show redirects. !redirect Only show non-redirects.Values
 	 *            (separate with |): redirect, !redirect
-	 * @param fulimit - How many to return. No more than 500 (5,000 for bots)
+	 * @param gfulimit - How many to return. No more than 500 (5,000 for bots)
 	 *            allowed.Default: 10
-	 * @param fucontinue - When more results are available, use this to
+	 * @param gfucontinue - When more results are available, use this to
 	 *            continue.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
@@ -16385,7 +16191,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -16397,7 +16203,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -16438,12 +16244,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages using File:Example.jpg.
-	 *             api
+	 * @throws IOException Examples: Get information about pages using
+	 *             File:Example.jpg. api
 	 *             .php?action=query&generator=fileusage&titles=File%3AExample
-	 *             .jpg&prop=info */
+	 *             .jpg&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -16452,13 +16257,11 @@ public abstract class WikiPediaConnector {
 			@Default("json") @RestQueryParam(value = "format", ignoreIfEmpty = true) String format,
 			@Optional @RestQueryParam(value = "prop", ignoreIfEmpty = true) String prop,
 			@Optional @RestQueryParam(value = "list", ignoreIfEmpty = true) String list,
-			@Optional @RestQueryParam(value = "geuprop", ignoreIfEmpty = true) String geuprop,
-			@Optional @RestQueryParam(value = "geuoffset", ignoreIfEmpty = true) String geuoffset,
-			@Optional @RestQueryParam(value = "geuprotocol", ignoreIfEmpty = true) String geuprotocol,
-			@Optional @RestQueryParam(value = "geuquery", ignoreIfEmpty = true) String geuquery,
-			@Optional @RestQueryParam(value = "geunamespace", ignoreIfEmpty = true) String geunamespace,
-			@Optional @RestQueryParam(value = "geulimit", ignoreIfEmpty = true) String geulimit,
-			@Optional @RestQueryParam(value = "geuexpandurl", ignoreIfEmpty = true) String geuexpandurl,
+			@Optional @RestQueryParam(value = "gfuprop", ignoreIfEmpty = true) String gfuprop,
+			@Optional @RestQueryParam(value = "gfunamespace", ignoreIfEmpty = true) String gfunamespace,
+			@Optional @RestQueryParam(value = "gfushow", ignoreIfEmpty = true) String gfushow,
+			@Optional @RestQueryParam(value = "gfulimit", ignoreIfEmpty = true) String gfulimit,
+			@Optional @RestQueryParam(value = "gfucontinue", ignoreIfEmpty = true) String gfucontinue,
 			@Optional @RestQueryParam(value = "indexpageids", ignoreIfEmpty = true) String indexpageids,
 			@Optional @RestQueryParam(value = "export", ignoreIfEmpty = true) String export,
 			@Optional @RestQueryParam(value = "exportnowrap", ignoreIfEmpty = true) String exportnowrap,
@@ -16467,7 +16270,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -16482,7 +16284,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=images which Returns
+	/**
+	 * Fetch data from and about MediaWiki with generator=images which Returns
 	 * all files contained on the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -16532,7 +16335,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -16544,7 +16347,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -16585,12 +16388,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about all files used in the Main
-	 *             Page.
+	 * @throws IOException Examples: Get information about all files used in the
+	 *             Main Page.
 	 *             api.php?action=query&generator=images&titles=Main%20Page
-	 *             &prop=info */
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -16611,7 +16413,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -16626,7 +16427,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=imageusage which Find
+	/**
+	 * Fetch data from and about MediaWiki with generator=imageusage which Find
 	 * all pages that use the given image title.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -16687,7 +16489,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -16699,7 +16501,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -16740,12 +16542,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages using File:Albert
-	 *             Einstein Head.jpg.
+	 * @throws IOException Examples: Get information about pages using
+	 *             File:Albert Einstein Head.jpg.
 	 *             api.php?action=query&generator=imageusage&giutitle
-	 *             =File:Albert%20Einstein%20Head.jpg&prop=info */
+	 *             =File:Albert%20Einstein%20Head.jpg&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -16770,7 +16571,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -16785,7 +16585,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=imageusage which Find
+	/**
+	 * Fetch data from and about MediaWiki with generator=imageusage which Find
 	 * all pages that use the given image title.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -16838,7 +16639,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -16850,7 +16651,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -16891,12 +16692,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages using File:Albert
-	 *             Einstein Head.jpg.
+	 * @throws IOException Examples: Get information about pages using
+	 *             File:Albert Einstein Head.jpg.
 	 *             api.php?action=query&generator=imageusage&giutitle
-	 *             =File:Albert%20Einstein%20Head.jpg&prop=info */
+	 *             =File:Albert%20Einstein%20Head.jpg&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -16919,7 +16719,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -16934,13 +16733,11 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=langbacklinks which
-	 * Find all pages that link to the given language link.
-	 * 
-	 * Can be used to find all links with a language code, or all links to a
-	 * title (with a given language). Using neither parameter is effectively
-	 * "all language links".
-	 * 
+	/**
+	 * Fetch data from and about MediaWiki with generator=langbacklinks which
+	 * Find all pages that link to the given language link. Can be used to find
+	 * all links with a language code, or all links to a title (with a given
+	 * language). Using neither parameter is effectively "all language links".
 	 * Note that this may not consider language links added by extensions.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -16994,7 +16791,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -17006,7 +16803,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -17047,11 +16844,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages linking to fr:Test.
-	 *             api.php?action=query&generator=langbacklinks&glbltitle=Test&
-	 *             glbllang=fr&prop=info */
+	 * @throws IOException Examples: Get information about pages linking to
+	 *             fr:Test.
+	 *             api.php?action=query&generator=langbacklinks&glbltitle =Test&
+	 *             glbllang=fr&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -17074,7 +16871,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -17089,9 +16885,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=langbacklinks which
+	/**
+	 * Fetch data from and about MediaWiki with generator=langbacklinks which
 	 * Find all pages that link to the given language link.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -17143,7 +16939,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -17155,7 +16951,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -17196,11 +16992,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages linking to fr:Test.
-	 *             api.php?action=query&generator=langbacklinks&glbltitle=Test&
-	 *             glbllang=fr&prop=info */
+	 * @throws IOException Examples: Get information about pages linking to
+	 *             fr:Test.
+	 *             api.php?action=query&generator=langbacklinks&glbltitle =Test&
+	 *             glbllang=fr&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -17222,7 +17018,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -17237,9 +17032,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=linkshere which Find
+	/**
+	 * Fetch data from and about MediaWiki with generator=linkshere which Find
 	 * all pages that link to the given pages.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -17265,18 +17060,20 @@ public abstract class WikiPediaConnector {
 	 *            allmessages, filerepoinfo, globaluserinfo, languagestats,
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
-	 * @param lhprop - Which properties to get: pageid Page ID of each page.
+	 * @param glhprop - Which properties to get: pageid Page ID of each page.
 	 *            title Title of each page. redirect Flag if the page is a
 	 *            redirect. Values (separate with |): pageid, title, redirect
 	 *            Default: pageid|title|redirect
-	 * @param lhnamespace - Only include pages in these namespaces. Values
+	 * @param glhnamespace - Only include pages in these namespaces. Values
 	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
-	 * @param lhshow - Show only items that meet these criteria: redirect Only
+	 * @param glhshow - Show only items that meet these criteria: redirect Only
 	 *            show redirects. !redirect Only show non-redirects. Values
 	 *            (separate with |): redirect, !redirect
-	 * @param lhlimit - How many to return. No more than 500 (5,000 for bots)
+	 * @param glhlimit - How many to return. No more than 500 (5,000 for bots)
 	 *            allowed. Default: 10
+	 * @param glhcontinue - When more results are available, use this to
+	 *        continue.
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -17291,7 +17088,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -17303,7 +17100,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -17344,12 +17141,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages linking to the Main
-	 *             Page.
+	 * @throws IOException Examples: Get information about pages linking to the
+	 *             Main Page.
 	 *             api.php?action=query&generator=linkshere&titles=Main%20Page
-	 *             &prop=info */
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -17371,7 +17167,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -17386,7 +17181,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=messagecollection
+	/**
+	 * Fetch data from and about MediaWiki with generator=messagecollection
 	 * which Query MessageCollection about translations.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -17415,7 +17211,6 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param gmcgroup - Message group.This parameter is required.
 	 * @param gmclanguage - Language code. Default: en
-	 * 
 	 * @param gmclimit - How many messages to show (after filtering). No more
 	 *            than 5,000 (5,000 for bots) allowed. Default: 500
 	 * @param gmcoffset - When more results are available, use this to continue.
@@ -17456,7 +17251,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -17468,7 +17263,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -17509,12 +17304,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: More information about latest translation revisions
-	 *             for group page-Example
+	 * @throws IOException Examples: More information about latest translation
+	 *             revisions for group page-Example
 	 *             api.php?action=query&generator=messagecollection
-	 *             &gmcgroup=page-Example&gmclanguage=nl&prop=revisions */
+	 *             &gmcgroup=page-Example&gmclanguage=nl&prop=revisions
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -17537,7 +17331,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -17552,7 +17345,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=pageswithprop List all
+	/**
+	 * Fetch data from and about MediaWiki with generator=pageswithprop List all
 	 * pages using a given page property.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -17604,7 +17398,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -17616,7 +17410,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -17657,12 +17451,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get page info about first 10 pages using __NOTOC__.
-	 *             api
-	 *             .php?action=query&generator=pageswithprop&gpwppropname=notoc
-	 *             &prop=info */
+	 * @throws IOException Examples: Get page info about first 10 pages using
+	 *             __NOTOC__. api
+	 *             .php?action=query&generator=pageswithprop&gpwppropname =notoc
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -17684,7 +17477,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -17699,7 +17491,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=prefixsearch which
+	/**
+	 * Fetch data from and about MediaWiki with generator=prefixsearch which
 	 * Perform a prefix search for page titles.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -17747,7 +17540,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -17759,7 +17552,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -17800,10 +17593,10 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Search for page titles beginning with meaning.
-	 *             api.php?action=query&list=prefixsearch&pssearch=meaning */
+	 * @throws IOException Examples: Search for page titles beginning with
+	 *             meaning.
+	 *             api.php?action=query&list=prefixsearch&pssearch=meaning
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -17824,7 +17617,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -17839,7 +17631,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=protectedtitles which
+	/**
+	 * Fetch data from and about MediaWiki with generator=protectedtitles which
 	 * List all titles protected from creation.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -17904,7 +17697,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -17916,7 +17709,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -17957,12 +17750,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Find links to protected titles in the main
+	 * @throws IOException Examples: Find links to protected titles in the main
 	 *             namespace.
 	 *             api.php?action=query&generator=protectedtitles&gptnamespace
-	 *             =0&prop=linkshere */
+	 *             =0&prop=linkshere
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -17978,7 +17770,7 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "gptstart", ignoreIfEmpty = true) String gptstart,
 			@Optional @RestQueryParam(value = "gptend", ignoreIfEmpty = true) String gptend,
 			@Default("timestamp|level") @RestQueryParam(value = "gptprop", ignoreIfEmpty = true) String gptprop,
-			@Optional @RestQueryParam(value = "gptcontinue", ignoreIfEmpty = true) String ptcontinue,
+			@Optional @RestQueryParam(value = "gptcontinue", ignoreIfEmpty = true) String gptcontinue,
 			@Optional @RestQueryParam(value = "indexpageids", ignoreIfEmpty = true) String indexpageids,
 			@Optional @RestQueryParam(value = "export", ignoreIfEmpty = true) String export,
 			@Optional @RestQueryParam(value = "exportnowrap", ignoreIfEmpty = true) String exportnowrap,
@@ -17987,7 +17779,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -18002,7 +17793,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=querypage which Get a
+	/**
+	 * Fetch data from and about MediaWiki with generator=querypage which Get a
 	 * list provided by a QueryPage-based special page..
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -18059,7 +17851,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -18071,7 +17863,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -18112,10 +17904,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Return results from Special:Ancientpages.
-	 *             api.php?action=query&list=querypage&qppage=Ancientpages */
+	 * @throws IOException Examples: Return results from Special:Ancientpages.
+	 *             api.php?action=query&list=querypage&qppage=Ancientpages
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -18135,7 +17926,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -18150,16 +17940,14 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=random which Get a set
-	 * of random pages.
-	 * 
-	 * Pages are listed in a fixed sequence, only the starting point is random.
-	 * This means that if, for example, Main Page is the first random page in
-	 * the list, List of fictional monkeys will always be second, List of people
-	 * on stamps of Vanuatu third, etc.
-	 * 
-	 * If the number of pages in the namespace is lower than rnlimit, fewer
-	 * pages will be returned. The same page will not be returned twice.
+	/**
+	 * Fetch data from and about MediaWiki with generator=random which Get a set
+	 * of random pages. Pages are listed in a fixed sequence, only the starting
+	 * point is random. This means that if, for example, Main Page is the first
+	 * random page in the list, List of fictional monkeys will always be second,
+	 * List of people on stamps of Vanuatu third, etc. If the number of pages in
+	 * the namespace is lower than rnlimit, fewer pages will be returned. The
+	 * same page will not be returned twice.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -18205,7 +17993,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -18217,13 +18005,52 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 *            database replicated cluster. To save actions causing any more
+	 *            site replication lag, this parameter can make the client wait
+	 *            until the replication lag is less than the specified value. In
+	 *            case of excessive lag, error code maxlag is returned with a
+	 *            message like Waiting for $host: $lag seconds lagged.
+	 * @param smaxage - Set the s-maxage header to this many seconds. Errors are
+	 *            never cached.Default: 0
+	 * @param maxage - Set the max-age header to this many seconds. Errors are
+	 *            never cached. Default: 0
+	 * @param assertUser - Verify the user is logged in if set to user, or has
+	 *            the bot userright if bot.One value: user, bot
+	 * @param requestid - Any value given here will be included in the response.
+	 *            May be used to distinguish requests.
+	 * @param servedby - Include the hostname that served the request in the
+	 *            results.
+	 * @param curtimestamp - Include the current timestamp in the result.
+	 * @param origin - When accessing the API using a cross-domain AJAX request
+	 *            (CORS), set this to the originating domain. This must be
+	 *            included in any pre-flight request, and therefore must be part
+	 *            of the request URI (not the POST body). This must match one of
+	 *            the origins in the Origin header exactly, so it has to be set
+	 *            to something like https://en.wikipedia.org or
+	 *            https://meta.wikimedia.org. If this parameter does not match
+	 *            the Origin header, a 403 response will be returned. If this
+	 *            parameter matches the Origin header and the origin is
+	 *            whitelisted, an Access-Control-Allow-Origin header will be
+	 *            set.
+	 * @param uselang - Language to use for message translations. A list of
+	 *            codes may be fetched from action=query&meta=siteinfo with
+	 *            siprop=languages, or specify user to use the current user's
+	 *            language preference, or specify content to use this wiki's
+	 *            content language.Default: user
+	 * @param centralauthtoken - When accessing the API using a cross-domain
+	 *            AJAX request (CORS), use this to authenticate as the current
+	 *            SUL user. Use action=centralauthtoken on this wiki to retrieve
+	 *            the token, before making the CORS request. Each token may only
+	 *            be used once, and expires after 10 seconds. This should be
+	 *            included in any pre-flight request, and therefore should be
+	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Return page info about two random pages from the
-	 *             main namespace.
+	 * @throws IOException Examples: Return page info about two random pages
+	 *             from the main namespace.
 	 *             api.php?action=query&generator=random&grnnamespace
-	 *             =0&grnlimit=2&prop=info */
+	 *             =0&grnlimit=2&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -18243,7 +18070,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -18258,9 +18084,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=recentchanges which
+	/**
+	 * Fetch data from and about MediaWiki with generator=recentchanges which
 	 * Enumerate recent changes.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -18316,17 +18142,13 @@ public abstract class WikiPediaConnector {
 	 *            loginfo, tags, sha1 Default: title|timestamp|ids
 	 * @param grcshow - Show only items that meet these criteria. For example,
 	 *            to see only minor edits done by logged-in users, set
-	 *            rcshow=minor|!anon.
-	 * 
-	 *            Values (separate with |): minor, !minor, bot, !bot, anon,
-	 *            !anon, redirect, !redirect, patrolled, !patrolled, unpatrolled
-	 * @param grclimit - How many total changes to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param grctype - hich types of changes to show.
-	 * 
-	 *            Values (separate with |): edit, external, new, log Default:
-	 *            edit|new|log
+	 *            rcshow=minor|!anon. Values (separate with |): minor, !minor,
+	 *            bot, !bot, anon, !anon, redirect, !redirect, patrolled,
+	 *            !patrolled, unpatrolled
+	 * @param grclimit - How many total changes to return. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
+	 * @param grctype - hich types of changes to show. Values (separate with |):
+	 *            edit, external, new, log Default: edit|new|log
 	 * @param grctoponly - Only list changes which are the latest revision.
 	 * @param grccontinue - When more results are available, use this to
 	 *            continue.
@@ -18344,7 +18166,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -18356,7 +18178,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -18397,12 +18219,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get page info about recent unpatrolled changes.
-	 *             api.
+	 * @throws IOException Examples: Get page info about recent unpatrolled
+	 *             changes. api.
 	 *             php?action=query&generator=recentchanges&grcshow=!patrolled
-	 *             &prop=info */
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -18432,7 +18253,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -18447,7 +18267,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=redirects which
+	/**
+	 * Fetch data from and about MediaWiki with generator=redirects which
 	 * Returns all redirects to the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -18478,23 +18299,18 @@ public abstract class WikiPediaConnector {
 	 *            redirect. title Title of each redirect. fragment Fragment of
 	 *            each redirect, if any. Values (separate with |): pageid,
 	 *            title, fragment Default: pageid|title
-	 * @param grdnamespace - Only include pages in these namespaces.
-	 * 
-	 *            Note: Due to miser mode, using this may result in fewer than
-	 *            rdlimit results returned before continuing; in extreme cases,
-	 *            zero results may be returned.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829
-	 * @param grdshow - Show only items that meet these criteria:
-	 * 
-	 *            fragment Only show redirects with a fragment. !fragment Only
-	 *            show redirects without a fragment. Values (separate with |):
-	 *            fragment, !fragment
-	 * @param grdlimit - How many redirects to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param grdnamespace - Only include pages in these namespaces. Note: Due
+	 *            to miser mode, using this may result in fewer than rdlimit
+	 *            results returned before continuing; in extreme cases, zero
+	 *            results may be returned. Values (separate with |): 0, 1, 2, 3,
+	 *            4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 120, 121, 122, 123,
+	 *            1198, 1199, 2600, 828, 829
+	 * @param grdshow - Show only items that meet these criteria: fragment Only
+	 *            show redirects with a fragment. !fragment Only show redirects
+	 *            without a fragment. Values (separate with |): fragment,
+	 *            !fragment
+	 * @param grdlimit - How many redirects to return. No more than 500 (5,000
+	 *            for bots) allowed. Default: 10
 	 * @param grdcontinue - When more results are available, use this to
 	 *            continue.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -18511,7 +18327,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -18523,7 +18339,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -18564,12 +18380,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about all redirects to the Main
-	 *             Page.
+	 * @throws IOException Examples: Get information about all redirects to the
+	 *             Main Page.
 	 *             api.php?action=query&generator=redirects&titles=Main%20Page
-	 *             &prop=info */
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -18591,7 +18406,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -18606,15 +18420,12 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=revisions which Get
-	 * revision information.
-	 * 
-	 * May be used in several ways:
-	 * 
-	 * Get data about a set of pages (last revision), by setting titles or
-	 * pageids. Get revisions for one given page, by using titles or pageids
-	 * with start, end, or limit. Get data about a set of revisions by setting
-	 * their IDs with revids.
+	/**
+	 * Fetch data from and about MediaWiki with generator=revisions which Get
+	 * revision information. May be used in several ways: Get data about a set
+	 * of pages (last revision), by setting titles or pageids. Get revisions for
+	 * one given page, by using titles or pageids with start, end, or limit. Get
+	 * data about a set of revisions by setting their IDs with revids.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param prop - Which properties to get for the queried pages. Values
@@ -18706,7 +18517,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -18718,7 +18529,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -18759,14 +18570,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get data with content for the last revision of
-	 *             titles API and Main Page.
-	 *             api.php?action=query&prop=revisions&
-	 *             titles=API|Main%20Page&rvprop=timestamp|user|comment|content
-	 *             Get last 5 revisions of the Main Page.
-	 *             api.php?action=query&prop
+	 * @throws IOException Examples: Get data with content for the last revision
+	 *             of titles API and Main Page.
+	 *             api.php?action=query&prop=revisions& titles=API|Main%20Page&
+	 *             rvprop=timestamp|user|comment|content Get last 5 revisions of
+	 *             the Main Page. api.php?action=query&prop
 	 *             =revisions&titles=Main%20Page&rvlimit
 	 *             =5&rvprop=timestamp|user|comment Get first 5 revisions of the
 	 *             Main Page.
@@ -18786,7 +18594,8 @@ public abstract class WikiPediaConnector {
 	 *             MediaWiki default.
 	 *             api.php?action=query&prop=revisions&titles=
 	 *             Main%20Page&rvlimit
-	 *             =5&rvprop=timestamp|user|comment&rvuser=MediaWiki%20default */
+	 *             =5&rvprop=timestamp|user|comment&rvuser=MediaWiki%20default
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -18821,7 +18630,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -18836,7 +18644,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=search which Perform a
+	/**
+	 * Fetch data from and about MediaWiki with generator=search which Perform a
 	 * full text search.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -18864,43 +18673,32 @@ public abstract class WikiPediaConnector {
 	 *            messagegroups, messagegroupstats, messagetranslations,
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param gsrsearch - Search for all page titles (or content) that have this
-	 *            value.
-	 * 
-	 *            This parameter is required.
-	 * 
-	 * @param gsrnamespace - Search only within these namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829 Default: 0
-	 * @param gsrwhat - Which type of search to perform.
-	 * 
-	 *            One value: title, text, nearmatch
-	 * @param gsrinfo - Which metadata to return.
-	 * 
-	 *            Values (separate with |): totalhits, suggestion Default:
-	 *            totalhits|suggestion
-	 * @param gsrprop - Which properties to return:
-	 * 
-	 *            size Adds the size of the page in bytes. wordcount Adds the
-	 *            word count of the page. timestamp Adds the timestamp of when
-	 *            the page was last edited. snippet Adds a parsed snippet of the
-	 *            page. titlesnippet Adds a parsed snippet of the page title.
-	 *            redirectsnippet Adds a parsed snippet of the redirect title.
-	 *            redirecttitle Adds the title of the matching redirect.
-	 *            sectionsnippet Adds a parsed snippet of the matching section
-	 *            title. sectiontitle Adds the title of the matching section.
-	 *            score Deprecated and ignored. hasrelated Deprecated and
-	 *            ignored. Values (separate with |): size, wordcount, timestamp,
-	 *            score, snippet, titlesnippet, redirecttitle, redirectsnippet,
-	 *            sectiontitle, sectionsnippet, hasrelated Default:
-	 *            size|wordcount|timestamp|snippet
-	 * @param gsroffset - When more results are available, use this to continue.
-	 * 
+	 *            value. This parameter is required.
+	 * @param gsrnamespace - Search only within these namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
 	 *            Default: 0
-	 * @param gsrlimit - How many total pages to return.
-	 * 
-	 *            No more than 50 (500 for bots) allowed. Default: 10
+	 * @param gsrwhat - Which type of search to perform. One value: title, text,
+	 *            nearmatch
+	 * @param gsrinfo - Which metadata to return. Values (separate with |):
+	 *            totalhits, suggestion Default: totalhits|suggestion
+	 * @param gsrprop - Which properties to return: size Adds the size of the
+	 *            page in bytes. wordcount Adds the word count of the page.
+	 *            timestamp Adds the timestamp of when the page was last edited.
+	 *            snippet Adds a parsed snippet of the page. titlesnippet Adds a
+	 *            parsed snippet of the page title. redirectsnippet Adds a
+	 *            parsed snippet of the redirect title. redirecttitle Adds the
+	 *            title of the matching redirect. sectionsnippet Adds a parsed
+	 *            snippet of the matching section title. sectiontitle Adds the
+	 *            title of the matching section. score Deprecated and ignored.
+	 *            hasrelated Deprecated and ignored. Values (separate with |):
+	 *            size, wordcount, timestamp, score, snippet, titlesnippet,
+	 *            redirecttitle, redirectsnippet, sectiontitle, sectionsnippet,
+	 *            hasrelated Default: size|wordcount|timestamp|snippet
+	 * @param gsroffset - When more results are available, use this to continue.
+	 *            Default: 0
+	 * @param gsrlimit - How many total pages to return. No more than 50 (500
+	 *            for bots) allowed. Default: 10
 	 * @param gsrinterwiki - Include interwiki results in the search, if
 	 *            available.
 	 * @param indexpageids - Include an additional pageids section listing all
@@ -18917,7 +18715,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -18929,7 +18727,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -18970,12 +18768,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Ger page info about the pages returned for a search
-	 *             for meaning.
+	 * @throws IOException Examples: Ger page info about the pages returned for
+	 *             a search for meaning.
 	 *             api.php?action=query&generator=search&gsrsearch=meaning
-	 *             &prop=info */
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -19000,7 +18797,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -19015,7 +18811,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=templates which
+	/**
+	 * Fetch data from and about MediaWiki with generator=templates which
 	 * Returns all pages transcluded on the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -19068,7 +18865,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -19080,7 +18877,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -19121,17 +18918,16 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get the templates used on the page Main Page.
-	 *             api.php?action=query&prop=templates&titles=Main%20Page Get
-	 *             information about the template pages used on Main Page.
+	 * @throws IOException Examples: Get the templates used on the page Main
+	 *             Page. api.php?action=query&prop=templates&titles=Main%20Page
+	 *             Get information about the template pages used on Main Page.
 	 *             api.php
 	 *             ?action=query&generator=templates&titles=Main%20Page&prop
 	 *             =info Get pages in the User and Template namespaces that are
 	 *             transcluded on the page Main Page.
 	 *             api.php?action=query&prop=templates
-	 *             &titles=Main%20Page&tlnamespace=2|10 */
+	 *             &titles=Main%20Page&tlnamespace=2|10
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -19153,7 +18949,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -19168,7 +18963,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=transcludedin which
+	/**
+	 * Fetch data from and about MediaWiki with generator=transcludedin which
 	 * Find all pages that transclude the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -19223,7 +19019,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -19235,7 +19031,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -19276,12 +19072,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages transcluding Main Page.
-	 *             api
-	 *             .php?action=query&generator=transcludedin&titles=Main%20Page
-	 *             &prop=info */
+	 * @throws IOException Examples: Get information about pages transcluding
+	 *             Main Page. api
+	 *             .php?action=query&generator=transcludedin&titles =Main%20Page
+	 *             &prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -19303,7 +19098,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -19318,7 +19112,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=watchlist which Get
+	/**
+	 * Fetch data from and about MediaWiki with generator=watchlist which Get
 	 * recent changes to pages in the current user's watchlist.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -19349,47 +19144,38 @@ public abstract class WikiPediaConnector {
 	 *            given timeframe.
 	 * @param gwlstart - The timestamp to start enumerating from.
 	 * @param gwlend - The timestamp to end enumerating.
-	 * @param gwlnamespace - Filter changes to only the given namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829 wluser Only list changes by this user.
+	 * @param gwlnamespace - Filter changes to only the given namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
+	 *            wluser Only list changes by this user.
 	 * @param gwluser - Only list changes by this user.
 	 * @param gwlexcludeuser - Don't list changes by this user.
-	 * @param gwldir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: wlstart has to be before wlend.
-	 *            older List newest first (default). Note: wlstart has to be
-	 *            later than wlend. One value: newer, older Default: older
-	 * 
-	 * @param gwllimit - How many total results to return per request.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param gwlprop - Which additional items to get:
-	 * 
-	 *            ids Adds revision IDs and page IDs. title Adds title of the
-	 *            page. flags Adds flags for the edit. user Adds the user who
-	 *            made the edit. userid Adds user ID of whom made the edit.
-	 *            comment Adds comment of the edit. parsedcomment Adds parsed
-	 *            comment of the edit. timestamp Adds timestamp of the edit.
-	 *            patrol Tags edits that are patrolled. sizes Adds the old and
-	 *            new lengths of the page. notificationtimestamp Adds timestamp
-	 *            of when the user was last notified about the edit. loginfo
-	 *            Adds log information where appropriate. Values (separate with
-	 *            |): ids, title, flags, user, userid, comment, parsedcomment,
-	 *            timestamp, patrol, sizes, notificationtimestamp, loginfo
-	 *            Default: ids|title|flags
+	 * @param gwldir - In which direction to enumerate: newer List oldest first.
+	 *            Note: wlstart has to be before wlend. older List newest first
+	 *            (default). Note: wlstart has to be later than wlend. One
+	 *            value: newer, older Default: older
+	 * @param gwllimit - How many total results to return per request. No more
+	 *            than 500 (5,000 for bots) allowed. Default: 10
+	 * @param gwlprop - Which additional items to get: ids Adds revision IDs and
+	 *            page IDs. title Adds title of the page. flags Adds flags for
+	 *            the edit. user Adds the user who made the edit. userid Adds
+	 *            user ID of whom made the edit. comment Adds comment of the
+	 *            edit. parsedcomment Adds parsed comment of the edit. timestamp
+	 *            Adds timestamp of the edit. patrol Tags edits that are
+	 *            patrolled. sizes Adds the old and new lengths of the page.
+	 *            notificationtimestamp Adds timestamp of when the user was last
+	 *            notified about the edit. loginfo Adds log information where
+	 *            appropriate. Values (separate with |): ids, title, flags,
+	 *            user, userid, comment, parsedcomment, timestamp, patrol,
+	 *            sizes, notificationtimestamp, loginfo Default: ids|title|flags
 	 * @param gwlshow - Show only items that meet these criteria. For example,
 	 *            to see only minor edits done by logged-in users, set
-	 *            wlshow=minor|!anon.
-	 * 
-	 *            Values (separate with |): minor, !minor, bot, !bot, anon,
-	 *            !anon, patrolled, !patrolled, unread, !unread
-	 * @param gwltype - Which types of changes to show:
-	 * 
-	 *            edit Regular page edits. external External changes. new Page
-	 *            creations. log Log entries. Values (separate with |): edit,
-	 *            external, new, log Default: edit|new|log
+	 *            wlshow=minor|!anon. Values (separate with |): minor, !minor,
+	 *            bot, !bot, anon, !anon, patrolled, !patrolled, unread, !unread
+	 * @param gwltype - Which types of changes to show: edit Regular page edits.
+	 *            external External changes. new Page creations. log Log
+	 *            entries. Values (separate with |): edit, external, new, log
+	 *            Default: edit|new|log
 	 * @param gwlowner - Used along with wltoken to access a different user's
 	 *            watchlist.
 	 * @param gwltoken - A security token (available in the user's preferences)
@@ -19410,7 +19196,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -19422,7 +19208,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -19463,10 +19249,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List the top revision for recently changed pages on
-	 *             the current user's watchlist.
+	 * @throws IOException Examples: List the top revision for recently changed
+	 *             pages on the current user's watchlist.
 	 *             api.php?action=query&list=watchlist Fetch additional
 	 *             information about the top revision for recently changed pages
 	 *             on the current user's watchlist.
@@ -19477,7 +19261,8 @@ public abstract class WikiPediaConnector {
 	 *             api.php?action=query&list=watchlist&wlallrev=&wlprop
 	 *             =ids|title|timestamp|user|comment Fetch page info for
 	 *             recently changed pages on the current user's watchlist.
-	 *             api.php?action=query&generator=watchlist&prop=info */
+	 *             api.php?action=query&generator=watchlist&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -19508,7 +19293,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -19523,7 +19307,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Fetch data from and about MediaWiki with generator=watchlistraw which Get
+	/**
+	 * Fetch data from and about MediaWiki with generator=watchlistraw which Get
 	 * all pages on the current user's watchlist.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -19552,31 +19337,24 @@ public abstract class WikiPediaConnector {
 	 *            notifications, siteinfo, tokens, userinfo, wikibase
 	 * @param gwrcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param gwrnamespace - Only list pages in the given namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829
-	 * @param gwrlimit - How many total results to return per request.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param gwrprop - Which additional properties to get:
-	 * 
-	 *            changed Adds timestamp of when the user was last notified
-	 *            about the edit. Values (separate with |): changed
-	 * @param gwrshow - Only list items that meet these criteria.
-	 * 
-	 *            Values (separate with |): changed, !changed
+	 * @param gwrnamespace - Only list pages in the given namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
+	 * @param gwrlimit - How many total results to return per request. No more
+	 *            than 500 (5,000 for bots) allowed. Default: 10
+	 * @param gwrprop - Which additional properties to get: changed Adds
+	 *            timestamp of when the user was last notified about the edit.
+	 *            Values (separate with |): changed
+	 * @param gwrshow - Only list items that meet these criteria. Values
+	 *            (separate with |): changed, !changed
 	 * @param gwrowner - Used along with wrtoken to access a different user's
 	 *            watchlist.
 	 * @param gwrtoken - A security token (available in the user's preferences)
 	 *            to allow access to another user's watchlist.
-	 * @param gwrdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: wrstart has to be before wrend.
-	 *            older List newest first (default). Note: wrstart has to be
-	 *            later than wrend. One value: ascending, descending Default:
-	 *            ascending
+	 * @param gwrdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: wrstart has to be before wrend. older List newest first
+	 *            (default). Note: wrstart has to be later than wrend. One
+	 *            value: ascending, descending Default: ascending
 	 * @param indexpageids - Include an additional pageids section listing all
 	 *            returned page IDs.
 	 * @param export - Export the current revisions of all given or generated
@@ -19591,7 +19369,7 @@ public abstract class WikiPediaConnector {
 	 *            This parameter must be set to an empty string in the initial
 	 *            query. This parameter is recommended for all new development,
 	 *            and will be made default in the next API version.
-	 * @param title - A list of titles to work on. Separate values with |.
+	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on.Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
@@ -19603,7 +19381,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -19644,13 +19422,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List pages on the current user's watchlist.
+	 * @throws IOException Examples: List pages on the current user's watchlist.
 	 *             api.php?action=query&list=watchlistraw Fetch page info for
 	 *             pages on the current user's watchlist.
 	 *             api.php?action=query&generator
-	 *             =watchlistraw&gwrshow=changed&prop=info */
+	 *             =watchlistraw&gwrshow=changed&prop=info
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -19675,7 +19452,6 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "titles", ignoreIfEmpty = true) String titles,
 			@Optional @RestQueryParam(value = "pageids", ignoreIfEmpty = true) String pageids,
 			@Optional @RestQueryParam(value = "revids", ignoreIfEmpty = true) String revids,
-			@Optional @RestQueryParam(value = "generator", ignoreIfEmpty = true) String generator,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -19690,19 +19466,19 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Log in and get authentication cookies.
+	/**
+	 * Log in and get authentication cookies.
 	 * 
 	 * @param lgname - User name.
 	 * @param lgpassword - Password.
 	 * @param lgdomain - Domain (optional).
 	 * @param token - Login token obtained in first request.
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Example: Retrieve a login token. -
+	 * @throws IOException Example: Retrieve a login token. -
 	 *             api.php?action=login&lgname=user&lgpassword=password. Log in.
 	 *             - api.php?action=login&lgname=user&lgpassword=password&
-	 *             lgtoken=123ABC */
+	 *             lgtoken=123ABC
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=login", method = HttpMethod.POST)
@@ -19713,7 +19489,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "token", ignoreIfEmpty = true) String token)
 			throws IOException;
 
-	/** This is the main module.
+	/**
+	 * This is the main module.
 	 * 
 	 * @param action - action
 	 * @param format - The format of the output.Default Json
@@ -19758,9 +19535,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Example: Help - api.php?action=help */
+	 * @throws IOException Example: Help - api.php?action=help
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "", method = HttpMethod.POST)
@@ -19779,19 +19555,21 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Log out and clear session data.
+	/**
+	 * Log out and clear session data.
 	 * 
 	 * @param action - logout
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Example: Log the current user out. - api.php?action=logout */
+	 * @throws IOException Example: Log the current user out. -
+	 *             api.php?action=logout
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=logout", method = HttpMethod.GET)
 	public abstract String logout() throws IOException;
 
-	/** Search the wiki using the OpenSearch protocol.
+	/**
+	 * Search the wiki using the OpenSearch protocol.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param search - Search string.
@@ -19807,13 +19585,13 @@ public abstract class WikiPediaConnector {
 	 *            for format=json and "resolve" for other formats. One value:
 	 *            return, resolve
 	 * @param format - The format of the output. One value: json, jsonfm, xml,
-	 *            xmlfm. Default: json
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
-	 *            database replicated cluster. To save actions causing any more
-	 *            site replication lag, this parameter can make the client wait
-	 *            until the replication lag is less than the specified value. In
-	 *            case of excessive lag, error code maxlag is returned with a
-	 *            message like Waiting for $host: $lag seconds lagged.
+	 *            xmlfm. Default: json * @param maxlag - Maximum lag can be used
+	 *            when MediaWiki is installed on a database replicated cluster.
+	 *            To save actions causing any more site replication lag, this
+	 *            parameter can make the client wait until the replication lag
+	 *            is less than the specified value. In case of excessive lag,
+	 *            error code maxlag is returned with a message like Waiting for
+	 *            $host: $lag seconds lagged.
 	 * @param smaxage - Set the s-maxage header to this many seconds. Errors are
 	 *            never cached.Default: 0
 	 * @param maxage - Set the max-age header to this many seconds. Errors are
@@ -19849,10 +19627,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Example: Find pages beginning with Te. -
-	 *             api.php?action=opensearch&search=Te */
+	 * @throws IOException Example: Find pages beginning with Te. -
+	 *             api.php?action=opensearch&search=Te
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=opensearch", method = HttpMethod.GET)
@@ -19875,7 +19652,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Parses content and returns parser output. See the various prop-modules of
+	/**
+	 * Parses content and returns parser output. See the various prop-modules of
 	 * action=query to get information from the current version of a page. There
 	 * are several ways to specify the text to parse: Specify a page or
 	 * revision, using page, pageid, or oldid. Specify content explicitly, using
@@ -19937,8 +19715,8 @@ public abstract class WikiPediaConnector {
 	 * @param mobileformat - Return parse output in a format suitable for mobile
 	 *            devices.
 	 * @param noimages - Disable images in mobile output.
-	 * @param mainpage - Apply mobile main page transformations.
-	 * * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param mainpage - Apply mobile main page transformations. * @param maxlag
+	 *            - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -19979,14 +19757,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples : Parse a page. -
+	 * @throws IOException Examples : Parse a page. -
 	 *             api.php?action=parse&page=Project:Sandbox Parse wikitext. -
 	 *             api.php?action=parse&text={{Project:Sandbox}}&contentmodel=
 	 *             wikitext Parse wikitext, specifying the page title. -
 	 *             api.php?action=parse&text={{PAGENAME}}&title=Test Parse a
-	 *             summary. - api.php?action=parse&summary=Some+[[link]]&prop= */
+	 *             summary. - api.php?action=parse&summary=Some+[[link]]&prop=
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=parse", method = HttpMethod.GET)
@@ -20028,66 +19805,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles.Requires a POST request if the user
-	 * is not logged in.
-	 * 
-	 * @param forcelinkupdate
-	 * @param forcerecursivelinkupdate
-	 * @param continueStr
-	 * @param titles
-	 * @param pageids
-	 * @param revids
-	 * @param generator
-	 * @param redirects
-	 * @param converttitles
-	 * @throws IOException
-	 * 
-	 *             Examples : Purge the Main Page and the API page. -
-	 *             api.php?action=purge&titles=Main_Page|API Purge the first 10
-	 *             pages in the main namespace. -
-	 *             api.php?action=purge&generator=
-	 *             allpages&gapnamespace=0&gaplimit=10 */
-	/*
-	 * @Processor
-	 * 
-	 * @ReconnectOn(exceptions = { Exception.class })
-	 * 
-	 * @RestCall(uri="http://en.wikipedia.org/w/api.php" + "?action=purge",
-	 * method=HttpMethod.GET) public abstract String purgeCache(@Optional
-	 * 
-	 * @RestQueryParam(value="forcelinkupdate",ignoreIfEmpty=true) String
-	 * forcelinkupdate,
-	 * 
-	 * @Optional
-	 * 
-	 * @RestQueryParam(value="forcerecursivelinkupdate",ignoreIfEmpty=true)
-	 * String forcerecursivelinkupdate,
-	 * 
-	 * @Optional @RestQueryParam(value="continue",ignoreIfEmpty=true) String
-	 * continueStr,
-	 * 
-	 * @Optional @RestQueryParam(value="titles",ignoreIfEmpty=true) String
-	 * titles,
-	 * 
-	 * @Optional @RestQueryParam(value="pageids",ignoreIfEmpty=true) String
-	 * pageids,
-	 * 
-	 * @Optional @RestQueryParam(value="revids",ignoreIfEmpty=true) String
-	 * revids,
-	 * 
-	 * @Optional @RestQueryParam(value="generator",ignoreIfEmpty=true) String
-	 * generator,
-	 * 
-	 * @Optional AllCategories allCategories,
-	 * 
-	 * @Optional @RestQueryParam(value="redirects",ignoreIfEmpty=true) String
-	 * redirects,
-	 * 
-	 * @Optional @RestQueryParam(value="converttitles",ignoreIfEmpty=true)
-	 * String converttitles) throws IOException;
-	 */
-
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='AllCategories' which enumerate all categories.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -20124,7 +19843,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -20165,14 +19884,13 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List categories with information on the number of
-	 *             pages in each. -
+	 * @throws IOException Examples: List categories with information on the
+	 *             number of pages in each. -
 	 *             api.php?action=query&list=allcategories&acprop=size Retrieve
 	 *             info about the category page itself for categories beginning
 	 *             List.-
-	 *             api.php?action=purge&generator=allcategories&gacprefix= List */
+	 *             api.php?action=purge&generator=allcategories&gacprefix= List
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=allcategories", method = HttpMethod.POST)
@@ -20207,7 +19925,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='alldeletedrevisions' which list all deleted revisions by a user or in a
 	 * namespace.
 	 * 
@@ -20268,7 +19987,6 @@ public abstract class WikiPediaConnector {
 	 *            first. Note: adrstart has to be before adrend. older List
 	 *            newest first (default). Note: adrstart has to be later than
 	 *            adrend. One value: newer, older. Default: older
-	 * 
 	 * @param gadrfrom - Start listing at this title.Cannot be used with
 	 *            adruser.
 	 * @param gadrto - Stop listing at this title.Cannot be used with adruser.
@@ -20287,7 +20005,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -20328,15 +20046,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List the last 50 deleted contributions by user
-	 *             Example.-
+	 * @throws IOException Examples: List the last 50 deleted contributions by
+	 *             user Example.-
 	 *             api.php?action=query&list=alldeletedrevisions&adruser
 	 *             =Example&adrlimit=50 List the first 50 deleted revisions in
 	 *             the main namespace.
 	 *             -api.php?action=purge&generator=alldeletedrevisions
-	 *             &adruser=Example&adrlimit=50 */
+	 *             &adruser=Example&adrlimit=50
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=alldeletedrevisions", method = HttpMethod.POST)
@@ -20383,7 +20100,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='allfileusages' which list all file usages, including non-existing.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -20420,7 +20138,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -20461,10 +20179,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: List file titles, including missing ones, with page
-	 *             IDs they are from, starting at B.-
+	 * @throws IOException Examples: List file titles, including missing ones,
+	 *             with page IDs they are from, starting at B.-
 	 *             api.php?action=query&list=allfileusages
 	 *             &affrom=B&afprop=ids|title List unique file
 	 *             titles.-api.php?action
@@ -20472,7 +20188,9 @@ public abstract class WikiPediaConnector {
 	 *             titles, marking the missing
 	 *             ones.-api.php?action=query&generator
 	 *             =allfileusages&gafunique=&gaffrom=B Gets pages containing the
-	 *             files.-api.php?action=query&generator=allfileusages&gaffrom=B */
+	 *             files.-api.php?action=query&generator=allfileusages&gaffrom
+	 *             =B
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -20494,7 +20212,8 @@ public abstract class WikiPediaConnector {
 			@Default("10") @RestQueryParam(value = "gaflimit", ignoreIfEmpty = true) String gaflimit,
 			@Default("ascending") @RestQueryParam(value = "gafdir", ignoreIfEmpty = true) String gafdir,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
-			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
+			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
+			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
 			@Default("0") @RestQueryParam(value = "smaxage", ignoreIfEmpty = true) String smaxage,
 			@Default("0") @RestQueryParam(value = "maxage", ignoreIfEmpty = true) String maxage,
 			@Optional @RestQueryParam(value = "assert", ignoreIfEmpty = true) String assertUser,
@@ -20506,9 +20225,9 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='allimages'
+	/**
+	 * Purge the cache for the given titles with the generator type ='allimages'
 	 * which enumerate all images sequentially..
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
@@ -20562,7 +20281,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -20603,9 +20322,7 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show a list of files starting at the letter
+	 * @throws IOException Examples: Show a list of files starting at the letter
 	 *             B.-api.php?action=query&generator=allimages&gaifrom=B Show a
 	 *             list of recently uploaded files, similar to Special:NewFiles.
 	 *             -api.php?action=query&generator=allimages&gaiprop=user|
@@ -20615,7 +20332,8 @@ public abstract class WikiPediaConnector {
 	 *             &generator=gallimages&gaimime=image/png|image/gif Show info
 	 *             about 4 files starting at the letter T.
 	 *             api.php?action=query&generator
-	 *             =allimages&gailimit=4&gaifrom=T&prop=imageinfo */
+	 *             =allimages&gailimit=4&gaifrom=T&prop=imageinfo
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -20659,16 +20377,17 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='alllinks'
+	/**
+	 * Purge the cache for the given titles with the generator type ='alllinks'
 	 * which enumerate all links that point to a given namespace..
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -20701,7 +20420,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -20742,12 +20461,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Gets all linked titles, marking the missing ones. -
-	 *             api.php?action=query&generator=alllinks&galunique=&galfrom=B
-	 *             Gets pages containing the links. -
-	 *             api.php?action=query&generator=alllinks&galfrom=B */
+	 * @throws IOException Examples: Gets all linked titles, marking the missing
+	 *             ones. - api.php?action=query&generator=alllinks&galunique
+	 *             =&galfrom=B Gets pages containing the links. -
+	 *             api.php?action=query&generator=alllinks&galfrom=B
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=alllinks", method = HttpMethod.POST)
@@ -20782,16 +20500,17 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='allpages'
+	/**
+	 * Purge the cache for the given titles with the generator type ='allpages'
 	 * which enumerate all pages sequentially in a given namespace.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -20836,7 +20555,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -20877,15 +20596,14 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show info about 4 pages starting at the letter T.
-	 *             api.php?action=query&generator=allpages&gaplimit=4&gapfrom=T&
-	 *             prop=info Show content of first 2 non-redirect pages
-	 *             beginning at Re.
+	 * @throws IOException Examples: Show info about 4 pages starting at the
+	 *             letter T. api.php?action=query&generator=allpages&gaplimit=4
+	 *             &gapfrom=T& prop=info Show content of first 2 non-redirect
+	 *             pages beginning at Re.
 	 *             api.php?action=query&generator=allpages&gaplimit
 	 *             =2&gapfilterredir
-	 *             =nonredirects&gapfrom=Re&prop=revisions&rvprop=content */
+	 *             =nonredirects&gapfrom=Re&prop=revisions&rvprop=content
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=allpages", method = HttpMethod.POST)
@@ -20926,16 +20644,17 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='allredirects' which list all redirects to a namespace.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -20972,7 +20691,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -21013,13 +20732,12 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Gets all target pages, marking the missing ones. -
-	 *             api
-	 *             .php?action=query&generator=allredirects&galunique=&galfrom=B
-	 *             Gets pages containing the redirects. -
-	 *             api.php?action=query&generator=allredirects&galfrom=B */
+	 * @throws IOException Examples: Gets all target pages, marking the missing
+	 *             ones. - api
+	 *             .php?action=query&generator=allredirects&galunique
+	 *             =&galfrom=B Gets pages containing the redirects. -
+	 *             api.php?action=query&generator=allredirects&galfrom=B
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=allredirects", method = HttpMethod.POST)
@@ -21054,17 +20772,18 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='alltransclusions' which List all transclusions (pages embedded using
 	 * {{x}}), including non-existing.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -21097,14 +20816,53 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 *            database replicated cluster. To save actions causing any more
+	 *            site replication lag, this parameter can make the client wait
+	 *            until the replication lag is less than the specified value. In
+	 *            case of excessive lag, error code maxlag is returned with a
+	 *            message like Waiting for $host: $lag seconds lagged.
+	 * @param smaxage - Set the s-maxage header to this many seconds. Errors are
+	 *            never cached.Default: 0
+	 * @param maxage - Set the max-age header to this many seconds. Errors are
+	 *            never cached. Default: 0
+	 * @param assertUser - Verify the user is logged in if set to user, or has
+	 *            the bot userright if bot.One value: user, bot
+	 * @param requestid - Any value given here will be included in the response.
+	 *            May be used to distinguish requests.
+	 * @param servedby - Include the hostname that served the request in the
+	 *            results.
+	 * @param curtimestamp - Include the current timestamp in the result.
+	 * @param origin - When accessing the API using a cross-domain AJAX request
+	 *            (CORS), set this to the originating domain. This must be
+	 *            included in any pre-flight request, and therefore must be part
+	 *            of the request URI (not the POST body). This must match one of
+	 *            the origins in the Origin header exactly, so it has to be set
+	 *            to something like https://en.wikipedia.org or
+	 *            https://meta.wikimedia.org. If this parameter does not match
+	 *            the Origin header, a 403 response will be returned. If this
+	 *            parameter matches the Origin header and the origin is
+	 *            whitelisted, an Access-Control-Allow-Origin header will be
+	 *            set.
+	 * @param uselang - Language to use for message translations. A list of
+	 *            codes may be fetched from action=query&meta=siteinfo with
+	 *            siprop=languages, or specify user to use the current user's
+	 *            language preference, or specify content to use this wiki's
+	 *            content language.Default: user
+	 * @param centralauthtoken - When accessing the API using a cross-domain
+	 *            AJAX request (CORS), use this to authenticate as the current
+	 *            SUL user. Use action=centralauthtoken on this wiki to retrieve
+	 *            the token, before making the CORS request. Each token may only
+	 *            be used once, and expires after 10 seconds. This should be
+	 *            included in any pre-flight request, and therefore should be
+	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Gets all transcluded titles, marking the missing
-	 *             ones. -
+	 * @throws IOException Examples: Gets all transcluded titles, marking the
+	 *             missing ones. -
 	 *             api.php?action=query&generator=alltransclusions&gatunique
 	 *             =&gatfrom=B Gets pages containing the transclusions. -
-	 *             api.php?action=query&generator=alltransclusions&gatfrom=B */
+	 *             api.php?action=query&generator=alltransclusions&gatfrom=B
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=alltransclusions", method = HttpMethod.POST)
@@ -21139,16 +20897,17 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='backlinks'
+	/**
+	 * Purge the cache for the given titles with the generator type ='backlinks'
 	 * which find all pages that link to the given page
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -21182,7 +20941,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -21223,12 +20982,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get information about pages linking to Main page.-
-	 *             api
+	 * @throws IOException Examples: Get information about pages linking to Main
+	 *             page.- api
 	 *             .php?action=query&generator=backlinks&gbltitle=Main%20Page&
-	 *             prop=info */
+	 *             prop=info
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=backlinks", method = HttpMethod.POST)
@@ -21262,16 +21020,17 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='backlinks'
+	/**
+	 * Purge the cache for the given titles with the generator type ='backlinks'
 	 * which find all pages that link to the given page
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -21301,7 +21060,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -21342,9 +21101,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=categories */
+	 * @throws IOException Examples: api.php?action=purge&generator=categories
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=categories", method = HttpMethod.POST)
@@ -21376,18 +21134,19 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the
+	/**
+	 * Purge the cache for the given titles with the
 	 * https://www.wikidata.org/w/api
 	 * .php?action=query&prop=categories&titles=Albert%20Einsteingenerator type
 	 * ='categorymembers' which find all pages that link to the given page
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -21446,7 +21205,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -21487,12 +21246,11 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Get page info about first 10 pages in
+	 * @throws IOException Examples: Get page info about first 10 pages in
 	 *             Category:Physics
 	 *             .-api.php?action=query&generator=categorymembers
-	 *             &gcmtitle=Category:Physics&prop=info */
+	 *             &gcmtitle=Category:Physics&prop=info
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=categorymembers", method = HttpMethod.POST)
@@ -21523,16 +21281,17 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='deletedrevisions' which get deleted revision information.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -21586,7 +21345,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -21627,9 +21386,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=backlinks */
+	 * @throws IOException Examples: api.php?action=purge&generator=backlinks
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=deletedrevisions", method = HttpMethod.POST)
@@ -21671,17 +21429,18 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='duplicatefiles' which List all files that are duplicates of the given
 	 * files based on hash values..
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -21700,7 +21459,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -21741,9 +21500,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=duplicatefiles */
+	 * @throws IOException Examples:
+	 *             api.php?action=purge&generator=duplicatefiles
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=duplicatefiles", method = HttpMethod.POST)
@@ -21773,17 +21532,18 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='embeddedin' which Find all pages that embed (transclude) the given
 	 * title..
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -21810,7 +21570,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -21851,9 +21611,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=embeddedin */
+	 * @throws IOException Examples: api.php?action=purge&generator=embeddedin
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=embeddedin", method = HttpMethod.POST)
@@ -21886,17 +21645,18 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='embeddedin' which Find all pages that embed (transclude) the given
 	 * title..
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -21931,7 +21691,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -21972,9 +21732,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=exturlusage */
+	 * @throws IOException Examples: api.php?action=purge&generator=exturlusage
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=exturlusage", method = HttpMethod.POST)
@@ -22007,34 +21766,35 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='fileusage'
+	/**
+	 * Purge the cache for the given titles with the generator type ='fileusage'
 	 * which Find all pages that use the given files.
-	 * 
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param revids - A list of revision IDs to work on.
-	 * @param fuprop - Which properties to get: pageid Page ID of each page.
+	 * @param gfuprop - Which properties to get: pageid Page ID of each page.
 	 *            title Title of each page. redirect Flag if the page is a
 	 *            redirect. Values (separate with |): pageid, title, redirect
 	 *            Default: pageid|title|redirect
-	 * @param funamespace - Only include pages in these namespaces. Values
+	 * @param gfunamespace - Only include pages in these namespaces. Values
 	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
-	 * @param fushow - Show only items that meet these criteria: redirect Only
+	 * @param gfushow - Show only items that meet these criteria: redirect Only
 	 *            show redirects. !redirect Only show non-redirects.Values
 	 *            (separate with |): redirect, !redirect
-	 * @param fulimit - How many to return. No more than 500 (5,000 for bots)
+	 * @param gfulimit - How many to return. No more than 500 (5,000 for bots)
 	 *            allowed.Default: 10
-	 * @param fucontinue - When more results are available, use this to
+	 * @param gfucontinue - When more results are available, use this to
 	 *            continue.
 	 * @param redirects - Automatically resolve redirects in titles, pageids,
 	 *            and revids, and in pages returned by generator.
@@ -22042,7 +21802,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22083,9 +21843,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=fileusage */
+	 * @throws IOException Examples: api.php?action=purge&generator=fileusage
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=fileusage", method = HttpMethod.POST)
@@ -22116,7 +21875,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='images'
+	/**
+	 * Purge the cache for the given titles with the generator type ='images'
 	 * which Returns all files contained on the given pages..
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -22124,7 +21884,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -22145,7 +21906,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22186,9 +21947,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=images */
+	 * @throws IOException Examples: api.php?action=purge&generator=images
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=images", method = HttpMethod.POST)
@@ -22218,7 +21978,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='imageusage' which Find all pages that use the given image title..
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -22226,7 +21987,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -22258,7 +22020,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22299,9 +22061,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=images */
+	 * @throws IOException Examples: api.php?action=purge&generator=images
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=imageusage", method = HttpMethod.POST)
@@ -22335,7 +22096,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='iwbacklinks' which Find all pages that link to the given interwiki
 	 * link. Can be used to find all links with a prefix, or all links to a
 	 * title (with a given prefix). Using neither parameter is effectively
@@ -22346,7 +22108,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -22370,7 +22133,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22411,9 +22174,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=iwbacklinks */
+	 * @throws IOException Examples: api.php?action=purge&generator=iwbacklinks
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=iwbacklinks", method = HttpMethod.POST)
@@ -22445,7 +22207,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='langbacklinks' which Find all pages that link to the given language
 	 * link. Can be used to find all links with a language code, or all links to
 	 * a title (with a given language). Using neither parameter is effectively
@@ -22457,7 +22220,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -22482,7 +22246,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22523,9 +22287,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=langbacklinks */
+	 * @throws IOException Examples:
+	 *             api.php?action=purge&generator=langbacklinks
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=langbacklinks", method = HttpMethod.POST)
@@ -22557,7 +22321,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='links'
+	/**
+	 * Purge the cache for the given titles with the generator type ='links'
 	 * which Returns all links from the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -22565,7 +22330,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -22589,7 +22355,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22630,9 +22396,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=links */
+	 * @throws IOException Examples: api.php?action=purge&generator=links
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=links", method = HttpMethod.POST)
@@ -22663,7 +22428,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='linkshere'
+	/**
+	 * Purge the cache for the given titles with the generator type ='linkshere'
 	 * which Find all pages that link to the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -22671,31 +22437,34 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param revids - A list of revision IDs to work on.
-	 * @param lhprop - Which properties to get: pageid Page ID of each page.
+	 * @param glhprop - Which properties to get: pageid Page ID of each page.
 	 *            title Title of each page. redirect Flag if the page is a
 	 *            redirect. Values (separate with |): pageid, title, redirect
 	 *            Default: pageid|title|redirect
-	 * @param lhnamespace - Only include pages in these namespaces. Values
+	 * @param glhnamespace - Only include pages in these namespaces. Values
 	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
-	 * @param lhshow - Show only items that meet these criteria: redirect Only
+	 * @param glhshow - Show only items that meet these criteria: redirect Only
 	 *            show redirects. !redirect Only show non-redirects. Values
 	 *            (separate with |): redirect, !redirect
-	 * @param lhlimit - How many to return. No more than 500 (5,000 for bots)
+	 * @param glhlimit - How many to return. No more than 500 (5,000 for bots)
 	 *            allowed. Default: 10
+	 * @param glhcontinue - When more results are available, use this to
+	 *        continue.
 	 * @param redirects - Automatically resolve redirects in titles, pageids,
 	 *            and revids, and in pages returned by generator.
 	 * @param converttitles - Convert titles to other variants if necessary.
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22736,9 +22505,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=links */
+	 * @throws IOException Examples: api.php?action=purge&generator=links
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=linkshere", method = HttpMethod.POST)
@@ -22769,7 +22537,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='linkshere'
+	/**
+	 * Purge the cache for the given titles with the generator type ='linkshere'
 	 * which Find all pages that link to the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -22777,7 +22546,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -22785,7 +22555,6 @@ public abstract class WikiPediaConnector {
 	 * @param revids - A list of revision IDs to work on.
 	 * @param gmcgroup - Message group.This parameter is required.
 	 * @param gmclanguage - Language code. Default: en
-	 * 
 	 * @param gmclimit - How many messages to show (after filtering). No more
 	 *            than 5,000 (5,000 for bots) allowed. Default: 500
 	 * @param gmcoffset - When more results are available, use this to continue.
@@ -22818,7 +22587,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22859,9 +22628,9 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: api.php?action=purge&generator=messagecollection */
+	 * @throws IOException Examples:
+	 *             api.php?action=purge&generator=messagecollection
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=messagecollection", method = HttpMethod.POST)
@@ -22893,7 +22662,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='pageswithprop' which List all pages using a given page property.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -22901,7 +22671,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -22924,7 +22695,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -22965,9 +22736,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=pageswithprop */
+	 * @throws IOException Examples:api.php?action=purge&generator=pageswithprop
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -22999,7 +22769,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='prefixsearch' which Perform a prefix search for page titles.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -23007,7 +22778,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -23026,7 +22798,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -23067,9 +22839,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=prefixsearch */
+	 * @throws IOException Examples:api.php?action=purge&generator=prefixsearch
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=prefixsearch", method = HttpMethod.POST)
@@ -23099,7 +22870,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='protectedtitles' List all titles protected from creation.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -23107,7 +22879,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -23143,7 +22916,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -23185,8 +22958,8 @@ public abstract class WikiPediaConnector {
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
 	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=protectedtitles */
+	 *             Examples:api.php?action=purge&generator=protectedtitles
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -23206,7 +22979,7 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "gptstart", ignoreIfEmpty = true) String gptstart,
 			@Optional @RestQueryParam(value = "gptend", ignoreIfEmpty = true) String gptend,
 			@Default("timestamp|level") @RestQueryParam(value = "gptprop", ignoreIfEmpty = true) String gptprop,
-			@Optional @RestQueryParam(value = "gptcontinue", ignoreIfEmpty = true) String ptcontinue,
+			@Optional @RestQueryParam(value = "gptcontinue", ignoreIfEmpty = true) String gptcontinue,
 			@Optional @RestQueryParam(value = "redirects", ignoreIfEmpty = true) String redirects,
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles,
 			@Optional @RestQueryParam(value = "maxlag", ignoreIfEmpty = true) String maxlag,
@@ -23221,7 +22994,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='querypage'
+	/**
+	 * Purge the cache for the given titles with the generator type ='querypage'
 	 * which gets a list provided by a QueryPage-based special page.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -23229,7 +23003,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -23257,7 +23032,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -23298,9 +23073,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=querypage */
+	 * @throws IOException Examples:api.php?action=purge&generator=querypage
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=querypage", method = HttpMethod.POST)
@@ -23329,7 +23103,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='random'
+	/**
+	 * Purge the cache for the given titles with the generator type ='random'
 	 * which gets a set of random pages. Pages are listed in a fixed sequence,
 	 * only the starting point is random. This means that if, for example, Main
 	 * Page is the first random page in the list, List of fictional monkeys will
@@ -23342,7 +23117,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -23360,10 +23136,49 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 *            database replicated cluster. To save actions causing any more
+	 *            site replication lag, this parameter can make the client wait
+	 *            until the replication lag is less than the specified value. In
+	 *            case of excessive lag, error code maxlag is returned with a
+	 *            message like Waiting for $host: $lag seconds lagged.
+	 * @param smaxage - Set the s-maxage header to this many seconds. Errors are
+	 *            never cached.Default: 0
+	 * @param maxage - Set the max-age header to this many seconds. Errors are
+	 *            never cached. Default: 0
+	 * @param assertUser - Verify the user is logged in if set to user, or has
+	 *            the bot userright if bot.One value: user, bot
+	 * @param requestid - Any value given here will be included in the response.
+	 *            May be used to distinguish requests.
+	 * @param servedby - Include the hostname that served the request in the
+	 *            results.
+	 * @param curtimestamp - Include the current timestamp in the result.
+	 * @param origin - When accessing the API using a cross-domain AJAX request
+	 *            (CORS), set this to the originating domain. This must be
+	 *            included in any pre-flight request, and therefore must be part
+	 *            of the request URI (not the POST body). This must match one of
+	 *            the origins in the Origin header exactly, so it has to be set
+	 *            to something like https://en.wikipedia.org or
+	 *            https://meta.wikimedia.org. If this parameter does not match
+	 *            the Origin header, a 403 response will be returned. If this
+	 *            parameter matches the Origin header and the origin is
+	 *            whitelisted, an Access-Control-Allow-Origin header will be
+	 *            set.
+	 * @param uselang - Language to use for message translations. A list of
+	 *            codes may be fetched from action=query&meta=siteinfo with
+	 *            siprop=languages, or specify user to use the current user's
+	 *            language preference, or specify content to use this wiki's
+	 *            content language.Default: user
+	 * @param centralauthtoken - When accessing the API using a cross-domain
+	 *            AJAX request (CORS), use this to authenticate as the current
+	 *            SUL user. Use action=centralauthtoken on this wiki to retrieve
+	 *            the token, before making the CORS request. Each token may only
+	 *            be used once, and expires after 10 seconds. This should be
+	 *            included in any pre-flight request, and therefore should be
+	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=random */
+	 * @throws IOException Examples:api.php?action=purge&generator=random
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -23393,7 +23208,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='recentchanges' Enumerate recent changes.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -23401,7 +23217,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -23437,17 +23254,13 @@ public abstract class WikiPediaConnector {
 	 *            loginfo, tags, sha1 Default: title|timestamp|ids
 	 * @param grcshow - Show only items that meet these criteria. For example,
 	 *            to see only minor edits done by logged-in users, set
-	 *            rcshow=minor|!anon.
-	 * 
-	 *            Values (separate with |): minor, !minor, bot, !bot, anon,
-	 *            !anon, redirect, !redirect, patrolled, !patrolled, unpatrolled
-	 * @param grclimit - How many total changes to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param grctype - hich types of changes to show.
-	 * 
-	 *            Values (separate with |): edit, external, new, log Default:
-	 *            edit|new|log
+	 *            rcshow=minor|!anon. Values (separate with |): minor, !minor,
+	 *            bot, !bot, anon, !anon, redirect, !redirect, patrolled,
+	 *            !patrolled, unpatrolled
+	 * @param grclimit - How many total changes to return. No more than 500
+	 *            (5,000 for bots) allowed. Default: 10
+	 * @param grctype - hich types of changes to show. Values (separate with |):
+	 *            edit, external, new, log Default: edit|new|log
 	 * @param grctoponly - Only list changes which are the latest revision.
 	 * @param grccontinue - When more results are available, use this to
 	 *            continue.
@@ -23457,7 +23270,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -23498,9 +23311,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=recentchanges */
+	 * @throws IOException Examples:api.php?action=purge&generator=recentchanges
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=recentchanges", method = HttpMethod.POST)
@@ -23539,7 +23351,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='redirects'
+	/**
+	 * Purge the cache for the given titles with the generator type ='redirects'
 	 * which Returns all redirects to the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -23547,7 +23360,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -23557,23 +23371,18 @@ public abstract class WikiPediaConnector {
 	 *            redirect. title Title of each redirect. fragment Fragment of
 	 *            each redirect, if any. Values (separate with |): pageid,
 	 *            title, fragment Default: pageid|title
-	 * @param grdnamespace - Only include pages in these namespaces.
-	 * 
-	 *            Note: Due to miser mode, using this may result in fewer than
-	 *            rdlimit results returned before continuing; in extreme cases,
-	 *            zero results may be returned.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829
-	 * @param grdshow - Show only items that meet these criteria:
-	 * 
-	 *            fragment Only show redirects with a fragment. !fragment Only
-	 *            show redirects without a fragment. Values (separate with |):
-	 *            fragment, !fragment
-	 * @param grdlimit - How many redirects to return.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
+	 * @param grdnamespace - Only include pages in these namespaces. Note: Due
+	 *            to miser mode, using this may result in fewer than rdlimit
+	 *            results returned before continuing; in extreme cases, zero
+	 *            results may be returned. Values (separate with |): 0, 1, 2, 3,
+	 *            4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 120, 121, 122, 123,
+	 *            1198, 1199, 2600, 828, 829
+	 * @param grdshow - Show only items that meet these criteria: fragment Only
+	 *            show redirects with a fragment. !fragment Only show redirects
+	 *            without a fragment. Values (separate with |): fragment,
+	 *            !fragment
+	 * @param grdlimit - How many redirects to return. No more than 500 (5,000
+	 *            for bots) allowed. Default: 10
 	 * @param grdcontinue - When more results are available, use this to
 	 *            continue.
 	 * @param redirects - Automatically resolve redirects in titles, pageids,
@@ -23582,7 +23391,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -23623,9 +23432,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=redirects */
+	 * @throws IOException Examples:api.php?action=purge&generator=redirects
+	 */
 
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
@@ -23657,22 +23465,21 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='revisions'
-	 * which Get revision information.
-	 * 
-	 * May be used in several ways:
-	 * 
-	 * Get data about a set of pages (last revision), by setting titles or
-	 * pageids. Get revisions for one given page, by using titles or pageids
-	 * with start, end, or limit. Get data about a set of revisions by setting
-	 * their IDs with revids.
+	/**
+	 * Purge the cache for the given titles with the generator type ='revisions'
+	 * which Get revision information. May be used in several ways: Get data
+	 * about a set of pages (last revision), by setting titles or pageids. Get
+	 * revisions for one given page, by using titles or pageids with start, end,
+	 * or limit. Get data about a set of revisions by setting their IDs with
+	 * revids.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param forcelinkupdate - Update the links tables.
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -23736,7 +23543,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -23777,9 +23584,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=revisions */
+	 * @throws IOException Examples:api.php?action=purge&generator=revisions
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=revisions", method = HttpMethod.POST)
@@ -23823,7 +23629,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='search'
+	/**
+	 * Purge the cache for the given titles with the generator type ='search'
 	 * which Perform a full text search.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -23831,50 +23638,40 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param revids - A list of revision IDs to work on.
 	 * @param gsrsearch - Search for all page titles (or content) that have this
-	 *            value.
-	 * 
-	 *            This parameter is required.
-	 * 
-	 * @param gsrnamespace - Search only within these namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829 Default: 0
-	 * @param gsrwhat - Which type of search to perform.
-	 * 
-	 *            One value: title, text, nearmatch
-	 * @param gsrinfo - Which metadata to return.
-	 * 
-	 *            Values (separate with |): totalhits, suggestion Default:
-	 *            totalhits|suggestion
-	 * @param gsrprop - Which properties to return:
-	 * 
-	 *            size Adds the size of the page in bytes. wordcount Adds the
-	 *            word count of the page. timestamp Adds the timestamp of when
-	 *            the page was last edited. snippet Adds a parsed snippet of the
-	 *            page. titlesnippet Adds a parsed snippet of the page title.
-	 *            redirectsnippet Adds a parsed snippet of the redirect title.
-	 *            redirecttitle Adds the title of the matching redirect.
-	 *            sectionsnippet Adds a parsed snippet of the matching section
-	 *            title. sectiontitle Adds the title of the matching section.
-	 *            score Deprecated and ignored. hasrelated Deprecated and
-	 *            ignored. Values (separate with |): size, wordcount, timestamp,
-	 *            score, snippet, titlesnippet, redirecttitle, redirectsnippet,
-	 *            sectiontitle, sectionsnippet, hasrelated Default:
-	 *            size|wordcount|timestamp|snippet
-	 * @param gsroffset - When more results are available, use this to continue.
-	 * 
+	 *            value. This parameter is required.
+	 * @param gsrnamespace - Search only within these namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
 	 *            Default: 0
-	 * @param gsrlimit - How many total pages to return.
-	 * 
-	 *            No more than 50 (500 for bots) allowed. Default: 10
+	 * @param gsrwhat - Which type of search to perform. One value: title, text,
+	 *            nearmatch
+	 * @param gsrinfo - Which metadata to return. Values (separate with |):
+	 *            totalhits, suggestion Default: totalhits|suggestion
+	 * @param gsrprop - Which properties to return: size Adds the size of the
+	 *            page in bytes. wordcount Adds the word count of the page.
+	 *            timestamp Adds the timestamp of when the page was last edited.
+	 *            snippet Adds a parsed snippet of the page. titlesnippet Adds a
+	 *            parsed snippet of the page title. redirectsnippet Adds a
+	 *            parsed snippet of the redirect title. redirecttitle Adds the
+	 *            title of the matching redirect. sectionsnippet Adds a parsed
+	 *            snippet of the matching section title. sectiontitle Adds the
+	 *            title of the matching section. score Deprecated and ignored.
+	 *            hasrelated Deprecated and ignored. Values (separate with |):
+	 *            size, wordcount, timestamp, score, snippet, titlesnippet,
+	 *            redirecttitle, redirectsnippet, sectiontitle, sectionsnippet,
+	 *            hasrelated Default: size|wordcount|timestamp|snippet
+	 * @param gsroffset - When more results are available, use this to continue.
+	 *            Default: 0
+	 * @param gsrlimit - How many total pages to return. No more than 50 (500
+	 *            for bots) allowed. Default: 10
 	 * @param gsrinterwiki - Include interwiki results in the search, if
 	 *            available.
 	 * @param redirects - Automatically resolve redirects in titles, pageids,
@@ -23883,7 +23680,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -23924,9 +23721,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=revisions */
+	 * @throws IOException Examples:api.php?action=purge&generator=revisions
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=search", method = HttpMethod.POST)
@@ -23950,7 +23746,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "converttitles", ignoreIfEmpty = true) String converttitles)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='templates'
+	/**
+	 * Purge the cache for the given titles with the generator type ='templates'
 	 * which Returns all pages transcluded on the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -23958,7 +23755,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -23982,7 +23780,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -24023,9 +23821,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=templates */
+	 * @throws IOException Examples:api.php?action=purge&generator=templates
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=query&prop=templates", method = HttpMethod.POST)
@@ -24056,7 +23853,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='transcludedin' which Find all pages that transclude the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -24064,7 +23862,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -24090,7 +23889,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -24131,9 +23930,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=transcludedin */
+	 * @throws IOException Examples:api.php?action=purge&generator=transcludedin
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=transcludedin", method = HttpMethod.POST)
@@ -24164,7 +23962,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type ='watchlist'
+	/**
+	 * Purge the cache for the given titles with the generator type ='watchlist'
 	 * which Find all pages that transclude the given pages.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -24172,7 +23971,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -24182,47 +23982,38 @@ public abstract class WikiPediaConnector {
 	 *            given timeframe.
 	 * @param gwlstart - The timestamp to start enumerating from.
 	 * @param gwlend - The timestamp to end enumerating.
-	 * @param gwlnamespace - Filter changes to only the given namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829 wluser Only list changes by this user.
+	 * @param gwlnamespace - Filter changes to only the given namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
+	 *            wluser Only list changes by this user.
 	 * @param gwluser - Only list changes by this user.
 	 * @param gwlexcludeuser - Don't list changes by this user.
-	 * @param gwldir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: wlstart has to be before wlend.
-	 *            older List newest first (default). Note: wlstart has to be
-	 *            later than wlend. One value: newer, older Default: older
-	 * 
-	 * @param gwllimit - How many total results to return per request.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param gwlprop - Which additional items to get:
-	 * 
-	 *            ids Adds revision IDs and page IDs. title Adds title of the
-	 *            page. flags Adds flags for the edit. user Adds the user who
-	 *            made the edit. userid Adds user ID of whom made the edit.
-	 *            comment Adds comment of the edit. parsedcomment Adds parsed
-	 *            comment of the edit. timestamp Adds timestamp of the edit.
-	 *            patrol Tags edits that are patrolled. sizes Adds the old and
-	 *            new lengths of the page. notificationtimestamp Adds timestamp
-	 *            of when the user was last notified about the edit. loginfo
-	 *            Adds log information where appropriate. Values (separate with
-	 *            |): ids, title, flags, user, userid, comment, parsedcomment,
-	 *            timestamp, patrol, sizes, notificationtimestamp, loginfo
-	 *            Default: ids|title|flags
+	 * @param gwldir - In which direction to enumerate: newer List oldest first.
+	 *            Note: wlstart has to be before wlend. older List newest first
+	 *            (default). Note: wlstart has to be later than wlend. One
+	 *            value: newer, older Default: older
+	 * @param gwllimit - How many total results to return per request. No more
+	 *            than 500 (5,000 for bots) allowed. Default: 10
+	 * @param gwlprop - Which additional items to get: ids Adds revision IDs and
+	 *            page IDs. title Adds title of the page. flags Adds flags for
+	 *            the edit. user Adds the user who made the edit. userid Adds
+	 *            user ID of whom made the edit. comment Adds comment of the
+	 *            edit. parsedcomment Adds parsed comment of the edit. timestamp
+	 *            Adds timestamp of the edit. patrol Tags edits that are
+	 *            patrolled. sizes Adds the old and new lengths of the page.
+	 *            notificationtimestamp Adds timestamp of when the user was last
+	 *            notified about the edit. loginfo Adds log information where
+	 *            appropriate. Values (separate with |): ids, title, flags,
+	 *            user, userid, comment, parsedcomment, timestamp, patrol,
+	 *            sizes, notificationtimestamp, loginfo Default: ids|title|flags
 	 * @param gwlshow - Show only items that meet these criteria. For example,
 	 *            to see only minor edits done by logged-in users, set
-	 *            wlshow=minor|!anon.
-	 * 
-	 *            Values (separate with |): minor, !minor, bot, !bot, anon,
-	 *            !anon, patrolled, !patrolled, unread, !unread
-	 * @param gwltype - Which types of changes to show:
-	 * 
-	 *            edit Regular page edits. external External changes. new Page
-	 *            creations. log Log entries. Values (separate with |): edit,
-	 *            external, new, log Default: edit|new|log
+	 *            wlshow=minor|!anon. Values (separate with |): minor, !minor,
+	 *            bot, !bot, anon, !anon, patrolled, !patrolled, unread, !unread
+	 * @param gwltype - Which types of changes to show: edit Regular page edits.
+	 *            external External changes. new Page creations. log Log
+	 *            entries. Values (separate with |): edit, external, new, log
+	 *            Default: edit|new|log
 	 * @param gwlowner - Used along with wltoken to access a different user's
 	 *            watchlist.
 	 * @param gwltoken - A security token (available in the user's preferences)
@@ -24235,7 +24026,7 @@ public abstract class WikiPediaConnector {
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -24276,9 +24067,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=watchlist */
+	 * @throws IOException Examples:api.php?action=purge&generator=watchlist
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=watchlist", method = HttpMethod.POST)
@@ -24318,7 +24108,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Purge the cache for the given titles with the generator type
+	/**
+	 * Purge the cache for the given titles with the generator type
 	 * ='watchlistraw' which Get all pages on the current user's watchlist.
 	 * 
 	 * @param format - The format of the output.Default Json
@@ -24326,7 +24117,8 @@ public abstract class WikiPediaConnector {
 	 * @param forcerecursivelinkupdate - Update the links table, and update the
 	 *            links tables for any page that uses this page as a template.
 	 * @param continueStr - When more results are available, use this to
-	 *            continue.
+	 *            continue. - A list of titles to work on. Separate values with
+	 *            |. Maximum number of values is 50 (500 for bots).
 	 * @param titles - A list of titles to work on. Separate values with |.
 	 *            Maximum number of values is 50 (500 for bots).
 	 * @param pageids - A list of page IDs to work on. Separate values with |.
@@ -24334,38 +24126,31 @@ public abstract class WikiPediaConnector {
 	 * @param revids - A list of revision IDs to work on.
 	 * @param gwrcontinue - When more results are available, use this to
 	 *            continue.
-	 * @param gwrnamespace - Only list pages in the given namespaces.
-	 * 
-	 *            Values (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	 *            11, 12, 13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828,
-	 *            829
-	 * @param gwrlimit - How many total results to return per request.
-	 * 
-	 *            No more than 500 (5,000 for bots) allowed. Default: 10
-	 * @param gwrprop - Which additional properties to get:
-	 * 
-	 *            changed Adds timestamp of when the user was last notified
-	 *            about the edit. Values (separate with |): changed
-	 * @param gwrshow - Only list items that meet these criteria.
-	 * 
-	 *            Values (separate with |): changed, !changed
+	 * @param gwrnamespace - Only list pages in the given namespaces. Values
+	 *            (separate with |): 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	 *            13, 14, 15, 120, 121, 122, 123, 1198, 1199, 2600, 828, 829
+	 * @param gwrlimit - How many total results to return per request. No more
+	 *            than 500 (5,000 for bots) allowed. Default: 10
+	 * @param gwrprop - Which additional properties to get: changed Adds
+	 *            timestamp of when the user was last notified about the edit.
+	 *            Values (separate with |): changed
+	 * @param gwrshow - Only list items that meet these criteria. Values
+	 *            (separate with |): changed, !changed
 	 * @param gwrowner - Used along with wrtoken to access a different user's
 	 *            watchlist.
 	 * @param gwrtoken - A security token (available in the user's preferences)
 	 *            to allow access to another user's watchlist.
-	 * @param gwrdir - In which direction to enumerate:
-	 * 
-	 *            newer List oldest first. Note: wrstart has to be before wrend.
-	 *            older List newest first (default). Note: wrstart has to be
-	 *            later than wrend. One value: ascending, descending Default:
-	 *            ascending
+	 * @param gwrdir - In which direction to enumerate: newer List oldest first.
+	 *            Note: wrstart has to be before wrend. older List newest first
+	 *            (default). Note: wrstart has to be later than wrend. One
+	 *            value: ascending, descending Default: ascending
 	 * @param redirects - Automatically resolve redirects in titles, pageids,
 	 *            and revids, and in pages returned by generator.
 	 * @param converttitles - Convert titles to other variants if necessary.
 	 *            Only works if the wiki's content language supports variant
 	 *            conversion. Languages that support variant conversion include
 	 *            gan, iu, kk, ku, shi, sr, tg, uz, zh.
-	 *            * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
+	 * @param maxlag - Maximum lag can be used when MediaWiki is installed on a
 	 *            database replicated cluster. To save actions causing any more
 	 *            site replication lag, this parameter can make the client wait
 	 *            until the replication lag is less than the specified value. In
@@ -24406,9 +24191,8 @@ public abstract class WikiPediaConnector {
 	 *            included in any pre-flight request, and therefore should be
 	 *            included in the request URI (not the POST body).
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples:api.php?action=purge&generator=watchlistraw */
+	 * @throws IOException Examples:api.php?action=purge&generator=watchlistraw
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=purge&generator=watchlistraw", method = HttpMethod.POST)
@@ -24442,7 +24226,8 @@ public abstract class WikiPediaConnector {
 			@Optional @RestQueryParam(value = "centralauthtoken", ignoreIfEmpty = true) String centralauthtoken)
 			throws IOException;
 
-	/** Obtain information about API modules.
+	/**
+	 * Obtain information about API modules.
 	 * 
 	 * @param format - The format of the output.Default Json
 	 * @param modules - List of module names (values of the action and format
@@ -24451,13 +24236,11 @@ public abstract class WikiPediaConnector {
 	 * @param helpformat - Format of help strings. One value: html, wikitext,
 	 *            raw, none. Default: none
 	 * @return Json String
-	 * @throws IOException
-	 * 
-	 *             Examples: Show info for action=parse, format=jsonfm,
+	 * @throws IOException Examples: Show info for action=parse, format=jsonfm,
 	 *             action=query&list=allpages, and action=query&meta=siteinfo.
-	 * 
-	 *             api.php?action=paraminfo&modules=parse|phpfm|query+allpages|
-	 *             query+siteinfo */
+	 *             api .php?action=paraminfo&modules=parse|phpfm|query+allpages|
+	 *             query+siteinfo
+	 */
 	@Processor
 	@ReconnectOn(exceptions = { Exception.class })
 	@RestCall(uri = BASE_URL + "?action=paraminfo", method = HttpMethod.GET)
@@ -24466,8 +24249,6 @@ public abstract class WikiPediaConnector {
 			@RestQueryParam(value = "modules", ignoreIfEmpty = true) String modules,
 			@Default("none") @RestQueryParam(value = "helpformat", ignoreIfEmpty = true) String helpformat)
 			throws IOException;
-
-
 
 	public ConnectorConnectionStrategy getConnectionStrategy() {
 		return connectionStrategy;
