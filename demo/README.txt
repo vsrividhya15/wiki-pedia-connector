@@ -2,7 +2,15 @@ WIKIPEDIA
 =========
 HOW TO DEMO
 ===========
-1. Set the MikiPedia API credentials in the mule-app.properties
+Test the flows
+
+With Anypoint Studio up and running, open the Import wizard from the File menu. 
+A pop-up wizard will offer you the chance to pick Anypoint Studio Project from External Location. 
+On the next wizard window point Project Root to the location of the demo project and select the Server Runtime .
+Once successfully imported the studio will automatically present the Mule Flows.
+
+From the Package Explorer view, expand the demo project and open the mule-app.properties file. Fill in the credentials of MediaWiki API.
+
 
 example-param-info
 ====================

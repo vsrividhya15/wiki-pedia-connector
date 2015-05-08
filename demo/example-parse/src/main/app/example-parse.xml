@@ -13,7 +13,7 @@ http://www.mulesoft.org/schema/mule/wiki-pedia http://www.mulesoft.org/schema/mu
     <wiki-pedia:config-type name="WikiPedia__HttpBasicAuth" username="${user.name}" password="${password}" doc:name="WikiPedia: HttpBasicAuth"/>
     <flow name="example-parseFlow">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/wiki/parse" doc:name="HTTP"/>
-        <wiki-pedia:parse-content config-ref="WikiPedia__HttpBasicAuth" contentmodel="wikitext" text="{{Project:Sandbox}}" doc:name="WikiPedia"/>
+        <wiki-pedia:parse-content config-ref="WikiPedia__HttpBasicAuth" title="{{Project:Sandbox}}" doc:name="WikiPedia"/>
         <logger message="=============================login #[payload]" level="INFO" doc:name="Logger"/>
         <json:object-to-json-transformer doc:name="Object to JSON"/>
     </flow>

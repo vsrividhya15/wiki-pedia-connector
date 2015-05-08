@@ -119,7 +119,6 @@ import org.mule.modules.wikipedia.automation.testcases.QueryListRandomTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListRecentChangesTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListSearchTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListTagsTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryListTermTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListUserContribsTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListUsersTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListWatchListRawTestCases;
@@ -130,14 +129,7 @@ import org.mule.modules.wikipedia.automation.testcases.QueryListdeletedrevsTestC
 import org.mule.modules.wikipedia.automation.testcases.QueryListlangbacklinksTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryMetaAllMessagesTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryMetaFileRepoInfoTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryMetaGlobalUserInfoTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryMetaLanguageStatsTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryMetaMessageGroupStatsTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryMetaMessageGroupsTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryMetaMessageranslationsTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryMetaNotificationsTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryMetaUserInfoTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryMetaWikiBaseTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryMetasSiteInfoTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryMetatokensTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryPropCategoriesTestCases;
@@ -228,7 +220,6 @@ import org.mule.modules.wikipedia.automation.testcases.QueryTestCases;
     QueryListlangbacklinksTestCases.class,
     QueryListLogEventsTestCases.class,
     QueryListMessageCollectionTestCases.class,
-    QueryListTermTestCases.class,
     QueryListPagePropNamesTestCases.class,
     QueryListPageswithpropTestCases.class,
     QueryListPrefixSearchTestCases.class,
@@ -245,16 +236,9 @@ import org.mule.modules.wikipedia.automation.testcases.QueryTestCases;
     QueryListWikiSetsTestCases.class,
     QueryMetaAllMessagesTestCases.class,
     QueryMetaFileRepoInfoTestCases.class,
-    QueryMetaGlobalUserInfoTestCases.class,
-    QueryMetaLanguageStatsTestCases.class,
-    QueryMetaMessageGroupsTestCases.class,
-    QueryMetaMessageGroupStatsTestCases.class,
-    QueryMetaNotificationsTestCases.class,
-    QueryMetaMessageranslationsTestCases.class,
     QueryMetasSiteInfoTestCases.class,
     QueryMetatokensTestCases.class,
     QueryMetaUserInfoTestCases.class,
-    QueryMetaWikiBaseTestCases.class,
     QueryGenAllcategoriesTestCases.class,
     QueryGenAllDeletedRevisionsTestCases.class,
     QueryGenAllFileUsagesTestCases.class,
