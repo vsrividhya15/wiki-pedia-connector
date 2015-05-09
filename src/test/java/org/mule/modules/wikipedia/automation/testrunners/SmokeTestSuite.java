@@ -31,7 +31,6 @@ import org.mule.modules.wikipedia.automation.testcases.PurgeInterwikiBackLinksTe
 import org.mule.modules.wikipedia.automation.testcases.PurgeLangBackLinksTestCases;
 import org.mule.modules.wikipedia.automation.testcases.PurgeLinkShereTestCases;
 import org.mule.modules.wikipedia.automation.testcases.PurgeLinksTestCases;
-import org.mule.modules.wikipedia.automation.testcases.PurgeMessageCollectionTestCases;
 import org.mule.modules.wikipedia.automation.testcases.PurgePagesWithPropTestCases;
 import org.mule.modules.wikipedia.automation.testcases.PurgePrefixSearchTestCases;
 import org.mule.modules.wikipedia.automation.testcases.PurgeProtectedTitlesTestCases;
@@ -67,7 +66,6 @@ import org.mule.modules.wikipedia.automation.testcases.QueryGenIwBackLinksTestCa
 import org.mule.modules.wikipedia.automation.testcases.QueryGenLangBackLinksTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryGenLinkShereTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryGenLinksTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryGenMessageCollectionTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryGenPagesWithPropTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryGenPrefixSearchTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryGenProtectedTitlesTestCases;
@@ -109,7 +107,6 @@ import org.mule.modules.wikipedia.automation.testcases.QueryListGlobalGroupsTest
 import org.mule.modules.wikipedia.automation.testcases.QueryListImageUsageTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListIwBackLinksTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListLogEventsTestCases;
-import org.mule.modules.wikipedia.automation.testcases.QueryListMessageCollectionTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListPagePropNamesTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListPageswithpropTestCases;
 import org.mule.modules.wikipedia.automation.testcases.QueryListPrefixSearchTestCases;
@@ -219,7 +216,6 @@ import org.mule.modules.wikipedia.automation.testcases.QueryTestCases;
     QueryListIwBackLinksTestCases.class,
     QueryListlangbacklinksTestCases.class,
     QueryListLogEventsTestCases.class,
-    QueryListMessageCollectionTestCases.class,
     QueryListPagePropNamesTestCases.class,
     QueryListPageswithpropTestCases.class,
     QueryListPrefixSearchTestCases.class,
@@ -261,7 +257,6 @@ import org.mule.modules.wikipedia.automation.testcases.QueryTestCases;
     QueryGenLangBackLinksTestCases.class,
     QueryGenLinksTestCases.class,
     QueryGenLinkShereTestCases.class,
-    QueryGenMessageCollectionTestCases.class,
     QueryGenPagesWithPropTestCases.class,
     QueryGenPrefixSearchTestCases.class,
     QueryGenProtectedTitlesTestCases.class,
@@ -302,7 +297,6 @@ import org.mule.modules.wikipedia.automation.testcases.QueryTestCases;
     PurgeLangBackLinksTestCases.class,
     PurgeLinksTestCases.class,
     PurgeLinkShereTestCases.class,
-    PurgeMessageCollectionTestCases.class,
     PurgePagesWithPropTestCases.class,
     PurgePrefixSearchTestCases.class,
     PurgeProtectedTitlesTestCases.class,

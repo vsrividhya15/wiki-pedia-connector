@@ -330,12 +330,6 @@ http://www.mulesoft.org/schema/mule/wiki-pedia http://www.mulesoft.org/schema/mu
 			config-ref="WikiPedia__HttpBasicAuth" doc:name="WikiPedia" />
 	</flow>
 
-	<flow name="query-list-message-collection">
-		<wiki-pedia:query-list-message-collection
-			config-ref="WikiPedia__HttpBasicAuth" mcgroup="#[flowVars.mcgroup]"
-			doc:name="WikiPedia" />
-	</flow>
-
 	<!-- <flow name="query-list-term" > <wiki-pedia:query-list-term config-ref="Wiki-pedia" 
 		doc:name="WikiPedia"/> </flow> -->
 
@@ -548,12 +542,6 @@ http://www.mulesoft.org/schema/mule/wiki-pedia http://www.mulesoft.org/schema/mu
 			config-ref="WikiPedia__HttpBasicAuth" doc:name="WikiPedia" />
 	</flow>
 
-	<flow name="query-gen-message-collection">
-		<wiki-pedia:query-gen-message-collection
-			config-ref="WikiPedia__HttpBasicAuth" gmcgroup="#[flowVars.gmcgroup]"
-			doc:name="WikiPedia" />
-	</flow>
-
 	<flow name="query-gen-pages-with-prop">
 		<wiki-pedia:query-gen-pages-with-prop
 			config-ref="WikiPedia__HttpBasicAuth" gpwppropname="#[flowVars.gpwppropname]"
@@ -754,12 +742,6 @@ http://www.mulesoft.org/schema/mule/wiki-pedia http://www.mulesoft.org/schema/mu
 
 	<flow name="purge-link-shere">
 		<wiki-pedia:purge-link-shere config-ref="WikiPedia__HttpBasicAuth"
-			doc:name="WikiPedia" />
-	</flow>
-
-	<flow name="purge-message-collection">
-		<wiki-pedia:purge-message-collection
-			config-ref="WikiPedia__HttpBasicAuth" gmcgroup="#[flowVars.gmcgroup]"
 			doc:name="WikiPedia" />
 	</flow>
 
